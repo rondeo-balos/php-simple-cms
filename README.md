@@ -1,5 +1,6 @@
 A simple CMS built using PHP
 
 Start Server
-
-`> php -S localhost:8000
+```bash
+> php -S localhost:8000
+```
