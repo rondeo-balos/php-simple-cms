@@ -4,6 +4,12 @@
         "slim/psr7": "^1.6",
         "slim/twig-view": "^3.3",
         "slim/php-view": "^3.2",
-        "php-di/php-di": "^7.0"
+        "php-di/php-di": "^7.0",
+        "illuminate/database": "11.0.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }
