@@ -5,8 +5,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\model\User;
 use simpl\Response as ResponseData;
-use simpl\Database;
-use \Exception as Exception;
+use Illuminate\Database\Capsule\Manager as Manager;
 
 class InstallAjax {
     
@@ -20,21 +19,46 @@ class InstallAjax {
         $db_username = $post['db_username'];
         $db_password = $post['db_password'];
     
-        $database = new Database;
-        $database->test_connection( $db_host, $db_username, $db_password );
+        $settings = [
+            'driver' => 'mysql',
+            'host' => $db_host,
+            'database' => '',
+            'username' => $db_username,
+            'password' => $db_password,
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ];
+
+        $capsule = new Manager();
+        $capsule->addConnection($settings);
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
     
         try {
-            $connection = $database->capsule->getConnection();
+            $connection = $capsule->getConnection();
             $connection->getPdo();
     
             // Create database
-            $capsule = $database->capsule;
             $manager = $capsule->getDatabaseManager();
             $manager->statement( 'CREATE DATABASE IF NOT EXISTS ' . $db_name );
     
             // Re-test the connection
-            $database->test_connection( $db_host, $db_username, $db_password, $db_name );
-            $capsule = $database->capsule;
+            $settings = [
+                'driver' => 'mysql',
+                'host' => $db_host,
+                'database' => $db_name,
+                'username' => $db_username,
+                'password' => $db_password,
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => '',
+            ];
+    
+            $capsule = new Manager();
+            $capsule->addConnection($settings);
+            $capsule->setAsGlobal();
+            $capsule->bootEloquent();
             $manager = $capsule->getDatabaseManager();
     
             // Add tables to the database
@@ -44,6 +68,7 @@ class InstallAjax {
                 password text,
                 firstname varchar(255),
                 lastname varchar(255),
+                token text DEFAULT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
                 updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 UNIQUE(email)
@@ -59,17 +84,26 @@ class InstallAjax {
             ];
             $user = new User( $user_data );
             $user->save();
+
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $secret = '';
+            for ($i = 0; $i < 32; $i++) {
+                $secret .= $characters[random_int(0, $charactersLength - 1)];
+            }
     
             // Create Config
             file_put_contents( 'config.php',
                 "<?php\n\n" .
-                "define( 'DB_NAME', 'database' );\n" .
-                "define( 'DB_USERNAME', 'username' );\n" .
-                "define( 'DB_PASSWORD', 'password' );\n" .
-                "define( 'DB_HOST', 'localhost' );\n"
+                "define( 'DB_NAME', '" . $db_name . "' );\n" .
+                "define( 'DB_USERNAME', '" . $db_username . "' );\n" .
+                "define( 'DB_PASSWORD', '" . $db_password . "' );\n" .
+                "define( 'DB_HOST', '" . $db_host . "' );\n" .
+                "\n" .
+                "define( 'SECRET', '" . $secret . "' );\n"
             );
     
-        } catch( Exception $e ) {
+        } catch( \Exception $e ) {
             $response_data = new ResponseData( 500, $e->getMessage() );
             $payload = json_encode( $response_data() );
             $response->getBody()->write( $payload );
