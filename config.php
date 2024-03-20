@@ -5,4 +5,4 @@ define( 'DB_USERNAME', 'username' );
 define( 'DB_PASSWORD', 'password' );
 define( 'DB_HOST', 'localhost' );
 
-define( 'SECRET', '6Qq9gJnSYf4muPqXR24xbbOVjLDRZxE2' );
+define( 'SECRET', 'dsB3ro0DzWa2mLEZ1NmljG0fyiakYU7u' );

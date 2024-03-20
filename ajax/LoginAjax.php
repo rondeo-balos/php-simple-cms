@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\Response as ResponseData;
 use Illuminate\Database\Capsule\Manager as Manager;
+use simpl\Auth;
 
 class LoginAjax {
 
@@ -15,6 +16,7 @@ class LoginAjax {
         
         $email = $post['email'];
         $password = $post['password'];
+        $remember = $post['remember'] ?? false;
 
         $settings = [
             'driver' => 'mysql',
@@ -45,6 +47,8 @@ class LoginAjax {
                 ];
                 $issued = time();
                 $expiration = $issued + 3600; // 1 hour expiration
+                if( $remember )
+                    $expiration += (3600 * 24 * 7); // 1 Week expiration 604800000
                 
                 $payload = [
                     'user' => $user,
@@ -53,8 +57,7 @@ class LoginAjax {
                 ];
 
                 $token = JWT::encode( $payload, SECRET, 'HS256' );
-
-                $_SESSION[ 'token' ] = $token;
+                Auth::setSession( $token );
 
                 $response_data = new ResponseData( 200, 'Authenticated', [ 'token' => $token ] );
                 $payload = json_encode( $response_data() );

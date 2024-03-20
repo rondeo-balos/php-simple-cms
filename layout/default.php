@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?= $title ?></title>
         <script src="https://zeptojs.com/zepto.min.js" crossorigin="anonymous"></script>
+        <script src="<?= ROOT ?>src/js/main.js"></script>
     </head>
     <body>
         <?= $content ?>

@@ -62,19 +62,7 @@ class InstallAjax {
             $manager = $capsule->getDatabaseManager();
     
             // Add tables to the database
-            $create_user_table = 'CREATE TABLE IF NOT EXISTS users (
-                ID int AUTO_INCREMENT PRIMARY KEY,
-                email varchar(255),
-                password text,
-                firstname varchar(255),
-                lastname varchar(255),
-                token text DEFAULT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                UNIQUE(email)
-            )';
-            $manager->statement( $create_user_table );
-    
+            self::createUsersTable( $manager );
             // Insert User
             $user_data = [
                 'email' => $email,
@@ -84,6 +72,9 @@ class InstallAjax {
             ];
             $user = new User( $user_data );
             $user->save();
+
+            self::createPageTable( $manager );
+            self::createMediaTable( $manager );
 
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $charactersLength = strlen($characters);
@@ -113,6 +104,46 @@ class InstallAjax {
         $payload = json_encode( (new ResponseData())() );
         $response->getBody()->write( $payload );
         return $response->withHeader( 'Content-Type', 'application/json' );
+    }
+
+    private static function createUsersTable( $manager ) {
+        $create_user_table = 'CREATE TABLE IF NOT EXISTS users (
+            ID int AUTO_INCREMENT PRIMARY KEY,
+            email varchar(255),
+            password text,
+            firstname varchar(255),
+            lastname varchar(255),
+            token text DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE(email)
+        )';
+        $manager->statement( $create_user_table );
+    }
+
+    private static function createPageTable( $manager ) {
+        $create_page_table = 'CREATE TABLE IF NOT EXISTS pages (
+            ID int AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255),
+            slug varchar(255),
+            content text,
+            fields text,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )';
+        $manager->statement( $create_page_table );
+    }
+
+    private static function createMediaTable( $manager ) {
+        $create_page_table = 'CREATE TABLE IF NOT EXISTS media (
+            ID int AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255),
+            alt text,
+            filepath text,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )';
+        $manager->statement( $create_page_table );
     }
 
 }

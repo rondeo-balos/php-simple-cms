@@ -1,6 +1,5 @@
 <?php defined( 'ABSPATH' ) || exit; ?>
 
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
@@ -9,7 +8,9 @@
     <div class="row justify-content-center min-vh-100">
         <div class="col-md-5 align-self-center">
 
-            <img src="images/Simpl.CMS_Logo.png" width="300px">
+            <img src="<?= ROOT ?>src/images/Simpl.CMS_Logo.png" width="300px">
+
+            <div id="alert"></div>
             
             <form method="POST">
                 <div class="d-flex flex-column-reverse flex-md-row bg-gray border rounded overflow-hidden justify-content-between">
@@ -102,7 +103,7 @@
                         <button role="submit" class="btn btn-sm btn-outline-primary">Let's go</a>
                     </div>
 
-                    <div class="col-4" style="background-image: url(images/pattern.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
+                    <div class="col-4" style="background-image: url(<?= ROOT ?>src/images/pattern.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
                         <div style="height: 50px"></div>
                     </div>
                 </div>
@@ -135,7 +136,7 @@
             if( readyToNext ) {
                 step(1);
             } else {
-                alert( 'Please fill the blank fields' );
+                __alert( '#alert', 'Please fill the blank fields' );
             }
         }
     });
@@ -167,12 +168,12 @@
                 if( res.code === 200 ) {
                     document.location = '<?= $root ?>admin';
                 } else {
-                    alert( res.message );
+                    __alert( '#alert', res.message );
                 }
             },
             error: (xhr, status, error) => {
                 console.error(error); // Check for any AJAX errors
-                alert('An error occurred. Please try again.');
+                __alert( '#alert', 'An error occurred. Please try again.' );
             }
         } );
 
