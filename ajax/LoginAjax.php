@@ -5,8 +5,9 @@ use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\Response as ResponseData;
-use Illuminate\Database\Capsule\Manager as Manager;
 use simpl\Auth;
+use simpl\Db;
+use simpl\model\User;
 
 class LoginAjax {
 
@@ -18,21 +19,7 @@ class LoginAjax {
         $password = $post['password'];
         $remember = $post['remember'] ?? false;
 
-        $settings = [
-            'driver' => 'mysql',
-            'host' => DB_HOST,
-            'database' => DB_NAME,
-            'username' => DB_USERNAME,
-            'password' => DB_PASSWORD,
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-        ];
-
-        $capsule = new Manager;
-        $capsule->addConnection($settings);
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
+        $capsule = Db::createInstance();
 
         $results = $capsule->table('users')->where( 'email', $email )->get();
 

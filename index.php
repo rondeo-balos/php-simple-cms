@@ -22,10 +22,12 @@ if( file_exists( ABSPATH . 'config.php' ) ) {
 }
 require __DIR__ . '/includes/Init.php';
 require __DIR__ . '/includes/Auth.php';
+require __DIR__ . '/includes/Db.php';
 require __DIR__ . '/includes/Response.php';
 require __DIR__ . '/model/User.php';
 require __DIR__ . '/ajax/InstallAjax.php';
 require __DIR__ . '/ajax/LoginAjax.php';
+require __DIR__ . '/layout/components/Pagination.php';
 
 date_default_timezone_set( 'Asia/Manila' );
 
@@ -81,14 +83,27 @@ $app->get( '/admin/login', function( Request $request, Response $response, $args
     return $renderer->render( $response, '../views/login.php', [ 'root' => $root, 'title' => 'Simpl.Login' ] );
 })->add($init);
 
-$app->group( '/admin', function( RouteCollectorProxy $group ) use ($auth) {
+$app->group( '/admin', function( RouteCollectorProxy $group ) {
 
     $group->get( '', function( Request $request, Response $response, $args ) {
-
         $renderer = $this->get( 'renderer' );
-        return $renderer->render( $response, '../views/dashboard.php', [] );
+        $root = $this->get( 'root' );
+
+        return $renderer->render( $response, '../views/admin/dashboard.php', [ 'root' => $root, 'title' => 'Dashboard' ] );
     });
-    
+
+    $group->get( '/users', function( Request $request, Response $response, $args ) {
+        $renderer = $this->get( 'renderer' );
+        $root = $this->get( 'root' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'root' => $root,
+            'title' => 'Users', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/users.php', $data );
+    });
 
 })->add($init)->add($auth);
 

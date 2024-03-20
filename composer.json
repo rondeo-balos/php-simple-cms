@@ -6,7 +6,8 @@
         "slim/php-view": "^3.2",
         "php-di/php-di": "^7.0",
         "illuminate/database": "11.0.5",
-        "firebase/php-jwt": "^6.10"
+        "firebase/php-jwt": "^6.10",
+        "illuminate/pagination": "^11.0"
     },
     "config": {
         "allow-plugins": {
