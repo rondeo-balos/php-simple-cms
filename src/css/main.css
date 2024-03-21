@@ -4,22 +4,22 @@ small {
 
 table a {
     text-decoration: none;
-    color: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity));
+    color: rgb(var(--bs-secondary-rgb));
     font-weight: 500;
 }
 
-a.hover-blue:hover {
-    color: blue;
+a.hover-blue:hover small {
+    color: rgb(var(--bs-primary-rgb)) !important;
 }
 
-a.hover-red:hover {
-    color: red;
+a.hover-red:hover small {
+    color: rgb(var(--bs-danger-rgb)) !important;
 }
 
 * {
     font-size: 98.5%;
     font-weight: 500;
-    color: rgba(var(--bs-secondary-rgb), var(--bs-text-opacity));
+    color: rgb(var(--bs-secondary-rgb));
 }
 
 ion-icon {

@@ -19,13 +19,11 @@ class LoginAjax {
         $password = $post['password'];
         $remember = $post['remember'] ?? false;
 
-        $capsule = Db::createInstance();
+        Db::createInstance();
+        $user = User::where( 'email', $email )->first();
 
-        $results = $capsule->table('users')->where( 'email', $email )->get();
-
-        if( sizeof($results) > 0 ) {
-            $user = $results[0];
-            if( password_verify( $password, $user->password )) {
+        if( $user) {
+            if( password_verify( $password, $user->password ) && $user->administrator == 1 && $user->status == 1 ) {
 
                 $user = [
                     'email' => $user->email,
@@ -35,7 +33,7 @@ class LoginAjax {
                 $issued = time();
                 $expiration = $issued + 3600; // 1 hour expiration
                 if( $remember )
-                    $expiration += (3600 * 24 * 7); // 1 Week expiration 604800000
+                    $expiration += 604800000; //(3600 * 24 * 7); // 1 Week expiration 604800000
                 
                 $payload = [
                     'user' => $user,
@@ -45,27 +43,41 @@ class LoginAjax {
 
                 $token = JWT::encode( $payload, SECRET, 'HS256' );
                 Auth::setSession( $token );
+                User::where( 'email', $email )->update( ['token' => $token] );
 
                 $response_data = new ResponseData( 200, 'Authenticated', [ 'token' => $token ] );
                 $payload = json_encode( $response_data() );
                 $response->getBody()->write( $payload );
                 return $response->withHeader( 'Content-Type', 'application/json' );
-
-            } else {
+            } elseif ( $user->administrator == 0 ) { // No access
                 $_SESSION[ 'token' ] = '';
+                $response_data = new ResponseData( 401, 'You don\'t have access. Please contact administrator' );
+                $payload = json_encode( $response_data() );
+                $response->getBody()->write( $payload );
+                return $response->withHeader( 'Content-Type', 'application/json' );
 
+            } elseif( $user->status == 0 ) { // User not verified
+                $_SESSION[ 'token' ] = '';
+                $response_data = new ResponseData( 401, 'User not verified. Please contact administrator.' );
+                $payload = json_encode( $response_data() );
+                $response->getBody()->write( $payload );
+                return $response->withHeader( 'Content-Type', 'application/json' );
+
+            } else { // Invalid credentials
+                $_SESSION[ 'token' ] = '';
                 $response_data = new ResponseData( 401, 'Invalid password' );
                 $payload = json_encode( $response_data() );
                 $response->getBody()->write( $payload );
                 return $response->withHeader( 'Content-Type', 'application/json' );
+
             }
-        } else {
+        } else { // No user
             $_SESSION[ 'token' ] = '';
-            
             $response_data = new ResponseData( 404, 'Email not found' );
             $payload = json_encode( $response_data() );
             $response->getBody()->write( $payload );
             return $response->withHeader( 'Content-Type', 'application/json' );
+
         }
     }
 

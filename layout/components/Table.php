@@ -1,0 +1,217 @@
+<?php
+
+namespace simpl\components;
+
+class Table {
+    private $table;
+    private $items;
+    private $columns;
+
+    public function __construct( $table, $items, $columns ) {
+        $this->table = $table;
+        $this->items = $items;
+        $this->columns = $columns;
+    }
+
+    public function render( $action_col, $create_url = '', $edit_url = '', $delete_url = '', ) {
+        $table = $this->table;
+        $items = $this->items;
+        $columns = $this->columns;
+        ?>
+            <?php if( !$items->isEmpty() ): ?>
+            <div class="rounded border overflow-hidden bg-white mb-3">
+                <table class="table table-hover" style="margin-bottom: -1px;">
+                    <tr>
+                        
+                        <?php foreach( $columns as $key => $column ): ?>
+                            <th class="p-3 <?= $key ?>"><?= $column ?></th>
+                        <?php endforeach; ?>
+
+                    </tr>
+                    <?php foreach( $items as $item ): ?>
+                        <tr>
+
+                            <?php foreach( $columns as $key => $column ): ?>
+                                <td class="p-3 align-middle <?= $key ?>">
+                                    <b><?= $item->$key ?></b>
+
+                                    <?php if( $key === $action_col ): ?>
+                                        <div class="d-block text-sm">
+                                            <a href="<?= $edit_url . '/' . $item->ID ?>" class="pe-2 hover-blue"><small>Edit</small></a>
+                                            <a href="<?= $delete_url . '/' .$item->ID ?>" class="hover-red"><small>Delete</small></a>
+                                        </div>
+                                    <?php endif; ?>
+
+                                </td>
+                            <?php endforeach; ?>
+
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        <?php else: ?>
+            <div class="d-flex flex-column border border-5 justify-content-center align-items-center mb-3" style="min-height: 50vh">
+                <h2>No items</h2>
+                <p class="text-center">
+                    It seems that this colllection doesn't have items.<br> 
+                    Go ahead and add a new item!
+                </p>
+                <a href="<?= $create_url ?>" class="btn btn-primary btn-sm">Add <?= $table ?></a>
+            </div>
+        <?php endif; ?>
+        <?php
+    }
+
+    public function paginate() {
+        $table = $this->table;
+        $items = $this->items;
+        $columns = $this->columns;
+        ?>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <?php
+                        $perPage = $items->perPage();
+                        $totalUsers = $items->total();
+                        $start = ($items->currentPage() - 1) * $perPage + 1;
+                        $start = $items->isEmpty() ? 0 : $start;
+                        $end = min($start + $perPage - 1, $totalUsers);
+                
+                        echo "Showing $start to $end $table(s)";
+                    ?>
+                </div>
+                <div>
+                    <?php if ($items->hasPages()): ?>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm">
+                                <?php if ($items->onFirstPage()): ?>
+                                    <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                                <?php else: ?>
+                                    <li class="page-item"><a class="page-link" href="<?= $items->previousPageUrl() ?>">Previous</a></li>
+                                <?php endif; ?>
+
+                                <?php for ($i = 1; $i <= $items->lastPage(); $i++): ?>
+                                    <li class="page-item <?= ($i === $items->currentPage()) ? 'active' : '' ?>"><a class="page-link" href="<?= $items->url($i) ?>"><?= $i ?></a></li>
+                                <?php endfor; ?>
+
+                                <?php if ($items->hasMorePages()): ?>
+                                    <li class="page-item"><a class="page-link" href="<?= $items->nextPageUrl() ?>">Next</a></li>
+                                <?php else: ?>
+                                    <li class="page-item disabled"><span class="page-link">Next</span></li>
+                                <?php endif; ?>
+                            </ul>
+                        </nav>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php
+    }
+
+    public function filter( $base, $create_url = '' ) {
+        $table = $this->table;
+        $items = $this->items;
+        $columns = $this->columns;
+        ?>
+            <div class="d-flex flex-row justify-content-between align-items-center mb-4">
+
+                <div style="max-width: 400px;">
+                        <form>
+                    <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" placeholder="Search <?= $table ?>s" aria-label="Search <?= $table ?>" aria-describedby="search-button" name="s">
+                            <button role="submit" class="btn btn-outline-secondary btn-sm" aria-labelledby="Search button"><ion-icon name="search"></ion-icon></button>
+                    </div>
+                        </form>
+                </div>
+
+                <div class="d-flex flex-row align-items-center">
+                    <a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#editColumn">
+                        <ion-icon name="list" data-bs-toggle="tooltip" title="Edit columns"></ion-icon>
+                    </a>
+                    <a href="#" class="me-3">
+                        <ion-icon name="funnel" data-bs-toggle="tooltip" title="Filter <?= $table ?>s"></ion-icon>
+                    </a>
+                    <a href="<?= $create_url ?>" class="btn btn-primary btn-sm">Add <?= $table ?></a>
+                </div>
+
+                <div class="modal fade modal-sm" id="editColumn" tabindex="-1" aria-labelledby="Edit Column" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form id="columnsForm">
+                                <div class="modal-header p-0">
+                                    <h2 class="h6 mb-0 p-2 ps-3">Edit Columns</h2>
+                                    <div class="p-2 border-start rounded-0 ms-auto">
+                                        <button type="button" class="btn-close btn-sm m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                </div>
+                                <div class="modal-body p-2">
+                                    <?php foreach( $columns as $key => $column ): ?>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="<?= $key ?>" id="<?= $key ?>" checked>
+                                            <label class="form-check-label" for="<?= $key ?>">
+                                                <?= $column ?>
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="modal-footer p-2">
+                                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary btn-sm" id="applyColumn" text="Apply" data-bs-dismiss="modal">Apply</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    $( '#columnsForm' ).on( 'submit', e => {
+                        e.preventDefault();
+                        
+                        spin( '#applyColumn' );
+                        
+                        let columnsData = {};
+                        $( '#columnsForm' ).find( '[type="checkbox"]' ).each( function(i) {
+                            columnsData[$(this).val()] = $(this).is(":checked");
+                        });
+                        localStorage.setItem( '<?= $base ?>', JSON.stringify(columnsData) );
+                        
+                        applyColumn();
+                        unspin( '#applyColumn' );
+                        
+                        return false;
+                    } );
+
+                    const applyColumn = () => {
+                        let storedData = localStorage.getItem( '<?= $base ?>' );
+                        
+                        if (storedData) {
+                            let columnsData = JSON.parse(storedData);
+
+                            Object.keys( columnsData ).forEach( function( key ) {
+                                $( `#columnsForm #${key}` ).prop( "checked", columnsData[key] );
+                                if( !columnsData[key] ) {
+                                    console.log( `.${key}` );
+                                    $( `.${key}` ).hide();
+                                } else {
+                                    $( `.${key}` ).show();
+                                }
+                            });
+                            $('#columnsForm').find('[type="checkbox"]').each(function() {
+                                let checkboxValue = $(this).val();
+
+                                // Check if the checkbox value exists as a key in columnsData
+                                if (columnsData.hasOwnProperty(checkboxValue)) {
+                                    // Set the checkbox checked status based on the stored data
+                                    $(this).prop("checked", columnsData[checkboxValue]);
+                                }
+                            });
+                        }
+                    };
+
+                    $( document ).ready( function() {
+                        applyColumn();
+                    } );
+                </script>
+            </div>
+        <?php
+    }
+
+}

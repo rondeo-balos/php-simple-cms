@@ -25,9 +25,11 @@ require __DIR__ . '/includes/Auth.php';
 require __DIR__ . '/includes/Db.php';
 require __DIR__ . '/includes/Response.php';
 require __DIR__ . '/model/User.php';
+require __DIR__ . '/model/Page.php';
+require __DIR__ . '/model/Media.php';
 require __DIR__ . '/ajax/InstallAjax.php';
 require __DIR__ . '/ajax/LoginAjax.php';
-require __DIR__ . '/layout/components/Pagination.php';
+require __DIR__ . '/layout/components/Table.php';
 
 date_default_timezone_set( 'Asia/Manila' );
 
@@ -53,8 +55,8 @@ $app = AppFactory::create();
 $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware( true, true, true );
 
-$init = new Init();
-$auth = new Auth();
+$init = new Init( $app );
+$auth = new Auth( $app );
 
 // Ajaxes
 $app->post( '/install', InstallAjax::class . ':install' );
@@ -92,6 +94,19 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
         return $renderer->render( $response, '../views/admin/dashboard.php', [ 'root' => $root, 'title' => 'Dashboard' ] );
     });
 
+    $group->get( '/pages', function( Request $request, Response $response, $args ) {
+        $renderer = $this->get( 'renderer' );
+        $root = $this->get( 'root' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'root' => $root,
+            'title' => 'Pages', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/pages.php', $data );
+    });
+
     $group->get( '/users', function( Request $request, Response $response, $args ) {
         $renderer = $this->get( 'renderer' );
         $root = $this->get( 'root' );
@@ -105,7 +120,7 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
         return $renderer->render( $response, '../views/admin/users.php', $data );
     });
 
-})->add($init)->add($auth);
+})->add($auth);
 
 $app->get( '/', function( Request $request, Response $response, $args ) {
     $renderer = $this->get( 'public_renderer' );

@@ -8,16 +8,22 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class Auth {
+    private $app;
 
-    public function __construct() {}
+    public function __construct( $app ) {
+        $this->app = $app;
+    }
 
     public function __invoke( Request $request, RequestHandler $handler ): Response {
+        
+        $response = $this->app->getResponseFactory()->createResponse();
+        $response->getBody()->write( '' );
 
-        $response = $handler->handle($request);
-        $existingContent = (string) $response->getBody();
-    
-        $response = new \Slim\Psr7\Response();
-        $response->getBody()->write( $existingContent );
+        if( !file_exists( ABSPATH . 'config.php' ) ) {
+            return $response = $response
+                ->withHeader( 'Location', ROOT . 'install' )
+                ->withStatus( 302 );
+        }
 
         $authenticated = $this->authenticate($request);
 
@@ -26,6 +32,8 @@ class Auth {
                 ->withHeader( 'Location', ROOT . 'admin/login' )
                 ->withStatus( 302 );
         }
+
+        $response = $handler->handle($request);
     
         return $response;
     }

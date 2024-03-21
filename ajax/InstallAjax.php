@@ -68,7 +68,9 @@ class InstallAjax {
                 'email' => $email,
                 'password' => password_hash( $password, PASSWORD_DEFAULT ),
                 'firstname' => 'Admin',
-                'lastname' => ''
+                'lastname' => '',
+                'administrator' => 1,
+                'status' => 1
             ];
             $user = new User( $user_data );
             $user->save();
@@ -113,6 +115,8 @@ class InstallAjax {
             password text,
             firstname varchar(255),
             lastname varchar(255),
+            administrator int DEFAULT 0,
+            status int DEFAULT 0,
             token text DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -126,8 +130,10 @@ class InstallAjax {
             ID int AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
             slug varchar(255),
+            author int,
             content text,
             fields text,
+            status int DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )';
