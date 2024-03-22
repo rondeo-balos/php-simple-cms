@@ -73,7 +73,7 @@
             </div>
 
             <div class="d-flex flex-row">
-                <div class="w-10 p-4 me-5">
+                <div class="w-30 p-4 pe-5 me-5">
 
                     <div class="d-flex flex-column nav nav-pills" id="sidebarMenu">
                         <a href="<?= ROOT ?>admin" class="nav-link text-secondary d-flex align-items-center">
@@ -108,6 +108,23 @@
                 </div>
             </div>
 
+        </div>
+
+        <div class="modal fade modal-sm" id="alertModal" tabindex="-1" aria-labelledby="Confirmation" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header p-0">
+                        <div class="p-2 border-start rounded-0 ms-auto">
+                            <button type="button" class="btn-close btn-sm m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    <div class="modal-body p-2"></div>
+                    <div class="modal-footer p-2">
+                        <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        <a href="#"  class="btn btn-danger btn-sm" id="alertConfirm">Confirm</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script>

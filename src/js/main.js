@@ -17,6 +17,26 @@ const __alert = (e, txt, cls = 'danger') => {
     $( e ).html( div );
 }
 
+// Small modal
+
+
+$( document ).ready( () => {
+    const __modal = ( message, link ) => {
+        let alertModal = $( '#alertModal' );
+        alertModal.find( '.modal-body' ).html( message );
+        alertModal.find( '#alertConfirm' ).attr( 'href', link );
+    
+        let modal = new bootstrap.Modal( document.getElementById( 'alertModal' ) );
+        modal.show();
+    }
+
+    $( '[href*="delete"]' ).click( function(e) {
+        e.preventDefault();
+
+        __modal( 'Confirm deletion', $(this).attr( 'href' ) );
+    });
+});
+
 //const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 //const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 

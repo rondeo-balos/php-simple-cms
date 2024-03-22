@@ -4,6 +4,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\ajax\InstallAjax;
 use simpl\ajax\LoginAjax;
+use simpl\ajax\UserCreateAjax;
 use simpl\Auth;
 use simpl\Init;
 use Slim\Factory\AppFactory;
@@ -29,6 +30,7 @@ require __DIR__ . '/model/Page.php';
 require __DIR__ . '/model/Media.php';
 require __DIR__ . '/ajax/InstallAjax.php';
 require __DIR__ . '/ajax/LoginAjax.php';
+require __DIR__ . '/ajax/UserCreateAjax.php';
 require __DIR__ . '/layout/components/Table.php';
 
 date_default_timezone_set( 'Asia/Manila' );
@@ -45,9 +47,6 @@ $container->set( 'renderer', $renderer );
 $public_renderer = new PhpRenderer( 'layout', [] );
 $public_renderer->setLayout( 'default.php' );
 $container->set( 'public_renderer', $public_renderer );
-
-// ROOT
-$container->set( 'root', ROOT );
 
 // App factory
 AppFactory::setContainer( $container );
@@ -78,29 +77,25 @@ $app->get( '/install', function( Request $request, Response $response, $args ) {
 
 $app->get( '/admin/login', function( Request $request, Response $response, $args ) {
     $renderer = $this->get( 'public_renderer' );
-    $root = $this->get( 'root' );
 
     Auth::logout();
 
-    return $renderer->render( $response, '../views/login.php', [ 'root' => $root, 'title' => 'Simpl.Login' ] );
+    return $renderer->render( $response, '../views/login.php', [ 'title' => 'Simpl.Login' ] );
 })->add($init);
 
 $app->group( '/admin', function( RouteCollectorProxy $group ) {
 
     $group->get( '', function( Request $request, Response $response, $args ) {
         $renderer = $this->get( 'renderer' );
-        $root = $this->get( 'root' );
 
-        return $renderer->render( $response, '../views/admin/dashboard.php', [ 'root' => $root, 'title' => 'Dashboard' ] );
+        return $renderer->render( $response, '../views/admin/dashboard.php', [ 'title' => 'Dashboard' ] );
     });
 
     $group->get( '/pages', function( Request $request, Response $response, $args ) {
         $renderer = $this->get( 'renderer' );
-        $root = $this->get( 'root' );
 
         $get = $request->getQueryParams();
         $data = [
-            'root' => $root,
             'title' => 'Pages', 
             'get' => $get
         ];
@@ -109,16 +104,27 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
 
     $group->get( '/users', function( Request $request, Response $response, $args ) {
         $renderer = $this->get( 'renderer' );
-        $root = $this->get( 'root' );
 
         $get = $request->getQueryParams();
         $data = [
-            'root' => $root,
             'title' => 'Users', 
             'get' => $get
         ];
         return $renderer->render( $response, '../views/admin/users.php', $data );
     });
+
+    $group->get( '/users/create', function( Request $request, Response $response, $args ) {
+        $renderer = $this->get( 'renderer' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Create new user', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/users-create.php', $data );
+    });
+
+    $group->post( '/users/create', UserCreateAjax::class . ':create' );
 
 })->add($auth);
 

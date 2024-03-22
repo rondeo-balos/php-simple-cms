@@ -10,38 +10,52 @@ defined( 'ABSPATH' ) || exit;
 
 <h1 class="h5"><?= $title ?></h1>
 
-<div class="d-flex flex-row justify-content-between align-items-center mb-4">
-
-    <div style="width: 400px;">
-        <div class="input-group">
-            <input type="text" class="form-control form-control-sm" placeholder="Search pages" aria-label="Search pages" aria-describedby="search-button">
-            <button class="btn btn-outline-primary btn-sm" aria-labelledby="Search button"><ion-icon name="search"></ion-icon></button>
-        </div>
-    </div>
-
-    <div class="d-flex flex-row align-items-center">
-        <a href="#" class="me-3"><ion-icon name="funnel"></ion-icon></a>
-        <a href="#" class="me-3"><ion-icon name="list"></ion-icon></a>
-        <a href="<?= ROOT ?>admin/pages/create" class="btn btn-primary btn-sm">Add Page</a>
-    </div>
-</div>
-
 <?php
     Db::createInstance();
-    $pages = Page::paginate(
+    $builder = Page::query();
+    if( isset( $get['s'] ) ) {
+        $searchTerm = '%' . ($get['s'] ?? '') . '%';
+        $builder = $builder->where( 'title', 'like', $searchTerm )
+            ->orWhere( 'slug', 'like', $searchTerm );
+    }
+    if( isset( $get['column'] ) && isset( $get['operator'] ) && isset( $get['value'] ) ) {
+        foreach( $get['column'] as $key => $column ) {
+            $builder = $builder->where( $column, $get['operator'][$key], $get['value'][$key] );
+        }
+    }
+    $pages = $builder->paginate(
         $perPage = 8,
         $columns = ['*'],
         $pageName = 'page',
         $page = $get['page'] ?? 1
     );
-    $pages->withPath( ROOT . 'admin/pages' );
-
+    $base = ROOT . 'admin/pages';
+    $pages->withPath( $base );
     $cols = [
-        'title' => 'Title',
-        'slug' => 'Slug',
-        'author' => 'Author',
-        'status' => 'Status',
-        'created_at' => 'Created At'
+        'ID' => ['ID', ''],
+        'title' => ['Title', ''],
+        'slug' => ['Slug', ''],
+        'author' => ['Author', ''],
+        'status' => ['Status', ['Draft', 'Published']],
+        'created_at' => ['Created At', 'date'],
+        'updated_at' => ['Updated At', 'date']
     ];
-    Table::render( $pages, 'title', $cols );
-?>
+    $table = new Table( 'Page', $pages, $cols );
+    $table->filter( 'pages', $base . '/create' );
+    $table->render( 'title', $base . '/create', [
+        'edit' => [
+            'url' => $base . '/edit',
+            'class' => 'hover-blue',
+            'label' => 'Edit'
+        ],
+        'delete' => [
+            'url' => $base . '/delete',
+            'class' => 'hover-red',
+            'label' => 'Delete'
+        ],
+        'view' => [
+            'url' => $base . '/preview',
+            'label' => 'View'
+        ]
+    ]);
+    $table->paginate();

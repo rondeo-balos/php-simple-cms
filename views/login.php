@@ -46,14 +46,14 @@
         spin( '#signin' );
 
         $.ajax({
-            url: '<?= $root ?>admin/login',
+            url: '<?= ROOT ?>admin/login',
             type: 'POST',
             dataType: 'json',
             data: $( 'form' ).serialize(),
             success: res => {
                 console.log( res );
                 if( res.code === 200 ) {
-                    document.location = '<?= $root ?>admin';
+                    document.location = '<?= ROOT ?>admin';
                 } else {
                     __alert( '#alert', res.message );
                 }

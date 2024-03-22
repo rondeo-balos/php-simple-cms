@@ -19,7 +19,7 @@ a.hover-red:hover small {
 * {
     font-size: 98.5%;
     font-weight: 500;
-    color: rgb(var(--bs-secondary-rgb));
+    /*color: rgb(var(--bs-secondary-rgb));*/
 }
 
 ion-icon {
@@ -29,4 +29,8 @@ ion-icon {
 
 html[data-bs-theme="dark"] #logo svg [fill="black"] {
     fill: white;
+}
+
+.btn:hover ion-icon {
+    color: black;
 }
