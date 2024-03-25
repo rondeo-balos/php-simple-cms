@@ -4,7 +4,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\ajax\InstallAjax;
 use simpl\ajax\LoginAjax;
-use simpl\ajax\UserCreateAjax;
+use simpl\ajax\UserAjax;
 use simpl\Auth;
 use simpl\Init;
 use Slim\Factory\AppFactory;
@@ -30,7 +30,7 @@ require __DIR__ . '/model/Page.php';
 require __DIR__ . '/model/Media.php';
 require __DIR__ . '/ajax/InstallAjax.php';
 require __DIR__ . '/ajax/LoginAjax.php';
-require __DIR__ . '/ajax/UserCreateAjax.php';
+require __DIR__ . '/ajax/UserAjax.php';
 require __DIR__ . '/layout/components/Table.php';
 
 date_default_timezone_set( 'Asia/Manila' );
@@ -124,7 +124,27 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
         return $renderer->render( $response, '../views/admin/users-create.php', $data );
     });
 
-    $group->post( '/users/create', UserCreateAjax::class . ':create' );
+    $group->post( '/users/create', UserAjax::class . ':create' );
+
+    $group->get( '/users/edit/{ID}', function( Request $request, Response $response, $args ) {
+        $ID = $args['ID'];
+
+        $renderer = $this->get( 'renderer' );
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Edit user',
+            'get' => $get,
+            'ID' => $ID
+        ];
+        return $renderer->render( $response, '../views/admin/users-create.php', $data );
+    });
+
+    $group->post( '/users/edit/{ID}', UserAjax::class . ':edit' );
+
+    $group->get( '/users/delete/{ID}', function( Request $request, Response $response, $args ) {
+        $ID = $args['ID'] ?? -1;
+
+    });
 
 })->add($auth);
 
