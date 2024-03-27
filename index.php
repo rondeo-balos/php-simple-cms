@@ -25,6 +25,7 @@ require __DIR__ . '/includes/Init.php';
 require __DIR__ . '/includes/Auth.php';
 require __DIR__ . '/includes/Db.php';
 require __DIR__ . '/includes/Response.php';
+require __DIR__ . '/includes/FlashSession.php';
 require __DIR__ . '/model/User.php';
 require __DIR__ . '/model/Page.php';
 require __DIR__ . '/model/Media.php';
@@ -140,11 +141,7 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     });
 
     $group->post( '/users/edit/{ID}', UserAjax::class . ':edit' );
-
-    $group->get( '/users/delete/{ID}', function( Request $request, Response $response, $args ) {
-        $ID = $args['ID'] ?? -1;
-
-    });
+    $group->get( '/users/delete/{ID}', UserAjax::class . ':delete' );
 
 })->add($auth);
 

@@ -54,21 +54,21 @@ class LoginAjax {
                 $response_data = new ResponseData( 401, 'You don\'t have access. Please contact administrator' );
                 $payload = json_encode( $response_data() );
                 $response->getBody()->write( $payload );
-                return $response->withHeader( 'Content-Type', 'application/json' );
+                return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 401 );
 
             } elseif( $user->status == 0 ) { // User not verified
                 $_SESSION[ 'token' ] = '';
                 $response_data = new ResponseData( 401, 'User not verified. Please contact administrator.' );
                 $payload = json_encode( $response_data() );
                 $response->getBody()->write( $payload );
-                return $response->withHeader( 'Content-Type', 'application/json' );
+                return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 401 );
 
             } else { // Invalid credentials
                 $_SESSION[ 'token' ] = '';
                 $response_data = new ResponseData( 401, 'Invalid password' );
                 $payload = json_encode( $response_data() );
                 $response->getBody()->write( $payload );
-                return $response->withHeader( 'Content-Type', 'application/json' );
+                return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 401 );
 
             }
         } else { // No user
@@ -76,7 +76,7 @@ class LoginAjax {
             $response_data = new ResponseData( 404, 'Email not found' );
             $payload = json_encode( $response_data() );
             $response->getBody()->write( $payload );
-            return $response->withHeader( 'Content-Type', 'application/json' );
+            return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 404 );
 
         }
     }

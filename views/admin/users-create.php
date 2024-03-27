@@ -1,6 +1,7 @@
 <?php
 
 use simpl\Db;
+use simpl\FlashSession;
 use simpl\model\User;
 use simpl\components\Table;
 
@@ -10,7 +11,7 @@ if( isset($ID) ) {
     Db::createInstance();
     try{ 
         $user = User::findOrFail( $ID );
-        $fullname = $user->firstname.' '.$user->lastname;
+        $fullname = '<span class="text-primary">' . $user->firstname.' '.$user->lastname . '</span>';
         $update_text = 'Update';
         $password_class = 'col-md-10 d-none border-start password-container';
         $new_password = 'New Password';
@@ -99,12 +100,18 @@ if( isset($ID) ) {
                 <script>
                     $( '[name="change"]' ).on( 'change', function(e) {
                         $( '.password-container' ).toggleClass( 'd-none' );
+                        if( $( '#change0' ).is( ':checked' ) ) {
+                            $( '#create' ).removeAttr( 'disabled' );
+                        } else {
+                            $( '#create' ).attr( 'disabled', true );
+                        }
                     });
                 </script>
             <?php endif; ?>
             <div class="<?= $password_class ?? 'col-md-12' ?> p-4">
                 <label for="password" class="form-label"><?= $new_password ?? 'Password' ?> <span class="text-danger">*</span></label>
-                <input type="password" name="password" id="password" class="form-control form-control-sm" autocomplete="new-password">
+                <input type="password" name="password" id="password" class="form-control form-control-sm" autocomplete="new-password" validate-password="true">
+                <div class="form-text text-danger"></div>
             </div>
         </div>
 
@@ -112,6 +119,48 @@ if( isset($ID) ) {
 </form>
 
 <script>
+
+    const validatePassword = function(){
+        var rules = [{
+            Pattern: "[A-Z]",
+            Message: "Atleast 1 uppercase (A - Z)<br>"
+        },
+        {
+            Pattern: "[a-z]",
+            Message: "Atleast 1 lowercase (a - z)<br>"
+        },
+        {
+            Pattern: "[0-9]",
+            Message: "Atleast 1 number (0 - 9)<br>"
+        },
+        {
+            Pattern: "[!@@#$%^&*]",
+            Message: "Atleast 1 non-alphanumeric symbol (e.g. `@Z$%!*')<br>"
+        }];
+        
+        $( '#create' ).attr( 'disabled', true );
+        var info = $( this ).next();
+            info.html( '' );
+        var password = $(this).val();
+        var valid = true;
+
+        if( password.length < 8 ) {
+            info.append( 'Minimum of 6 letters<br>' );
+            valid = false;
+        }
+
+        for (var i = 0; i < rules.length; i++) {
+            if( ! new RegExp( rules[i].Pattern ).test( password ) ) {
+                info.append( rules[i].Message );
+                valid = false;
+            }
+        }
+
+        if( valid ) { $( '#create' ).removeAttr( 'disabled' ); }
+    }
+    
+    $( 'form [validate-password="true"]' ).on( 'keyup', validatePassword );
+
     $( 'form' ).on( 'submit', e => {
         e.preventDefault();
         spin( '#create' );
@@ -119,12 +168,16 @@ if( isset($ID) ) {
         $.ajax({
             url: '<?= ROOT ?><?= $update_url ?? 'admin/users/create' ?>',
             type: 'POST',
-            dataType: 'json',
+            //dataType: 'json',
             data: $( 'form' ).serialize(),
             success: res => {
                 console.log( res );
                 if( res.code === 200 ) {
-                    document.location = '<?= ROOT ?>admin/users';
+                    //document.location = '<?= ROOT ?>admin/users';
+                    __alert( '#alert', res.message, 'success' );
+                    if( typeof res.data.redirect !== 'undefined' ) {
+                        document.location = res.data.redirect;
+                    }
                 } else {
                     __alert( '#alert', res.message );
                 }
@@ -133,11 +186,14 @@ if( isset($ID) ) {
             },
             error: (xhr, status, error) => {
                 console.error(error); // Check for any AJAX errors
-                __alert( '#alert', 'An error occurred. Please try again.' );
+                __alert( '#alert', error );
                 unspin( '#create' );
             }
         } );
 
         return false;
     } );
+    <?php if( FlashSession::hasKey( 'message' ) ): ?>
+        __alert( '#alert', '<?= FlashSession::get( 'message' ) ?>', 'info' );
+    <?php endif; ?>
 </script>

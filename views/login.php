@@ -51,7 +51,6 @@
             dataType: 'json',
             data: $( 'form' ).serialize(),
             success: res => {
-                console.log( res );
                 if( res.code === 200 ) {
                     document.location = '<?= ROOT ?>admin';
                 } else {
@@ -61,8 +60,8 @@
                 unspin( '#signin' );
             },
             error: (xhr, status, error) => {
-                console.error(error); // Check for any AJAX errors
-                __alert( '#alert', 'An error occurred. Please try again.' );
+                //console.error(error); // Check for any AJAX errors
+                __alert( '#alert', error );
                 unspin( '#signin' );
             }
         } );

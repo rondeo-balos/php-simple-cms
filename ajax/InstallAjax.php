@@ -100,7 +100,7 @@ class InstallAjax {
             $response_data = new ResponseData( 500, $e->getMessage() );
             $payload = json_encode( $response_data() );
             $response->getBody()->write( $payload );
-            return $response->withHeader( 'Content-Type', 'application/json' );
+            return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 500 );
         }
     
         $payload = json_encode( (new ResponseData())() );

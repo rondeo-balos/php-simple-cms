@@ -3,6 +3,7 @@ namespace simpl\ajax;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use simpl\FlashSession;
 use simpl\Response as ResponseData;
 use simpl\Db;
 use simpl\model\User;
@@ -29,13 +30,21 @@ class UserAjax {
             'administrator' => $administrator,
             'status' => $status
         ];
-        $user = new User( $user_data );
-        $user->save();
+        try {
+            $ID = User::insertGetId( $user_data );
+            FlashSession::set( 'message', 'User created successfully' );
 
-        $response_data = new ResponseData( 200, 'OK', [ $user ] );
-        $payload = json_encode( $response_data() );
-        $response->getBody()->write( $payload );
-        return $response->withHeader( 'Content-Type', 'application/json' );
+            $response_data = new ResponseData( 200, 'User created successfully', [ 'redirect' => ROOT . 'admin/users/edit/' . $ID ] );
+            $payload = json_encode( $response_data() );
+            $response->getBody()->write( $payload );
+            return $response->withHeader( 'Content-Type', 'application/json' );
+        }catch( \Exception $e ) {
+            $response_data = new ResponseData( 500, $e->getMessage(), [] );
+            $payload = json_encode( $response_data() );
+            $response->getBody()->write( $payload );
+            return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 500 );
+        }
+        
     }
 
     public static function edit( Request $request, Response $response, $args ): Response {
@@ -64,16 +73,43 @@ class UserAjax {
 
         try{
             Db::createInstance();
-            $user = User::findOrFail( $ID );
-            $user->update($user_data);
+            User::where( 'ID', $ID )->update( $user_data );
 
-            $response_data = new ResponseData( 200, 'OK', [ $user ] );
+            $response_data = new ResponseData( 200, 'User updated sucessfully', [] );
             $payload = json_encode( $response_data() );
             $response->getBody()->write( $payload );
             return $response->withHeader( 'Content-Type', 'application/json' );
         } catch( \Exception $e ) {
-            throw $e;
+            $response_data = new ResponseData( 500, $e->getMessage(), [] );
+            $payload = json_encode( $response_data() );
+            $response->getBody()->write( $payload );
+            return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 500 );
         }
+    }
+
+    public static function delete( Request $request, Response $response, $args ): Response {
+        $ID = $args['ID'] ?? -1;
+
+        try{
+            Db::createInstance();
+            User::where( 'ID', $ID )->delete();
+
+            FlashSession::set( 'message', 'User deleted succcessfully' );
+            /*$response_data = new ResponseData( 200, 'User deleted sucessfully', [ 'redirect' => ROOT . 'admin/users' ] );
+            $payload = json_encode( $response_data() );
+            $response->getBody()->write( $payload );
+            return $response->withHeader( 'Content-Type', 'application/json' );*/
+        } catch( \Exception $e ) {
+            FlashSession::set( 'message', 'Error: ' . $e->getMessage() );
+            /*$response_data = new ResponseData( 500, $e->getMessage(), [] );
+            $payload = json_encode( $response_data() );
+            $response->getBody()->write( $payload );
+            return $response->withHeader( 'Content-Type', 'application/json' )->withStatus( 500 );*/
+        }
+
+        return $response = $response
+                ->withHeader( 'Location', ROOT . 'admin/users' )
+                ->withStatus( 302 );
     }
 
 }

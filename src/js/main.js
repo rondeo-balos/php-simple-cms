@@ -43,6 +43,28 @@ $( document ).ready( () => {
 document.addEventListener('DOMContentLoaded', function() {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     const tooltipList = [...tooltipTriggerList].map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-  });
+});
+
+// Spam blocker
+document.addEventListener("DOMContentLoaded", function () {
+    window.customElements.define('f-f', class extends HTMLElement { });
+    const els = document.getElementsByTagName("f-f");
+    for (let i = els.length - 1; i >= 0; i--) {
+        let attrs = els[i].getAttributeNames().reduce((acc, name) => {
+            return { ...acc, [name]: els[i].getAttribute(name) };
+        }, {});
+        let el = document.createElement(attrs["el"]);
+        for (let key in attrs) {
+            if (attrs.hasOwnProperty(key) && key != "el") {
+                el.setAttribute(`${key}`, `${attrs[key]}`);
+            }
+        }
+        while (els[i].childNodes.length > 0) {
+            el.appendChild(els[i].childNodes[0]);
+        }
+        els[i].parentNode.insertBefore(el, els[i]);
+        els[i].remove();
+    }
+});
