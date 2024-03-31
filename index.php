@@ -7,6 +7,7 @@ use simpl\ajax\LoginAjax;
 use simpl\ajax\UserAjax;
 use simpl\ajax\MediaAjax;
 use simpl\Auth;
+use simpl\blocks\BlockManager;
 use simpl\Init;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
@@ -35,8 +36,10 @@ require __DIR__ . '/ajax/LoginAjax.php';
 require __DIR__ . '/ajax/UserAjax.php';
 require __DIR__ . '/ajax/PageAjax.php';
 require __DIR__ . '/ajax/MediaAjax.php';
-require __DIR__ . '/layout/components/Table.php';
-require __DIR__ . '/layout/components/Grid.php';
+require __DIR__ . '/components/Table.php';
+require __DIR__ . '/components/Grid.php';
+require __DIR__ . '/blocks/BaseBlock.php';
+require __DIR__ . '/blocks/BlockManager.php';
 
 date_default_timezone_set( 'Asia/Manila' );
 
@@ -52,6 +55,13 @@ $container->set( 'renderer', $renderer );
 $public_renderer = new PhpRenderer( 'layout', [] );
 $public_renderer->setLayout( 'default.php' );
 $container->set( 'public_renderer', $public_renderer );
+
+// Block Manager
+$blockManager = new BlockManager;
+$container->set( 'blockManager', $blockManager );
+require __DIR__ . '/blocks/Heading.php';
+require __DIR__ . '/blocks/Button.php';
+require __DIR__ . '/blocks/HTML.php';
 
 // App factory
 AppFactory::setContainer( $container );
@@ -128,7 +138,8 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
         $get = $request->getQueryParams();
         $data = [
             'title' => 'Create new page', 
-            'get' => $get
+            'get' => $get,
+            'blockManager' => $this->get( 'blockManager' )
         ];
         return $renderer->render( $response, '../views/admin/pages-create.php', $data );
     });

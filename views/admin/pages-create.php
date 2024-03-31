@@ -2,11 +2,55 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 
+<script>
+    const definitions = <?= json_encode( $blockManager ) ?>
+    let props = [];
+    const _addBlock = ( props ) => {
+        props.push( props );
+    }
+
+    const _renderBlocks() {
+        
+    }
+</script>
+
+<div class="modal fade modal-lg" id="addBlock" tabindex="-1" aria-labelledby="Add Block" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0">
+                <h2 class="h6 mb-0 p-2 ps-3">Add block</h2>
+                <div class="p-2 border-start rounded-0 ms-auto">
+                    <button type="button" class="btn-close btn-sm m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body p-2 px-3">
+                <div class="row">
+                    <?php foreach( $blockManager->blocks as $block ): ?>
+                        <div class="col-md-2 p-2">
+                            <div class="w-100 ratio ratio-1x1">
+                                <button class="border-rounded btn btn-outline-secondary d-flex justify-content-center align-items-center w-100 flex-column" onclick="javascript:_addBlock( <?= json_encode( $block['props'] ) ?> )">
+                                    <div>
+                                        <ion-icon name="<?= $block['icon'] ?>" size="small"></ion-icon>
+                                        <p><?= $block['name'] ?></p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <form method="POST">
     <div class="row">
 
         <div class="col-md-2">
             <strong>Blocks</strong>
+            <div id="blocks"></div>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#addBlock"><ion-icon name="add-outline"></ion-icon> Add block </a>
         </div>
         
         <div class="col-md-8">
