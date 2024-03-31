@@ -88,6 +88,9 @@ class InstallAjax {
             // Create Config
             file_put_contents( 'config.php',
                 "<?php\n\n" .
+                "ini_set('post_max_size', '16M');\n" .
+                "ini_set('upload_max_filesize', '16M');\n" .
+                "\n\n" .
                 "define( 'DB_NAME', '" . $db_name . "' );\n" .
                 "define( 'DB_USERNAME', '" . $db_username . "' );\n" .
                 "define( 'DB_PASSWORD', '" . $db_password . "' );\n" .
@@ -145,7 +148,9 @@ class InstallAjax {
             ID int AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
             alt text,
+            type int,
             filepath text,
+            thumb text,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )';

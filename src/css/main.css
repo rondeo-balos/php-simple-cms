@@ -8,10 +8,20 @@ table a {
     font-weight: 500;
 }
 
+.hover {
+    transition: 0.3s;
+    opacity: 0;
+}
+.hover:hover {
+    opacity: 1;
+}
+
+a.hover-blue:hover,
 a.hover-blue:hover small {
     color: rgb(var(--bs-primary-rgb)) !important;
 }
 
+a.hover-red:hover,
 a.hover-red:hover small {
     color: rgb(var(--bs-danger-rgb)) !important;
 }

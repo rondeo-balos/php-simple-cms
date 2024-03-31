@@ -18,8 +18,6 @@ const __alert = (e, txt, cls = 'danger') => {
 }
 
 // Small modal
-
-
 $( document ).ready( () => {
     const __modal = ( message, link ) => {
         let alertModal = $( '#alertModal' );
@@ -68,3 +66,45 @@ document.addEventListener("DOMContentLoaded", function () {
         els[i].remove();
     }
 });
+
+// Form validator
+const validatePassword = function(){
+    var rules = [{
+        Pattern: "[A-Z]",
+        Message: "Atleast 1 uppercase (A - Z)<br>"
+    },
+    {
+        Pattern: "[a-z]",
+        Message: "Atleast 1 lowercase (a - z)<br>"
+    },
+    {
+        Pattern: "[0-9]",
+        Message: "Atleast 1 number (0 - 9)<br>"
+    },
+    {
+        Pattern: "[!@@#$%^&*]",
+        Message: "Atleast 1 non-alphanumeric symbol (e.g. `@Z$%!*')<br>"
+    }];
+    
+    $( 'form [role="submit"]' ).attr( 'disabled', true );
+    var info = $( this ).next();
+        info.html( '' );
+    var password = $(this).val();
+    var valid = true;
+
+    if( password.length < 8 ) {
+        info.append( 'Minimum of 6 letters<br>' );
+        valid = false;
+    }
+
+    for (var i = 0; i < rules.length; i++) {
+        if( ! new RegExp( rules[i].Pattern ).test( password ) ) {
+            info.append( rules[i].Message );
+            valid = false;
+        }
+    }
+
+    if( valid ) { $( 'form [role="submit"]' ).removeAttr( 'disabled' ); }
+}
+
+$( 'form [validate-password="true"]' ).on( 'keyup', validatePassword );

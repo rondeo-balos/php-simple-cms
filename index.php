@@ -5,6 +5,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\ajax\InstallAjax;
 use simpl\ajax\LoginAjax;
 use simpl\ajax\UserAjax;
+use simpl\ajax\MediaAjax;
 use simpl\Auth;
 use simpl\Init;
 use Slim\Factory\AppFactory;
@@ -32,7 +33,10 @@ require __DIR__ . '/model/Media.php';
 require __DIR__ . '/ajax/InstallAjax.php';
 require __DIR__ . '/ajax/LoginAjax.php';
 require __DIR__ . '/ajax/UserAjax.php';
+require __DIR__ . '/ajax/PageAjax.php';
+require __DIR__ . '/ajax/MediaAjax.php';
 require __DIR__ . '/layout/components/Table.php';
+require __DIR__ . '/layout/components/Grid.php';
 
 date_default_timezone_set( 'Asia/Manila' );
 
@@ -92,6 +96,21 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
         return $renderer->render( $response, '../views/admin/dashboard.php', [ 'title' => 'Dashboard' ] );
     });
 
+    $group->get( '/media', function( Request $request, Response $response, $args ) {
+        $renderer = $this->get( 'renderer' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Media', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/media.php', $data );
+    });
+
+    $group->post( '/media/create', MediaAjax::class . ':upload' );
+    $group->post( '/media/edit/{ID}', MediaAjax::class . ':edit' );
+    $group->get( '/media/delete/{ID}', MediaAjax::class . ':delete' );
+
     $group->get( '/pages', function( Request $request, Response $response, $args ) {
         $renderer = $this->get( 'renderer' );
 
@@ -101,6 +120,17 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
             'get' => $get
         ];
         return $renderer->render( $response, '../views/admin/pages.php', $data );
+    });
+
+    $group->get( '/pages/create', function( Request $request, Response $response, $args ) {
+        $renderer = $this->get( 'renderer' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Create new page', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/pages-create.php', $data );
     });
 
     $group->get( '/users', function( Request $request, Response $response, $args ) {

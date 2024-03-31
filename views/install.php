@@ -34,12 +34,12 @@
                         
                         <div class="form-group mb-3">
                             <label for="email" class="mb-1">Email </label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="email@domain.ltd">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="email@domain.ltd" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="password" class="mb-1">New Password </label>
-                            <input type="text" class="form-control" id="password" name="password" placeholder="Password">
+                            <input type="text" class="form-control" id="password" name="password" placeholder="Password" validate-password="true" required>
                         </div>
                         
                         <a href="" class="btn btn-sm btn-outline-secondary prev-step">&larr; Back</a> 
@@ -52,22 +52,22 @@
 
                         <div class="form-group mb-3">
                             <label for="db_host" class="mb-1">Database Host </label>
-                            <input type="text" class="form-control" id="db_host" name="db_host" placeholder="Host" value="localhost">
+                            <input type="text" class="form-control" id="db_host" name="db_host" placeholder="Host" value="localhost" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="db_name" class="mb-1">Database Name </label>
-                            <input type="text" class="form-control" id="db_name" name="db_name" placeholder="Database">
+                            <input type="text" class="form-control" id="db_name" name="db_name" placeholder="Database" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="db_username" class="mb-1">Database Username </label>
-                            <input type="text" class="form-control" id="db_username" name="db_username" placeholder="Username">
+                            <input type="text" class="form-control" id="db_username" name="db_username" placeholder="Username" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="db_password" class="mb-1">Database Password </label>
-                            <input type="text" class="form-control" id="db_password" name="db_password" placeholder="Password">
+                            <input type="text" class="form-control" id="db_password" name="db_password" placeholder="Password" required>
                         </div>
 
                         <a href="" class="btn btn-sm btn-outline-secondary prev-step">&larr; Back</a> 

@@ -73,30 +73,30 @@
             </div>
 
             <div class="d-flex flex-row">
-                <div class="w-30 p-4 pe-5 me-5">
+                <div class="w-30 p-4 pe-5 me-5 admin-sidebar">
 
                     <div class="d-flex flex-column nav nav-pills" id="sidebarMenu">
-                        <a href="<?= ROOT ?>admin" class="nav-link text-secondary d-flex align-items-center">
+                        <a href="<?= ROOT ?>admin" class="nav-link text-secondary d-flex align-items-center hover-blue">
                             <ion-icon name="speedometer" size="small" class="pe-2"></ion-icon>
                             Dashboard
                         </a>
-                        <a href="<?= ROOT ?>admin/pages" class="nav-link text-secondary d-flex align-items-center">
+                        <a href="<?= ROOT ?>admin/pages" class="nav-link text-secondary d-flex align-items-center hover-blue">
                             <ion-icon name="document-outline" size="small" class="pe-2"></ion-icon>
                             Pages
                         </a>
-                        <a href="<?= ROOT ?>admin/media" class="nav-link text-secondary d-flex align-items-center">
+                        <a href="<?= ROOT ?>admin/media" class="nav-link text-secondary d-flex align-items-center hover-blue">
                             <ion-icon name="image-outline" size="small" class="pe-2"></ion-icon>
                             Media
                         </a>
-                        <a href="<?= ROOT ?>admin/users" class="nav-link text-secondary d-flex align-items-center">
+                        <a href="<?= ROOT ?>admin/users" class="nav-link text-secondary d-flex align-items-center hover-blue">
                             <ion-icon name="people-outline" size="small" class="pe-2"></ion-icon>
                             Users
                         </a>
-                        <a href="<?= ROOT ?>admin/seo" class="nav-link text-secondary d-flex align-items-center">
+                        <a href="<?= ROOT ?>admin/seo" class="nav-link text-secondary d-flex align-items-center hover-blue">
                             <ion-icon name="search-outline" size="small" class="pe-2"></ion-icon>
                             SEO
                         </a>
-                        <a href="<?= ROOT ?>admin/settings" class="nav-link text-secondary d-flex align-items-center">
+                        <a href="<?= ROOT ?>admin/settings" class="nav-link text-secondary d-flex align-items-center hover-blue">
                             <ion-icon name="cog-outline" size="small" class="pe-2"></ion-icon>
                             Settings
                         </a>

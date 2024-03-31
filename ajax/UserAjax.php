@@ -19,9 +19,7 @@ class UserAjax {
         $status = $post['status'];
         $administrator = $post['administrator'];
         $password = $post['password'];
-
-        Db::createInstance();
-
+        
         $user_data = [
             'email' => $email,
             'password' => password_hash( $password, PASSWORD_DEFAULT ),
@@ -30,7 +28,9 @@ class UserAjax {
             'administrator' => $administrator,
             'status' => $status
         ];
+        
         try {
+            Db::createInstance();
             $ID = User::insertGetId( $user_data );
             FlashSession::set( 'message', 'User created successfully' );
 

@@ -3,7 +3,6 @@
 use simpl\Db;
 use simpl\FlashSession;
 use simpl\model\User;
-use simpl\components\Table;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -120,46 +119,7 @@ if( isset($ID) ) {
 
 <script>
 
-    const validatePassword = function(){
-        var rules = [{
-            Pattern: "[A-Z]",
-            Message: "Atleast 1 uppercase (A - Z)<br>"
-        },
-        {
-            Pattern: "[a-z]",
-            Message: "Atleast 1 lowercase (a - z)<br>"
-        },
-        {
-            Pattern: "[0-9]",
-            Message: "Atleast 1 number (0 - 9)<br>"
-        },
-        {
-            Pattern: "[!@@#$%^&*]",
-            Message: "Atleast 1 non-alphanumeric symbol (e.g. `@Z$%!*')<br>"
-        }];
-        
-        $( '#create' ).attr( 'disabled', true );
-        var info = $( this ).next();
-            info.html( '' );
-        var password = $(this).val();
-        var valid = true;
-
-        if( password.length < 8 ) {
-            info.append( 'Minimum of 6 letters<br>' );
-            valid = false;
-        }
-
-        for (var i = 0; i < rules.length; i++) {
-            if( ! new RegExp( rules[i].Pattern ).test( password ) ) {
-                info.append( rules[i].Message );
-                valid = false;
-            }
-        }
-
-        if( valid ) { $( '#create' ).removeAttr( 'disabled' ); }
-    }
     
-    $( 'form [validate-password="true"]' ).on( 'keyup', validatePassword );
 
     $( 'form' ).on( 'submit', e => {
         e.preventDefault();
