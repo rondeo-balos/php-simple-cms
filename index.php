@@ -59,9 +59,6 @@ $container->set( 'public_renderer', $public_renderer );
 // Block Manager
 $blockManager = new BlockManager;
 $container->set( 'blockManager', $blockManager );
-require __DIR__ . '/blocks/Heading.php';
-require __DIR__ . '/blocks/Button.php';
-require __DIR__ . '/blocks/HTML.php';
 
 // App factory
 AppFactory::setContainer( $container );
@@ -136,10 +133,15 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
         $renderer = $this->get( 'renderer' );
 
         $get = $request->getQueryParams();
+
+        $blockManager = $this->get( 'blockManager' );
+        require __DIR__ . '/blocks/Heading.php';
+        require __DIR__ . '/blocks/Button.php';
+
         $data = [
             'title' => 'Create new page', 
             'get' => $get,
-            'blockManager' => $this->get( 'blockManager' )
+            'blockManager' => $blockManager
         ];
         return $renderer->render( $response, '../views/admin/pages-create.php', $data );
     });

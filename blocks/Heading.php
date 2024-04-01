@@ -12,13 +12,12 @@ class Heading implements BaseBlock{
         'fields' => [
             'type' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
             'content' => ''
+        ],
+        'props' => [
+            'name' => 'Heading',
+            'type' => 'h1',
+            'content' => 'this is heading'
         ]
-    ];
-
-    public $props = [
-        'name' => 'Heading',
-        'type' => 'h1',
-        'content' => 'this is heading'
     ];
 
     public function __construct() {
@@ -26,7 +25,7 @@ class Heading implements BaseBlock{
         $blockManager->add( $this->definition );
     }
 
-    public function render( string $props ) {
+    public static function render( string $props ) {
         $props = json_decode( $props );
         ?>
             <<?= $props['type'] ?>>

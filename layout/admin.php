@@ -59,14 +59,14 @@
                     </svg>
                 </a>
                 <div class="d-flex flex-row align-items-center">
-                    <a href="" toggle="mode" class="text-secondary px-2" data-bs-toggle="tooltip" data-bs-title="Switch mode">
+                    <a href="" toggle="mode" class="text-secondary px-2 hover-blue" data-bs-toggle="tooltip" data-bs-title="Switch mode">
                         <ion-icon name="moon" size="small"></ion-icon>
                     </a>
 
-                    <a href="<?= ROOT ?>admin/profile" class="text-secondary px-2" data-bs-toggle="tooltip" data-bs-title="Profile">
+                    <a href="<?= ROOT ?>admin/profile" class="text-secondary px-2 hover-blue" data-bs-toggle="tooltip" data-bs-title="Profile">
                         <ion-icon name="person-circle-outline" size="small"></ion-icon>
                     </a>
-                    <a href="<?= ROOT ?>admin/login" class="text-secondary px-2" data-bs-toggle="tooltip" data-bs-title="Sign out">
+                    <a href="<?= ROOT ?>admin/login" class="text-secondary px-2 hover-blue" data-bs-toggle="tooltip" data-bs-title="Sign out">
                         <ion-icon name="log-out-outline" size="small"></ion-icon>
                     </a>
                 </div>

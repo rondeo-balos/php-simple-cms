@@ -4,10 +4,10 @@ namespace simpl\blocks;
 
 class BlockManager {
 
-    public array $blocks = [];
+    public array $definitions = [];
 
     public function add( $definition ) {
-        $this->blocks[ $definition['name'] ] = $definition;
+        $this->definitions[ $definition['name'] ] = $definition;
     }
 
 }

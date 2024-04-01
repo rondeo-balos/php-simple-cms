@@ -132,8 +132,9 @@ class InstallAjax {
         $create_page_table = 'CREATE TABLE IF NOT EXISTS pages (
             ID int AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
-            slug varchar(255),
-            author int,
+            description varchar(255),
+            visibility varchar(255),
+            path varchar(255),
             content text,
             fields text,
             status int DEFAULT 0,

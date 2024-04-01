@@ -12,13 +12,12 @@ class Button implements BaseBlock{
         'fields' => [
             'link' => 'pages',
             'label' => ''
+        ],
+        'props' => [
+            'name' => 'Button',
+            'link' => '',
+            'label' => 'This is a button'
         ]
-    ];
-
-    public $props = [
-        'name' => 'Button',
-        'link' => '',
-        'label' => 'This is a button'
     ];
 
     public function __construct() {
@@ -26,7 +25,7 @@ class Button implements BaseBlock{
         $blockManager->add( $this->definition );
     }
 
-    public function render( string $props ) {
+    public static function render( string $props ) {
         $props = json_decode( $props );
         ?>
             <a href="<?= $props['link'] ?>">
