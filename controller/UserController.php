@@ -1,7 +1,6 @@
 <?php
-namespace simpl\actions;
+namespace simpl\controller;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\includes\FlashSession;
@@ -9,15 +8,8 @@ use simpl\includes\Response as ResponseData;
 use simpl\includes\Db;
 use simpl\model\User;
 
-class UserAction {
-
-    private $container;
-
-    // constructor receives container instance
-    public function __construct( ContainerInterface $container ) {
-        $this->container = $container;
-    }
-
+class UserController extends BaseController{
+    
     public function get( Request $request, Response $response, $args ): Response {
         $renderer = $this->container->get( 'admin-renderer' );
 

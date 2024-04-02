@@ -1,7 +1,6 @@
 <?php
-namespace simpl\actions;
+namespace simpl\controller;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\model\User;
@@ -9,7 +8,7 @@ use simpl\includes\Auth;
 use simpl\includes\Response as ResponseData;
 use Illuminate\Database\Capsule\Manager as Manager;
 
-class InstallAction extends BaseAction {
+class InstallController extends BaseController {
 
     public function get( Request $request, Response $response, $args ): Response {
         if( file_exists( ABSPATH . 'config.php' ) ) {

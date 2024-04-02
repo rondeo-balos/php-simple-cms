@@ -1,5 +1,5 @@
 <?php
-namespace simpl\actions;
+namespace simpl\controller;
 
 use simpl\includes\Db;
 use simpl\model\Page;
@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Routing\RouteCollectorProxy;
 use Psr\Container\ContainerInterface;
 
-class PublicAction extends BaseAction{
+class PublicController extends BaseController{
 
     public function home( Request $request, Response $response, $args ): Response {
         $renderer = $this->container->get( 'renderers' )['default'];

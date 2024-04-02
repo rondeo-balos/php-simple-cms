@@ -1,14 +1,12 @@
 <?php
 use DI\ContainerBuilder;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use simpl\actions\GeneralAction;
-use simpl\actions\InstallAction;
-use simpl\actions\LoginAction;
-use simpl\actions\PageAction;
-use simpl\actions\PublicAction;
-use simpl\actions\UserAction;
-use simpl\actions\MediaAction;
+use simpl\controller\GeneralController;
+use simpl\controller\InstallController;
+use simpl\controller\LoginController;
+use simpl\controller\PageController;
+use simpl\controller\PublicController;
+use simpl\controller\UserController;
+use simpl\controller\MediaController;
 use simpl\includes\Auth;
 use simpl\includes\Init;
 use simpl\blocks\BlockManager;
@@ -64,40 +62,40 @@ $init = new Init( $app );
 $auth = new Auth( $app );
 
 // Ajaxes
-$app->get( '/install', InstallAction::class . ':get');
-$app->post( '/install', InstallAction::class . ':install' );
-$app->get( '/admin/login', LoginAction::class . ':get')->add($init);
-$app->post( '/admin/login', LoginAction::class . ':login' )->add($init);
+$app->get( '/install', InstallController::class . ':get');
+$app->post( '/install', InstallController::class . ':install' );
+$app->get( '/admin/login', LoginController::class . ':get')->add($init);
+$app->post( '/admin/login', LoginController::class . ':login' )->add($init);
 
 $app->group( '/admin', function( RouteCollectorProxy $group ) {
 
-    $group->get( '', GeneralAction::class . ':dashboard');
+    $group->get( '', GeneralController::class . ':dashboard');
 
     // Media actions
-    $group->get( '/media', MediaAction::class . ':get'  );
-    $group->post( '/media/create', MediaAction::class . ':upload' );
-    $group->post( '/media/edit/{ID}', MediaAction::class . ':edit' );
-    $group->get( '/media/delete/{ID}', MediaAction::class . ':delete' );
+    $group->get( '/media', MediaController::class . ':get'  );
+    $group->post( '/media/create', MediaController::class . ':upload' );
+    $group->post( '/media/edit/{ID}', MediaController::class . ':edit' );
+    $group->get( '/media/delete/{ID}', MediaController::class . ':delete' );
 
     // Page actions
-    $group->get( '/pages', PageAction::class . ':get' );
-    $group->get( '/pages/create', PageAction::class . ':create' );
-    $group->post( '/pages/preview', PageAction::class . ':preview' );
+    $group->get( '/pages', PageController::class . ':get' );
+    $group->get( '/pages/create', PageController::class . ':create' );
+    $group->post( '/pages/preview', PageController::class . ':preview' );
 
     // User actions
-    $group->get( '/users', UserAction::class . ':get');
-    $group->get( '/users/create', UserAction::class . ':getCreate');
-    $group->post( '/users/create', UserAction::class . ':create' );
-    $group->get( '/users/edit/{ID}', UserAction::class . ':getEdit' );
-    $group->post( '/users/edit/{ID}', UserAction::class . ':edit' );
-    $group->get( '/users/delete/{ID}', UserAction::class . ':delete' );
+    $group->get( '/users', UserController::class . ':get');
+    $group->get( '/users/create', UserController::class . ':getCreate');
+    $group->post( '/users/create', UserController::class . ':create' );
+    $group->get( '/users/edit/{ID}', UserController::class . ':getEdit' );
+    $group->post( '/users/edit/{ID}', UserController::class . ':edit' );
+    $group->get( '/users/delete/{ID}', UserController::class . ':delete' );
 
 })->add($auth);
 
 $app->group( '/', function( RouteCollectorProxy $group ) {
 
-    $group->get( '', PublicAction::class . ':home');
-    PublicAction::fetchPages( $group, $this );
+    $group->get( '', PublicController::class . ':home');
+    PublicController::fetchPages( $group, $this );
 
 })->add( $init );
 

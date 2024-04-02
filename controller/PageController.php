@@ -1,7 +1,6 @@
 <?php
-namespace simpl\actions;
+namespace simpl\controller;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\includes\Response as ResponseData;
@@ -9,7 +8,7 @@ use simpl\includes\Db;
 use simpl\model\Preview;
 use simpl\blocks\BlockManager;
 
-class PageAction extends BaseAction {
+class PageController extends BaseController {
 
     public function get( Request $request, Response $response, $args ): Response {
         $renderer = $this->container->get( 'admin-renderer' );

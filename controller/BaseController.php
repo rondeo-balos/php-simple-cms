@@ -1,9 +1,9 @@
 <?php
-namespace simpl\actions;
+namespace simpl\controller;
 
 use Psr\Container\ContainerInterface;
 
-class BaseAction {
+class BaseController {
 
     protected $container;
 
