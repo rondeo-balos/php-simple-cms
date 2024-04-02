@@ -96,7 +96,7 @@
                         </table>
                         
                         <a href="" class="btn btn-sm btn-outline-secondary prev-step">&larr; Back</a> 
-                        <button role="submit" class="btn btn-sm btn-outline-primary">Let's go</a>
+                        <button type="submit" role="submit" class="btn btn-sm btn-outline-primary">Let's go</a>
                     </div>
 
                     <div class="col-4" style="background-image: url(<?= ROOT ?>src/images/pattern.png); background-repeat: no-repeat; background-size: cover; background-position: center;">

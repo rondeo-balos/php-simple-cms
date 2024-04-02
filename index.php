@@ -80,6 +80,9 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     // Page actions
     $group->get( '/pages', PageController::class . ':get' );
     $group->get( '/pages/create', PageController::class . ':create' );
+    $group->post( '/pages/create', PageController::class . ':post' );
+    $group->get( '/pages/edit/{ID}', PageController::class . ':getEdit' );
+    $group->post( '/pages/edit/{ID}', PageController::class . ':post' );
     $group->post( '/pages/preview', PageController::class . ':preview' );
 
     // User actions

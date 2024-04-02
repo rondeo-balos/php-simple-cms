@@ -1,5 +1,4 @@
 <?php
-
 use simpl\includes\Db;
 use simpl\includes\FlashSession;
 use simpl\model\User;
@@ -27,7 +26,7 @@ if( isset($ID) ) {
         <a href="<?= ROOT ?>admin/users" class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" title="All users"><ion-icon name="chevron-back" size="small"></ion-icon></a>
         <h1 class="h5 m-0"><?= $title ?> <?= $fullname ?? '' ?></h1>
         <div class="flex-fill"></div>
-        <button role="submit" class="btn btn-primary btn-sm" id="create" text="<?= $update_text ?? 'Create' ?>"><?= $update_text ?? 'Create' ?></button>
+        <button type="submit" role="submit" class="btn btn-primary btn-sm" id="create" text="<?= $update_text ?? 'Create' ?>"><?= $update_text ?? 'Create' ?></button>
     </div>
 
     <div id="alert"></div>
@@ -118,9 +117,6 @@ if( isset($ID) ) {
 </form>
 
 <script>
-
-    
-
     $( 'form' ).on( 'submit', e => {
         e.preventDefault();
         spin( '#create' );
@@ -128,7 +124,7 @@ if( isset($ID) ) {
         $.ajax({
             url: '<?= ROOT ?><?= $update_url ?? 'admin/users/create' ?>',
             type: 'POST',
-            //dataType: 'json',
+            dataType: 'json',
             data: $( 'form' ).serialize(),
             success: res => {
                 console.log( res );

@@ -82,7 +82,7 @@ defined( 'ABSPATH' ) || exit;
                 </div>
                 <div class="modal-footer p-2">
                     <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button role="submit" class="btn btn-primary btn-sm">Save</a>
+                    <button type="submit" role="submit" class="btn btn-primary btn-sm">Save</a>
                 </div>
             </div>
         </div>

@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
     if( isset( $get['s'] ) ) {
         $searchTerm = '%' . ($get['s'] ?? '') . '%';
         $builder = $builder->where( 'title', 'like', $searchTerm )
-            ->orWhere( 'slug', 'like', $searchTerm );
+            ->orWhere( 'path', 'like', $searchTerm );
     }
     if( isset( $get['column'] ) && isset( $get['operator'] ) && isset( $get['value'] ) ) {
         foreach( $get['column'] as $key => $column ) {

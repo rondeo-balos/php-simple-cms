@@ -139,8 +139,8 @@ class Table {
                 <div style="max-width: 400px;">
                     <form>
                         <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" placeholder="Search <?= $table ?>s" aria-label="Search <?= $table ?>" aria-describedby="search-button" name="s">
-                            <button role="submit" class="btn btn-outline-secondary btn-sm" aria-labelledby="Search button"><ion-icon name="search"></ion-icon></button>
+                            <input type="text" class="form-control form-control-sm" placeholder="Search <?= $table ?>s" aria-label="Search <?= $table ?>" aria-describedby="search-button" name="s" value="<?= $_GET['s'] ?? '' ?>">
+                            <button type="submit" role="submit" class="btn btn-outline-secondary btn-sm" aria-labelledby="Search button"><ion-icon name="search"></ion-icon></button>
                         </div>
                     </form>
                 </div>
@@ -402,7 +402,7 @@ class Table {
                         return $dateTime->format('Y-m-d H:i A');
                     default:
                         // For other cases, return value as is
-                        return $value;
+                        return $value ?? '';
                 }
             }
         }

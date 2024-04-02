@@ -156,7 +156,8 @@ class InstallController extends BaseController {
             author int,
             token varchar(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            UNIQUE(path)
         )';
         $manager->statement( $create_page_table );
     }

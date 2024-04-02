@@ -1,10 +1,34 @@
 <?php
+use simpl\includes\Db;
+use simpl\includes\FlashSession;
+use simpl\model\Page;
+use simpl\model\Preview;
+
 defined( 'ABSPATH' ) || exit;
+
+if( isset($ID) ) {
+    Db::createInstance();
+    try {
+        $page = Page::findOrFail( $ID );
+        $blocks = $page->blocks;
+
+        $preview = Preview::where( 'token', '=', $page->token )->first();
+        if( $preview ) {
+            $data = json_decode( $preview->data );
+            $blocks = $data->blocks;
+        }
+
+        $update_text = 'Update Page';
+        $update_url = 'admin/pages/edit/'.$ID;
+    } catch( \Exception $e ) {
+
+    }
+}
 ?>
 
 <script>
     const _definitions = <?= json_encode( $blockManager->definitions ) ?>;
-    let _props = [];
+    let _props = <?= $blocks ?? '[]' ?>;
     let index = -1;
 
     const _addBlock = ( name ) => {
@@ -164,6 +188,8 @@ defined( 'ABSPATH' ) || exit;
         $( '#title' ).on( 'keyup', function(e) {
             $( '#_title' ).val( $( this ).val() );
         });
+
+        _renderBlocks();
     });
 </script>
 
@@ -196,10 +222,11 @@ defined( 'ABSPATH' ) || exit;
     </div>
 </div>
 
+<div id="alert"></div>
 
 <form method="POST">
-    <input type="hidden" name="token" value="">
-    <input type="hidden" name="blocks" value="">
+    <input type="hidden" name="token" value="<?= $page->token ?? '' ?>">
+    <input type="hidden" name="blocks" value="<?= $blocks ?? '' ?>">
     <div class="row">
 
         <div class="col-md-2">
@@ -212,7 +239,7 @@ defined( 'ABSPATH' ) || exit;
             <div class="d-flex flex-row align-items-center justify-content-center mb-3">
                 <a href="<?= ROOT ?>admin/pages" class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" title="All pages"><ion-icon name="chevron-back" size="small"></ion-icon></a>
 
-                <input type="text" name="_title" id="_title" class="h5 border-0 p-2 m-0 focus-ring flex-fill" value="" placeholder="Page Title" style="background: none; --bs-focus-ring-color: rgba(0, 0, 0, 0)">
+                <input type="text" name="_title" id="_title" class="h5 border-0 p-2 m-0 focus-ring flex-fill" value="<?= $page->title ?? '' ?>" placeholder="Page Title" style="background: none; --bs-focus-ring-color: rgba(0, 0, 0, 0)" required>
 
                 <h1 class="h5 m-0"></h1>
                 <div class="flex-fill"></div>
@@ -222,7 +249,7 @@ defined( 'ABSPATH' ) || exit;
                 <button type="button" class="me-3 btn btn-outline-secondary btn-sm">
                     <ion-icon name="refresh-outline" data-bs-toggle="tooltip" title="Reload preview"></ion-icon>
                 </button>
-                <button role="submit" class="btn btn-primary btn-sm" id="create" text="<?= $update_text ?? 'Publish' ?>"><?= $update_text ?? 'Publish' ?></button>
+                <button type="submit" role="submit" class="btn btn-primary btn-sm" id="create" text="<?= $update_text ?? 'Publish' ?>"><?= $update_text ?? 'Publish' ?></button>
             </div>
 
             <div id="preview" class="border" style="height: 80vh">
@@ -254,10 +281,10 @@ defined( 'ABSPATH' ) || exit;
                                 </span>
                             </label><br>
                             <div class="btn-group" role="group" aria-label="Status">
-                                <input type="radio" class="btn-check" name="status" id="draft" value="0" autocomplete="off"  required>
+                                <input type="radio" class="btn-check" name="status" id="draft" value="0" autocomplete="off" <?= isset($page) ? ($page->status == 0 ? 'checked' : '') : '' ?> required>
                                 <label class="btn btn-outline-primary btn-sm" for="draft">Draft</label>
 
-                                <input type="radio" class="btn-check" name="status" id="public" value="1" autocomplete="off" required checked>
+                                <input type="radio" class="btn-check" name="status" id="public" value="1" autocomplete="off" <?= isset($page) ? ($page->status == 1 ? 'checked' : '') : 'checked' ?> required>
                                 <label class="btn btn-outline-primary btn-sm" for="public">Public</label>
                             </div>
                         </div>
@@ -268,7 +295,7 @@ defined( 'ABSPATH' ) || exit;
                                     <ion-icon name="help-circle-outline"></ion-icon>
                                 </span>
                             </label>
-                            <input type="text" name="path" id="path" class="form-control form-control-sm" autocomplete="off" required value="/">
+                            <input type="text" name="path" id="path" class="form-control form-control-sm" autocomplete="off" value="<?= $page->path ?? '/' ?>" required>
                         </div>
 
                     </div>
@@ -280,7 +307,7 @@ defined( 'ABSPATH' ) || exit;
                                     <ion-icon name="help-circle-outline"></ion-icon>
                                 </span>
                             </label>
-                            <input type="text" name="title" id="title" class="form-control form-control-sm" autocomplete="off" required>
+                            <input type="text" name="title" id="title" class="form-control form-control-sm" autocomplete="off" value="<?= $page->title ?? '' ?>">
                         </div>
                         <div class="form-group mb-2">
                             <label for="description" class="form-label">
@@ -289,7 +316,7 @@ defined( 'ABSPATH' ) || exit;
                                     <ion-icon name="help-circle-outline"></ion-icon>
                                 </span>
                             </label>
-                            <textarea name="description" id="description" class="form-control form-control-sm" autocomplete="off" required></textarea>
+                            <textarea name="description" id="description" class="form-control form-control-sm" autocomplete="off"><?= $page->description ?? '' ?></textarea>
                         </div>
                         <div class="form-group mb-2">
                             <label class="form-label">
@@ -299,10 +326,10 @@ defined( 'ABSPATH' ) || exit;
                                 </span>
                             </label><br>
                             <div class="btn-group" role="group" aria-label="Visibility">
-                                <input type="radio" class="btn-check" name="visibility" id="hidden" value="noindex" autocomplete="off"  required>
+                                <input type="radio" class="btn-check" name="visibility" id="hidden" value="noindex" autocomplete="off" <?= isset($page) ? ($page->visibility == 'noindex' ? 'checked' : '') : 'checked' ?>>
                                 <label class="btn btn-outline-primary btn-sm" for="hidden">Hidden</label>
 
-                                <input type="radio" class="btn-check" name="visibility" id="visible" value="index" autocomplete="off" required checked>
+                                <input type="radio" class="btn-check" name="visibility" id="visible" value="index" autocomplete="off" <?= isset($page) ? ($page->visibility == 'index' ? 'checked' : '') : '' ?>>
                                 <label class="btn btn-outline-primary btn-sm" for="visible">Visible</label>
                             </div>
                         </div>
@@ -322,3 +349,40 @@ defined( 'ABSPATH' ) || exit;
     display: none;
 }
 </style>
+
+<script>
+    $( 'form' ).on( 'submit', e => {
+        e.preventDefault();
+        spin( '#create' );
+
+        $.ajax({
+            url: '<?= ROOT ?><?= $update_url ?? 'admin/pages/create' ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: $( 'form' ).serialize(),
+            success: res => {
+                console.log( res );
+                if( res.code === 200 ) {
+                    __alert( '#alert', res.message, 'success' );
+                    if( typeof res.data.redirect !== 'undefined' ) {
+                        document.location = res.data.redirect;
+                    }
+                } else {
+                    __alert( '#alert', res.message );
+                }
+
+                unspin( '#create' );
+            },
+            error: (xhr, status, error) => {
+                console.error(error); // Check for any AJAX errors
+                __alert( '#alert', error );
+                unspin( '#create' );
+            }
+        } );
+
+        return false;
+    } );
+    <?php if( FlashSession::hasKey( 'message' ) ): ?>
+        __alert( '#alert', '<?= FlashSession::get( 'message' ) ?>', 'info' );
+    <?php endif; ?>
+</script>
