@@ -20,8 +20,7 @@ class Heading implements BaseBlock{
         ]
     ];
 
-    public function __construct() {
-        global $blockManager;
+    public function __construct( BlockManager $blockManager ) {
         $blockManager->add( $this->definition );
     }
 
@@ -33,4 +32,4 @@ class Heading implements BaseBlock{
         <?php
     }
 
-} new Heading;
+}

@@ -1,13 +1,13 @@
 <?php
-namespace simpl\ajax;
+namespace simpl\actions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use simpl\Response as ResponseData;
-use simpl\Db;
+use simpl\includes\Response as ResponseData;
+use simpl\includes\Db;
 use simpl\model\Preview;
 
-class PageAjax {
+class PageAction {
 
     public static function preview( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();

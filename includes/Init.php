@@ -1,10 +1,9 @@
 <?php
-namespace simpl;
+namespace simpl\includes;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Psr\Http\Message\ResponseInterface as Response;
-use Illuminate\Pagination\Paginator;
 
 class Init {
     private $app;

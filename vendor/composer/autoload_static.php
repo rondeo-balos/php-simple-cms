@@ -26,6 +26,10 @@ class ComposerStaticInit7fb946c6e6314f56da694bf98693276b
         array (
             'voku\\' => 5,
         ),
+        's' => 
+        array (
+            'simpl\\' => 6,
+        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -92,6 +96,10 @@ class ComposerStaticInit7fb946c6e6314f56da694bf98693276b
         'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+        ),
+        'simpl\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/',
         ),
         'Twig\\' => 
         array (

@@ -1,5 +1,5 @@
 <?php
-namespace simpl;
+namespace simpl\includes;
 
 use Illuminate\Database\Capsule\Manager as Manager;
 

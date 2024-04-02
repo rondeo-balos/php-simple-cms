@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 
     $( document ).on( 'tabShown', '#blocks [data-bs-toggle="tab"]', function(e) {
         var index = $( '#blocks' ).attr( 'index' );
-        
+
         if( index < 0 ) {
             alert();
             $( '#block' ).parent().addClass( 'd-none' );
@@ -51,7 +51,7 @@ defined( 'ABSPATH' ) || exit;
                 f = $( '<input class="form-control mb-2" type="' + field + '" value="' + prop[key] + '">' );
             }
             
-            f.on( 'keyup, change', function(e) {
+            f.on( 'keyup change', function(e) {
                 prop[key] = $( this ).val();
                 _preview();
             });
@@ -133,7 +133,28 @@ defined( 'ABSPATH' ) || exit;
 
     const _reload = ( token ) => {
         $( '#preview_blank' ).attr( 'href', '<?= ROOT ?>?__p=' + token );
-        $( 'iframe' ).attr( 'src', '<?= ROOT ?>?__p=' + token );
+        // Get the iframe element
+        var iframe = document.getElementById('preview_iframe');
+
+        // Create a new document for the iframe
+        var iframeDocument = iframe.contentWindow.document;
+
+        // Make an AJAX request using Zepto
+        $.ajax({
+            url: '<?= ROOT ?>?__p=' + token,
+            type: 'GET',
+            dataType: 'html',
+            success: function (data) {
+                // When the request is successful, load the content into the iframe
+                iframeDocument.open();
+                iframeDocument.write(data);
+                iframeDocument.close();
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching content:', error);
+            }
+        });
+        //$( 'iframe' ).attr( 'src',  );
     }
 
     $( document ).ready( function(){
@@ -205,7 +226,7 @@ defined( 'ABSPATH' ) || exit;
             </div>
 
             <div id="preview" class="border" style="height: 80vh">
-                <iframe src="<?= ROOT ?>" style="width: 100%; height: 100%"></iframe>
+                <iframe id="preview_iframe" src="<?= ROOT ?>" style="width: 100%; height: 100%"></iframe>
             </div>
         </div>
         

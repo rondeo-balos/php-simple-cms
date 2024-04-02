@@ -1,13 +1,13 @@
 <?php
-namespace simpl\ajax;
+namespace simpl\actions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\model\User;
-use simpl\Response as ResponseData;
+use simpl\includes\Response as ResponseData;
 use Illuminate\Database\Capsule\Manager as Manager;
 
-class InstallAjax {
+class InstallAction {
     
     public static function install( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();

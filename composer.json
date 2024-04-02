@@ -13,5 +13,10 @@
         "allow-plugins": {
             "kylekatarnls/update-helper": true
         }
+    },
+    "autoload": {
+        "psr-4": {
+            "simpl\\" : ""
+        }
     }
 }

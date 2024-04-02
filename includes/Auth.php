@@ -1,5 +1,5 @@
 <?php
-namespace simpl;
+namespace simpl\includes;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

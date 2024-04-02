@@ -1,7 +1,7 @@
 <?php
 
-use simpl\Db;
-use simpl\FlashSession;
+use simpl\includes\Db;
+use simpl\includes\FlashSession;
 use simpl\model\User;
 
 defined( 'ABSPATH' ) || exit;

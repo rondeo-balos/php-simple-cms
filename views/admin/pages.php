@@ -1,6 +1,6 @@
 <?php
 
-use simpl\Db;
+use simpl\includes\Db;
 use simpl\model\Page;
 use simpl\components\Table;
 

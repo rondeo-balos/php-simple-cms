@@ -1,15 +1,15 @@
 <?php
-namespace simpl\ajax;
+namespace simpl\actions;
 
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use simpl\Response as ResponseData;
-use simpl\Auth;
-use simpl\Db;
+use simpl\includes\Response as ResponseData;
+use simpl\includes\Auth;
+use simpl\includes\Db;
 use simpl\model\User;
 
-class LoginAjax {
+class LoginAction {
 
     public static function login( Request $request, Response $response, $args ): Response {
 

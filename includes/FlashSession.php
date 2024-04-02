@@ -1,5 +1,5 @@
 <?php
-namespace simpl;
+namespace simpl\includes;
 
 class FlashSession {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace simpl;
+namespace simpl\includes;
 
 class Response {
     private $code;

@@ -1,9 +1,9 @@
 <?php
 
-use simpl\Db;
+use simpl\includes\Db;
 use simpl\model\Media;
 use simpl\components\Grid;
-use simpl\FlashSession;
+use simpl\includes\FlashSession;
 
 defined( 'ABSPATH' ) || exit;
 

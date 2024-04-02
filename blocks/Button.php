@@ -20,8 +20,7 @@ class Button implements BaseBlock{
         ]
     ];
 
-    public function __construct() {
-        global $blockManager;
+    public function __construct( BlockManager $blockManager ) {
         $blockManager->add( $this->definition );
     }
 
@@ -33,4 +32,4 @@ class Button implements BaseBlock{
         <?php
     }
 
-} new Button;
+}

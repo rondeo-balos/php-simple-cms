@@ -1,15 +1,15 @@
 <?php
-namespace simpl\ajax;
+namespace simpl\actions;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UploadedFileInterface;
-use simpl\FlashSession;
-use simpl\Response as ResponseData;
-use simpl\Db;
+use simpl\includes\FlashSession;
+use simpl\includes\Response as ResponseData;
+use simpl\includes\Db;
 use simpl\model\Media;
 
-class MediaAjax {
+class MediaAction {
 
     public static function edit( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
