@@ -1,6 +1,7 @@
 <?php
 namespace simpl\actions;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\includes\FlashSession;
@@ -9,8 +10,37 @@ use simpl\includes\Db;
 use simpl\model\User;
 
 class UserAction {
+
+    private $container;
+
+    // constructor receives container instance
+    public function __construct( ContainerInterface $container ) {
+        $this->container = $container;
+    }
+
+    public function get( Request $request, Response $response, $args ): Response {
+        $renderer = $this->container->get( 'admin-renderer' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Users', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/users.php', $data );
+    }
+
+    public function getCreate( Request $request, Response $response, $args ) {
+        $renderer = $this->container->get( 'admin-renderer' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Create new user', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/users-create.php', $data );
+    }
     
-    public static function create( Request $request, Response $response, $args ): Response {
+    public function create( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
 
         $firstname = $post['firstname'];
@@ -47,7 +77,20 @@ class UserAction {
         
     }
 
-    public static function edit( Request $request, Response $response, $args ): Response {
+    public function getEdit( Request $request, Response $response, $args ): Response {
+        $ID = $args['ID'];
+
+        $renderer = $this->container->get( 'admin-renderer' );
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Edit user',
+            'get' => $get,
+            'ID' => $ID
+        ];
+        return $renderer->render( $response, '../views/admin/users-create.php', $data );
+    }
+
+    public function edit( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
 
         $ID = $args['ID'] ?? -1;
@@ -87,7 +130,7 @@ class UserAction {
         }
     }
 
-    public static function delete( Request $request, Response $response, $args ): Response {
+    public function delete( Request $request, Response $response, $args ): Response {
         $ID = $args['ID'] ?? -1;
 
         try{

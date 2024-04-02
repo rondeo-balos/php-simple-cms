@@ -1,15 +1,44 @@
 <?php
 namespace simpl\actions;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\includes\Response as ResponseData;
 use simpl\includes\Db;
 use simpl\model\Preview;
+use simpl\blocks\BlockManager;
 
-class PageAction {
+class PageAction extends BaseAction {
 
-    public static function preview( Request $request, Response $response, $args ): Response {
+    public function get( Request $request, Response $response, $args ): Response {
+        $renderer = $this->container->get( 'admin-renderer' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Pages', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/pages.php', $data );
+    }
+
+    public function create( Request $request, Response $response, $args ): Response {
+        $renderer = $this->container->get( 'admin-renderer' );
+
+        $get = $request->getQueryParams();
+
+        $blockManager = $this->container->get( 'blockManager' );
+        BlockManager::autoloadBlocks( $blockManager );
+
+        $data = [
+            'title' => 'Create new page', 
+            'get' => $get,
+            'blockManager' => $blockManager
+        ];
+        return $renderer->render( $response, '../views/admin/pages-create.php', $data );
+    }
+
+    public function preview( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
 
         $token = $post['token'] ?? false;

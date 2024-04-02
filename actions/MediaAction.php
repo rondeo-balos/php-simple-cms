@@ -1,6 +1,7 @@
 <?php
 namespace simpl\actions;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UploadedFileInterface;
@@ -9,9 +10,21 @@ use simpl\includes\Response as ResponseData;
 use simpl\includes\Db;
 use simpl\model\Media;
 
-class MediaAction {
+class MediaAction extends BaseAction {
 
-    public static function edit( Request $request, Response $response, $args ): Response {
+    public function get( Request $request, Response $response, $args ): Response {
+        global $app;
+        $renderer = $this->container->get( 'admin-renderer' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Media', 
+            'get' => $get
+        ];
+        return $renderer->render( $response, '../views/admin/media.php', $data );
+    }
+
+    public function edit( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
 
         $ID = $args['ID'] ?? -1;
@@ -41,7 +54,7 @@ class MediaAction {
         }
     }
 
-    public static function delete( Request $request, Response $response, $args ): Response {
+    public function delete( Request $request, Response $response, $args ): Response {
         $ID = $args['ID'] ?? -1;
 
         try{
@@ -63,7 +76,7 @@ class MediaAction {
                 ->withStatus( 302 );
     }
 
-    public static function upload( Request $request, Response $response, $args ): Response {
+    public function upload( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
         $files = $request->getUploadedFiles();
 
@@ -106,7 +119,7 @@ class MediaAction {
         return $response->withHeader( 'Content-Type', 'application/json' );
     }
 
-    public static function moveUploadedFile( string $directory, UploadedFileInterface $uploadedFile ): string {
+    public function moveUploadedFile( string $directory, UploadedFileInterface $uploadedFile ): string {
         $extension = pathinfo( $uploadedFile->getClientFilename(), PATHINFO_EXTENSION );
 
         $basename = bin2hex( random_bytes(8) );

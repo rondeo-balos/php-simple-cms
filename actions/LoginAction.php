@@ -1,6 +1,7 @@
 <?php
 namespace simpl\actions;
 
+use Psr\Container\ContainerInterface;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -9,9 +10,17 @@ use simpl\includes\Auth;
 use simpl\includes\Db;
 use simpl\model\User;
 
-class LoginAction {
+class LoginAction extends BaseAction {
 
-    public static function login( Request $request, Response $response, $args ): Response {
+    public function get( Request $request, Response $response, $args ) {
+        $renderer = $this->container->get( 'admin-full' );
+    
+        Auth::logout();
+    
+        return $renderer->render( $response, '../views/login.php', [ 'title' => 'Simpl.Login' ] );
+    }
+
+    public function login( Request $request, Response $response, $args ): Response {
 
         $post = $request->getParsedBody();
         

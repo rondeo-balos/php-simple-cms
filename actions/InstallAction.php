@@ -1,15 +1,30 @@
 <?php
 namespace simpl\actions;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\model\User;
+use simpl\includes\Auth;
 use simpl\includes\Response as ResponseData;
 use Illuminate\Database\Capsule\Manager as Manager;
 
-class InstallAction {
+class InstallAction extends BaseAction {
+
+    public function get( Request $request, Response $response, $args ): Response {
+        if( file_exists( ABSPATH . 'config.php' ) ) {
+            return $response = $response
+                ->withHeader( 'Location', ROOT . 'admin' )
+                ->withStatus( 302 );
+        }
     
-    public static function install( Request $request, Response $response, $args ): Response {
+        Auth::logout();
+    
+        $renderer = $this->container->get( 'admin-full' );
+        return $renderer->render( $response, '../views/install.php', [ 'title' => 'Simpl.Installation' ] );
+    }
+    
+    public function install( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
         
         $email = $post['email'];
