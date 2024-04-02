@@ -6,34 +6,82 @@ defined( 'ABSPATH' ) || exit;
     const _definitions = <?= json_encode( $blockManager->definitions ) ?>;
     let _props = [];
     let index = -1;
+
     const _addBlock = ( name ) => {
+        let newProps = JSON.parse(JSON.stringify(_definitions[name].props));
         if( index < 0 ) {
-            _props.push( _definitions[name] );
+            _props.push( newProps );
         } else {
-            _props.splice( index, 0, _definitions[name] );
+            _props.splice( index, 0, newProps );
+            $( '#blocks' ).attr( 'index', index + 1 );
         }
         index = -1;
         _renderBlocks();
     }
 
-    const _configureBlock = ( name ) => {
+    $( document ).on( 'tabShown', '#blocks [data-bs-toggle="tab"]', function(e) {
+        var index = $( '#blocks' ).attr( 'index' );
+        
+        if( index < 0 ) {
+            alert();
+            $( '#block' ).parent().addClass( 'd-none' );
+            return;
+        }
 
-    }
+        var prop = _props[index];
+        var definition = _definitions[prop.name];
+
+        let tab = $( '#block-tab' );
+        tab.empty();
+
+        Object.keys(definition.fields).forEach( function( key ) {
+            var field = definition.fields[key];
+            
+            var label = $( '<label class="form-label text-capitalize">' );
+            label.text( key );
+
+            var f = null;
+            if( Array.isArray( field ) ) {
+                f = $( '<select class="form-select mb-2">' );
+                field.forEach( function( option, i ) {
+                    var option = $( '<option>' + option + '</option>' );
+                    f.append( option );
+                });
+            } else {
+                f = $( '<input class="form-control mb-2" type="' + field + '" value="' + prop[key] + '">' );
+            }
+            
+            f.on( 'keyup, change', function(e) {
+                prop[key] = $( this ).val();
+                _preview();
+            });
+
+            tab.append( label );
+            tab.append( f );
+        });
+
+        $( '#block' ).parent().removeClass( 'd-none' );
+        $( '#block' ).click();
+    });
 
     const _renderBlocks = () => {
         var blocks = $( '#blocks' );
         blocks.empty();
         _props.forEach( function( prop, i ) {
+            var blockIndex = blocks.attr( 'index' );
+            var definition = _definitions[prop.name];
             
-            var button = $( '<button class="btn btn-sm btn-outline-secondary border-left-0 w-100 rounded-0 mb-1 d-flex flex-row">' );
-            button.text( prop.name );
+            var button = $( '<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row" data-bs-toggle="tab" type="button">' );
+            button.text( definition.name );
+            if( blockIndex == i ) button.addClass( 'active' );
             button.on( 'click', function(e) {
                 e.preventDefault();
-                _configureBlock( prop.name );
+                $( '#blocks' ).attr( 'index', i );
+                $( this ).trigger( 'tabShown' );
             });
 
             var icon = $( '<ion-icon size="small" class="me-2">' );
-            icon.attr( 'name', prop.icon );
+            icon.attr( 'name', definition.icon );
             button.prepend( icon );
 
             button.append( '<span class="flex-fill">' )
@@ -58,11 +106,11 @@ defined( 'ABSPATH' ) || exit;
             blocks.append( button );
         });
         
-        $( '[name="blocks"]' ).val( JSON.stringify( _props ) );
         _preview();
     }
 
     const _preview = () => {
+        $( '[name="blocks"]' ).val( JSON.stringify( _props ) );
         $.ajax({
             url: '<?= ROOT ?>admin/pages/preview',
             type: 'POST',
@@ -135,13 +183,13 @@ defined( 'ABSPATH' ) || exit;
 
         <div class="col-md-2">
             <strong>Blocks</strong>
-            <div id="blocks" class="py-2"></div>
+            <div class="nav flex-column nav-pills me-3 py-2" id="blocks" role="tablist" aria-orientation="vertical"> </div>
             <a href="#" data-bs-toggle="modal" data-bs-target="#addBlock" class="text-decoration-none"><ion-icon name="add-outline"></ion-icon> Add block </a>
         </div>
         
         <div class="col-md-8">
             <div class="d-flex flex-row align-items-center justify-content-center mb-3">
-                <a href="<?= ROOT ?>admin/pages" class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" title="All users"><ion-icon name="chevron-back" size="small"></ion-icon></a>
+                <a href="<?= ROOT ?>admin/pages" class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" title="All pages"><ion-icon name="chevron-back" size="small"></ion-icon></a>
 
                 <input type="text" name="_title" id="_title" class="h5 border-0 p-2 m-0 focus-ring flex-fill" value="" placeholder="Page Title" style="background: none; --bs-focus-ring-color: rgba(0, 0, 0, 0)">
 
@@ -245,7 +293,6 @@ defined( 'ABSPATH' ) || exit;
                 </div>
             </div>
         </div>
-
     </div>
 </form>
 

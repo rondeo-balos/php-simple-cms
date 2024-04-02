@@ -8,8 +8,10 @@ use simpl\ajax\PageAjax;
 use simpl\ajax\UserAjax;
 use simpl\ajax\MediaAjax;
 use simpl\Auth;
-use simpl\blocks\BlockManager;
+use simpl\Db;
 use simpl\Init;
+use simpl\model\Page;
+use simpl\blocks\BlockManager;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Views\PhpRenderer;
@@ -191,23 +193,51 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
 
 })->add($auth);
 
-$app->get( '/', function( Request $request, Response $response, $args ) {
-    $renderer = $this->get( 'public_renderer' );
-    $get = $request->getQueryParams();
+$app->group( '/', function( RouteCollectorProxy $group ) {
 
-    $blockManager = $this->get( 'blockManager' );
-    require __DIR__ . '/blocks/Heading.php';
-    require __DIR__ . '/blocks/Button.php';
+    $group->get( '', function( Request $request, Response $response, $args ) {
+        $renderer = $this->get( 'public_renderer' );
+        $get = $request->getQueryParams();
+    
+        $blockManager = $this->get( 'blockManager' );
+        require __DIR__ . '/blocks/Heading.php';
+        require __DIR__ . '/blocks/Button.php';
+    
+        /**
+         * For preview
+         */
+        if( isset( $get['__p'] ) ) {
+            return $renderer->render( $response, '../views/preview.php', [ 'get' => $get, 'blockManager' => $blockManager ] );
+        }
+    
+        try {
+            Db::createInstance();
+            $data = Page::where( 'path', '=', '/' )->firstOrFail();
+            return $renderer->render( $response, '../views/index.php', [ 'get' => $get, 'blockManager' => $blockManager, 'data' => $data ] );
+        } catch( \Exception $e ) {}
+    
+        // for actual document
+        return $renderer->render( $response, '../views/404.php', [] );
+    });
 
-    /**
-     * For preview
-     */
-    if( isset( $get['__p'] ) ) {
-        return $renderer->render( $response, '../views/preview.php', [ 'get' => $get, 'blockManager' => $blockManager ] );
+    // Query all pages
+    Db::createInstance();
+    $pages = Page::where( 'path', '<>', '/' )
+        ->where( 'status', '=', 1 )
+        ->get( ['*'] );
+    foreach( $pages as $page ) {
+        $group->map( ['GET', 'POST'], ltrim( $page->path, '/' ), function( Request $request, Response $response, array $args) use ($page) {
+            $renderer = $this->get( 'public_renderer' );
+            $get = $request->getQueryParams();
+
+            $blockManager = $this->get( 'blockManager' );
+            require __DIR__ . '/blocks/Heading.php';
+            require __DIR__ . '/blocks/Button.php';
+
+            return $renderer->render( $response, '../views/index.php', [ 'get' => $get, 'blockManager' => $blockManager, 'data' => $page ] );
+        });
     }
 
-    // for actual document
-    return $renderer->render( $response, '../views/index.php', [ 'title' => '' ] );
-})->add($init);
+})->add( $init );
 
 $app->run();

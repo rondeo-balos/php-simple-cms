@@ -47,7 +47,7 @@ class Table {
                                     <?php if( $key === $action_col ): ?>
                                         <div class="d-block text-sm">
                                             <?php foreach( $actions as $action ): ?>
-                                                <a href="<?= ($action['url'] ?? '') . '/' . $item->ID ?>" class="pe-2 <?= $action['class'] ?? '' ?>"><small><?= $action['label'] ?? '' ?></small></a>
+                                                <a href="<?= $this->replacePlaceholders($action['url'] ?? '', $item) /*($action['url'] ?? '') . '/' . $item->ID*/ ?>" class="pe-2 <?= $action['class'] ?? '' ?>"><small><?= $action['label'] ?? '' ?></small></a>
                                             <?php endforeach; ?>
                                         </div>
                                     <?php endif; ?>
@@ -73,6 +73,16 @@ class Table {
             
         </script>
         <?php
+    }
+
+    protected function replacePlaceholders( $string, $variables ) {
+        $callback = function($matches) use ($variables) {
+            $placeholder = $matches[1];
+            return isset($variables[$placeholder]) ? $variables[$placeholder] : $matches[0];
+        };
+    
+        $pattern = '/{{(.*?)}}/';
+        return preg_replace_callback($pattern, $callback, $string);
     }
 
     public function paginate() {

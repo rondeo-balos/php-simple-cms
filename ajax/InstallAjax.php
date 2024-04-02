@@ -136,10 +136,11 @@ class InstallAjax {
             description varchar(255),
             visibility varchar(255),
             path varchar(255),
-            content json,
+            blocks json,
             fields json,
             status int DEFAULT 0,
             author int,
+            token varchar(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )';
@@ -158,7 +159,7 @@ class InstallAjax {
     }
 
     private static function createMediaTable( $manager ) {
-        $create_page_table = 'CREATE TABLE IF NOT EXISTS media (
+        $create_media_table = 'CREATE TABLE IF NOT EXISTS media (
             ID int AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
             alt text,
@@ -168,7 +169,7 @@ class InstallAjax {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )';
-        $manager->statement( $create_page_table );
+        $manager->statement( $create_media_table );
     }
 
 }

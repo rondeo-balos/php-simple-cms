@@ -175,12 +175,12 @@ defined( 'ABSPATH' ) || exit;
     $table->filter( 'media', 'javascript:_upload();' );
     $table->render( 'title', 'javascript:_upload();', [
         'edit' => [
-            'url' => $base . '/edit',
+            'url' => $base . '/edit/{{ID}}',
             'class' => 'btn-outline-primary',
             'label' => '<ion-icon name="pencil-outline"></ion-icon>'
         ],
         'delete' => [
-            'url' => $base . '/delete',
+            'url' => $base . '/delete/{{ID}}',
             'class' => 'btn-outline-danger',
             'label' => '<ion-icon name="trash-outline"></ion-icon>'
         ]

@@ -17,7 +17,7 @@ class Grid extends Table {
                                 <img src="<?= ROOT . $item->thumb ?>" class="img-fluid object-fit-cover">
                                 <div class="hover position-absolute d-flex flex-wrap justify-content-center align-items-center bg-body-secondary bg-opacity-75">
                                     <?php foreach( $actions as $action ): ?>
-                                        <a href="<?= ($action['url'] ?? '') . '/' . $item->ID ?>" target="#<?= $item->ID ?>" class="m-1 btn btn-sm <?= $action['class'] ?? '' ?>"><?= $action['label'] ?? '' ?></a>
+                                        <a href="<?= $this->replacePlaceholders($action['url'] ?? '', $item) ?>" target="#<?= $item->ID ?>" class="m-1 btn btn-sm <?= $action['class'] ?? '' ?>"><?= $action['label'] ?? '' ?></a>
                                     <?php endforeach; ?>
                                 </div>
                             </div>

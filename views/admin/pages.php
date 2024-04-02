@@ -34,9 +34,11 @@ defined( 'ABSPATH' ) || exit;
     $cols = [
         'ID' => ['ID', ''],
         'title' => ['Title', ''],
-        'slug' => ['Slug', ''],
-        'author' => ['Author', ''],
+        'description' => ['Description', ''],
+        'visibility' => ['Visibility', ''],
+        'path' => ['Path', ''],
         'status' => ['Status', ['Draft', 'Published']],
+        'author' => ['Author', ''],
         'created_at' => ['Created At', 'date'],
         'updated_at' => ['Updated At', 'date']
     ];
@@ -44,17 +46,17 @@ defined( 'ABSPATH' ) || exit;
     $table->filter( 'pages', $base . '/create' );
     $table->render( 'title', $base . '/create', [
         'edit' => [
-            'url' => $base . '/edit',
+            'url' => $base . '/edit/{{ID}}',
             'class' => 'hover-blue',
             'label' => 'Edit'
         ],
         'delete' => [
-            'url' => $base . '/delete',
+            'url' => $base . '/delete/{{ID}}',
             'class' => 'hover-red',
             'label' => 'Delete'
         ],
         'view' => [
-            'url' => $base . '/preview',
+            'url' => ROOT . '?__p={{token}}',
             'label' => 'View'
         ]
     ]);

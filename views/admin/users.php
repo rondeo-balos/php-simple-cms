@@ -49,12 +49,12 @@ defined( 'ABSPATH' ) || exit;
     $table->filter( 'users', $base . '/create' );
     $table->render( 'email', $base . '/create', [
         'edit' => [
-            'url' => $base . '/edit',
+            'url' => $base . '/edit/{{ID}}',
             'class' => 'hover-blue',
             'label' => 'Edit'
         ],
         'delete' => [
-            'url' => $base . '/delete',
+            'url' => $base . '/delete/{{ID}}',
             'class' => 'hover-red',
             'label' => 'Delete'
         ]

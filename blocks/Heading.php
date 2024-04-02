@@ -11,7 +11,7 @@ class Heading implements BaseBlock{
         'icon' => 'text-outline',
         'fields' => [
             'type' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
-            'content' => ''
+            'content' => 'text'
         ],
         'props' => [
             'name' => 'Heading',

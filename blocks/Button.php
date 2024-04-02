@@ -10,8 +10,8 @@ class Button implements BaseBlock{
         'name' => 'Button',
         'icon' => 'link-outline',
         'fields' => [
-            'link' => 'pages',
-            'label' => ''
+            'link' => 'link',
+            'label' => 'text'
         ],
         'props' => [
             'name' => 'Button',
