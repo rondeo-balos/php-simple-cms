@@ -25,8 +25,7 @@ class Button implements BaseBlock{
         $blockManager->add( $this->definition );
     }
 
-    public static function render( string $props ) {
-        $props = json_decode( $props );
+    public static function render( array $props ) {
         ?>
             <a href="<?= $props['link'] ?>">
                 <?= $props['label'] ?>

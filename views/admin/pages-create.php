@@ -5,8 +5,7 @@ defined( 'ABSPATH' ) || exit;
 <script>
     const _definitions = <?= json_encode( $blockManager->definitions ) ?>;
     let _props = [];
-
-    var index = -1;
+    let index = -1;
     const _addBlock = ( name ) => {
         if( index < 0 ) {
             _props.push( _definitions[name] );
@@ -58,7 +57,45 @@ defined( 'ABSPATH' ) || exit;
 
             blocks.append( button );
         });
+        
+        $( '[name="blocks"]' ).val( JSON.stringify( _props ) );
+        _preview();
     }
+
+    const _preview = () => {
+        $.ajax({
+            url: '<?= ROOT ?>admin/pages/preview',
+            type: 'POST',
+            dataType: 'json',
+            data: $( 'form' ).serialize(),
+            success: res => {
+                console.log( res );
+                if( res.code === 200 ) {
+                    $( '[name="token"]' ).val( res.data.token );
+                    _reload( res.data.token );
+                } else {
+                    console.log( res.message );
+                }
+            },
+            error: (xhr, status, error) => {
+                console.log( error );
+            }
+        });
+    }
+
+    const _reload = ( token ) => {
+        $( '#preview_blank' ).attr( 'href', '<?= ROOT ?>?__p=' + token );
+        $( 'iframe' ).attr( 'src', '<?= ROOT ?>?__p=' + token );
+    }
+
+    $( document ).ready( function(){
+        $( '#_title' ).on( 'keyup', function(e) {
+            $( '#title' ).val( $( this ).val() );
+        });
+        $( '#title' ).on( 'keyup', function(e) {
+            $( '#_title' ).val( $( this ).val() );
+        });
+    });
 </script>
 
 <div class="modal fade modal-lg" id="addBlock" tabindex="-1" aria-labelledby="Add Block" aria-hidden="true">
@@ -92,6 +129,8 @@ defined( 'ABSPATH' ) || exit;
 
 
 <form method="POST">
+    <input type="hidden" name="token" value="">
+    <input type="hidden" name="blocks" value="">
     <div class="row">
 
         <div class="col-md-2">
@@ -104,11 +143,11 @@ defined( 'ABSPATH' ) || exit;
             <div class="d-flex flex-row align-items-center justify-content-center mb-3">
                 <a href="<?= ROOT ?>admin/pages" class="btn btn-outline-secondary btn-sm me-2" data-bs-toggle="tooltip" title="All users"><ion-icon name="chevron-back" size="small"></ion-icon></a>
 
-                <input type="text" name="title" id="title" class="h5 border-0 p-2 m-0 focus-ring flex-fill" value="" placeholder="Page Title" style="background: none; --bs-focus-ring-color: rgba(0, 0, 0, 0)">
+                <input type="text" name="_title" id="_title" class="h5 border-0 p-2 m-0 focus-ring flex-fill" value="" placeholder="Page Title" style="background: none; --bs-focus-ring-color: rgba(0, 0, 0, 0)">
 
                 <h1 class="h5 m-0"></h1>
                 <div class="flex-fill"></div>
-                <a href="#" class="me-3 btn btn-outline-secondary btn-sm" target="_blank">
+                <a href="#" id="preview_blank" class="me-3 btn btn-outline-secondary btn-sm" target="_blank">
                     <ion-icon name="open-outline" data-bs-toggle="tooltip" title="Open preview in new tab"></ion-icon>
                 </a>
                 <button type="button" class="me-3 btn btn-outline-secondary btn-sm">
@@ -117,7 +156,9 @@ defined( 'ABSPATH' ) || exit;
                 <button role="submit" class="btn btn-primary btn-sm" id="create" text="<?= $update_text ?? 'Publish' ?>"><?= $update_text ?? 'Publish' ?></button>
             </div>
 
-            <div id="preview" class="border" style="min-height: 80vh"></div>
+            <div id="preview" class="border" style="height: 80vh">
+                <iframe src="<?= ROOT ?>" style="width: 100%; height: 100%"></iframe>
+            </div>
         </div>
         
         <div class="col-md-2">
@@ -152,13 +193,13 @@ defined( 'ABSPATH' ) || exit;
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <label for="slug" class="form-label">
+                            <label for="path" class="form-label">
                                 URL Path <span class="text-danger">*</span>
                                 <span class="" data-bs-toggle="tooltip" title="Unique URL path of the page. The path always begins with a slash ('/') and never ends with one (e.g., '/about')">
                                     <ion-icon name="help-circle-outline"></ion-icon>
                                 </span>
                             </label>
-                            <input type="text" name="slug" id="slug" class="form-control form-control-sm" autocomplete="off" required value="/">
+                            <input type="text" name="path" id="path" class="form-control form-control-sm" autocomplete="off" required value="/">
                         </div>
 
                     </div>

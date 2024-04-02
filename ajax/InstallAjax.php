@@ -76,6 +76,7 @@ class InstallAjax {
             $user->save();
 
             self::createPageTable( $manager );
+            self::createPreviewTable( $manager );
             self::createMediaTable( $manager );
 
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -135,13 +136,25 @@ class InstallAjax {
             description varchar(255),
             visibility varchar(255),
             path varchar(255),
-            content text,
-            fields text,
+            content json,
+            fields json,
             status int DEFAULT 0,
+            author int,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )';
         $manager->statement( $create_page_table );
+    }
+
+    private static function createPreviewTable( $manager ) {
+        $create_preview_table = 'CREATE TABLE IF NOT EXISTS previews (
+            ID int AUTO_INCREMENT PRIMARY KEY,
+            token varchar(255),
+            data json,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )';
+        $manager->statement( $create_preview_table );
     }
 
     private static function createMediaTable( $manager ) {

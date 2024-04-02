@@ -4,6 +4,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use simpl\ajax\InstallAjax;
 use simpl\ajax\LoginAjax;
+use simpl\ajax\PageAjax;
 use simpl\ajax\UserAjax;
 use simpl\ajax\MediaAjax;
 use simpl\Auth;
@@ -31,6 +32,7 @@ require __DIR__ . '/includes/FlashSession.php';
 require __DIR__ . '/model/User.php';
 require __DIR__ . '/model/Page.php';
 require __DIR__ . '/model/Media.php';
+require __DIR__ . '/model/Preview.php';
 require __DIR__ . '/ajax/InstallAjax.php';
 require __DIR__ . '/ajax/LoginAjax.php';
 require __DIR__ . '/ajax/UserAjax.php';
@@ -83,8 +85,7 @@ $app->get( '/install', function( Request $request, Response $response, $args ) {
     Auth::logout();
 
     $renderer = $this->get( 'public_renderer' );
-    $root = $this->get( 'root' );
-    return $renderer->render( $response, '../views/install.php', [ 'root' => $root, 'title' => 'Simpl.Installation' ] );
+    return $renderer->render( $response, '../views/install.php', [ 'title' => 'Simpl.Installation' ] );
 });
 
 $app->get( '/admin/login', function( Request $request, Response $response, $args ) {
@@ -146,6 +147,8 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
         return $renderer->render( $response, '../views/admin/pages-create.php', $data );
     });
 
+    $group->post( '/pages/preview', PageAjax::class . ':preview' );
+
     $group->get( '/users', function( Request $request, Response $response, $args ) {
         $renderer = $this->get( 'renderer' );
 
@@ -190,6 +193,20 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
 
 $app->get( '/', function( Request $request, Response $response, $args ) {
     $renderer = $this->get( 'public_renderer' );
+    $get = $request->getQueryParams();
+
+    $blockManager = $this->get( 'blockManager' );
+    require __DIR__ . '/blocks/Heading.php';
+    require __DIR__ . '/blocks/Button.php';
+
+    /**
+     * For preview
+     */
+    if( isset( $get['__p'] ) ) {
+        return $renderer->render( $response, '../views/preview.php', [ 'get' => $get, 'blockManager' => $blockManager ] );
+    }
+
+    // for actual document
     return $renderer->render( $response, '../views/index.php', [ 'title' => '' ] );
 })->add($init);
 

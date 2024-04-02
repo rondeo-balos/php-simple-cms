@@ -4,6 +4,6 @@ namespace simpl\blocks;
 
 interface BaseBlock {
 
-    public static function render( string $props );
+    public static function render( array $props );
 
 }

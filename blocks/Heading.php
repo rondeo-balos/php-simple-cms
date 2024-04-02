@@ -25,8 +25,7 @@ class Heading implements BaseBlock{
         $blockManager->add( $this->definition );
     }
 
-    public static function render( string $props ) {
-        $props = json_decode( $props );
+    public static function render( array $props ) {
         ?>
             <<?= $props['type'] ?>>
                 <?= $props['content'] ?>
