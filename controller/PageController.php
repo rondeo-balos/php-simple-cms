@@ -12,6 +12,26 @@ use simpl\blocks\BlockManager;
 
 class PageController extends BaseController {
 
+    public function quickFetch( Request $request, Response $response, $args ): Response {
+        $pages = Page::get( ['ID', 'title', 'path'] );
+
+        $data = [];
+
+        // Format data
+        foreach( $pages as $page ) {
+            $data[] = [
+                'key' => 'pages:' . $page->ID,
+                'value' => $page->title,
+                'path' => $page->path
+            ];
+        }
+
+        $response_data = new ResponseData( 200, 'Updated successfully', $data );
+        $payload = json_encode( $response_data() );
+        $response->getBody()->write( $payload );
+        return $response->withHeader( 'Content-Type', 'application/json' );
+    }
+
     public function get( Request $request, Response $response, $args ): Response {
         $renderer = $this->container->get( 'admin-renderer' );
 

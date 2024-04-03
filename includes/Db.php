@@ -25,4 +25,25 @@ class Db {
         return $capsule;
     }
 
+    public static function formatter( array | string $str, $column, $before = '', $after = '' ): String {
+        $formatted = [];
+        if( is_string( $str ) ) {
+            $formatted = explode( ':', $str );
+        }
+
+        if( count( $formatted ) <= 1 || strlen( $formatted[1] ) <= 0 )
+            return $str;
+
+        $formatted[1] = (int)$formatted[1] ?? $formatted[1];
+        if( !is_int($formatted[1]) )
+            return $str;
+
+        $manager = self::createInstance()->getDatabaseManager();
+        $data = $manager->table( $formatted[0] )->where( 'ID', $formatted[1] )->first( [$column] );
+        if( $data )
+            return $before . $data->$column . $after;
+
+        return $str;
+    }
+
 }

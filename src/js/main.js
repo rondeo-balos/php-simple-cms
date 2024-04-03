@@ -17,6 +17,18 @@ const __alert = (e, txt, cls = 'danger') => {
     $( e ).html( div );
 }
 
+const __quickFetch = ( url, callback ) => {
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        data: [],
+        success: res => {
+            callback( res );
+        }
+    });
+}
+
 // Small modal
 $( document ).ready( () => {
     const __modal = ( message, link ) => {

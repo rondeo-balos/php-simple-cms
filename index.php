@@ -19,6 +19,7 @@ session_start();
 // Define path
 if( !defined( 'ABSPATH' ) ) { define( 'ABSPATH', __DIR__ . '/' ); }
 if( !defined( 'ROOT' ) ) { define( 'ROOT', (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/' ); }
+if( !defined( '__ROOT__' ) ) { define( '__ROOT__', (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] ); }
 
 require __DIR__ . '/vendor/autoload.php';
 if( file_exists( ABSPATH . 'config.php' ) ) {
@@ -78,6 +79,7 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     $group->get( '/media/delete/{ID}', MediaController::class . ':delete' );
 
     // Page actions
+    $group->map(['POST','GET'], '/pages/quick', PageController::class . ':quickFetch' );
     $group->get( '/pages', PageController::class . ':get' );
     $group->get( '/pages/create', PageController::class . ':create' );
     $group->post( '/pages/create', PageController::class . ':post' );

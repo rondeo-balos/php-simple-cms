@@ -20,6 +20,8 @@ if( isset($ID) ) {
 
         $update_text = 'Update Page';
         $update_url = 'admin/pages/edit/'.$ID;
+        $url = __ROOT__ . $page->path;
+        $public_url = '<label>Public URL</label><br><a target="_blank" title="Opens in new tab" href="'. $url . '">' . $url . '</a>';
     } catch( \Exception $e ) {
 
     }
@@ -71,8 +73,26 @@ if( isset($ID) ) {
                     var option = $( '<option>' + option + '</option>' );
                     f.append( option );
                 });
+            } else if( field.includes( 'select:' ) ) {
+                f = $( '<select class="form-select mb-2 form-select-sm">' );
+                __quickFetch( 'http://localhost/admin/'+ field.split( ':' )[1] +'/quick', res => {
+                    res.data.forEach( function( option, i ) {
+                        var option = $( '<option value="' + option.key + '">' + option.value + '</option>' );
+                        f.append( option );
+                    });
+                });
+            } else if( field.includes( 'datalist:' ) ) {
+                f = $( '<input class="form-control mb-2 form-control-sm" list="datalist_' + field + '" id="' + field + '" placeholder="Type to search..." value="' + prop[key] + '">' );
+                var flist = $( '<datalist id="datalist_' + field + '">' );
+                __quickFetch( 'http://localhost/admin/'+ field.split( ':' )[1] +'/quick', res => {
+                    res.data.forEach( function( option, i ) {
+                        var option = $( '<option value="' + option.key + '">' + option.value + '</option>' );
+                        flist.append( option );
+                    });
+                });
+                f.append( flist );
             } else {
-                f = $( '<input class="form-control mb-2" type="' + field + '" value="' + prop[key] + '">' );
+                f = $( '<input class="form-control mb-2 form-control-sm" type="' + field + '" value="' + prop[key] + '">' );
             }
             
             f.on( 'keyup change', function(e) {
@@ -95,7 +115,7 @@ if( isset($ID) ) {
             var blockIndex = blocks.attr( 'index' );
             var definition = _definitions[prop.name];
             
-            var button = $( '<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row" data-bs-toggle="tab" type="button">' );
+            var button = $( '<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button">' );
             button.text( definition.name );
             if( blockIndex == i ) button.addClass( 'active' );
             button.on( 'click', function(e) {
@@ -110,14 +130,14 @@ if( isset($ID) ) {
 
             button.append( '<span class="flex-fill">' )
 
-            var addBefore = $( '<ion-icon size="small" class="hover-blue" name="add-outline" data-bs-toggle="tooltip" title="Add block before">' );
+            var addBefore = $( '<ion-icon size="small" class="hover-blue block-actions" name="add-outline" data-bs-toggle="tooltip" title="Add block before">' );
             addBefore.on( 'click', function(e) {
                 e.preventDefault();
                 index = i;
                 let myModal = new bootstrap.Modal(document.getElementById('addBlock'), {});
                 myModal.show();
             });
-            var deleteBlock = $( '<ion-icon size="small" class="hover-red" name="trash-outline" data-bs-toggle="tooltip" title="Delete block">' );
+            var deleteBlock = $( '<ion-icon size="small" class="hover-red block-actions" name="trash-outline" data-bs-toggle="tooltip" title="Delete block">' );
             deleteBlock.on( 'click', function(e) {
                 e.preventDefault();
                 _props.splice( i, 1 );
@@ -297,6 +317,7 @@ if( isset($ID) ) {
                             </label>
                             <input type="text" name="path" id="path" class="form-control form-control-sm" autocomplete="off" value="<?= $page->path ?? '/' ?>" required>
                         </div>
+                        <div class="mb-2"><?= $public_url ?? '' ?></div>
 
                     </div>
                     <div class="tab-pane fade" id="seo-tab" role="tabpanel" aria-labelledby="seo" tabindex="0">
@@ -347,6 +368,13 @@ if( isset($ID) ) {
 <style>
 .admin-sidebar {
     display: none;
+}
+
+#blocks button .block-actions {
+    opacity: 0;
+}
+#blocks button:hover .block-actions {
+    opacity: 1;
 }
 </style>
 

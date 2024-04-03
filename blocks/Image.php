@@ -5,20 +5,20 @@ namespace simpl\blocks;
 use simpl\blocks\BaseBlock;
 use simpl\includes\Db;
 
-class Button implements BaseBlock{
+class Image implements BaseBlock{
     
     public $definition = [
-        'name' => 'Button',
-        'icon' => 'link-outline',
+        'name' => 'Image',
+        'icon' => 'image-outline',
         'fields' => [
-            'link' => 'datalist:pages',
-            'label' => 'text'
+            'image' => 'datalist:images',
+            'alt' => 'text'
         ],
         // These are the defaults
         'props' => [
-            'name' => 'Button',
-            'link' => '',
-            'label' => 'Let\'s go!'
+            'name' => 'Image',
+            'image' => 'media:1',
+            'alt' => 'Lorem ipsum'
         ]
     ];
 
@@ -28,9 +28,7 @@ class Button implements BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <a href="<?= Db::formatter($props['link'], 'path', __ROOT__ ) ?>">
-                <?= $props['label'] ?>
-            </a>
+            <img src="<?= Db::formatter($props['image'], 'filepath', ROOT ) ?>" alt="<?= $props['alt'] ?>">
         <?php
     }
 

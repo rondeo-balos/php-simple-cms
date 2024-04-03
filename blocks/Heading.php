@@ -13,10 +13,11 @@ class Heading implements BaseBlock{
             'type' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
             'content' => 'text'
         ],
+        // These are the defaults
         'props' => [
             'name' => 'Heading',
             'type' => 'h1',
-            'content' => 'this is heading'
+            'content' => 'Lorem ipsum'
         ]
     ];
 
