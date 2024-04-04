@@ -73,24 +73,36 @@ if( isset($ID) ) {
                     var option = $( '<option>' + option + '</option>' );
                     f.append( option );
                 });
-            } else if( field.includes( 'select:' ) ) {
+            /*} else if( field.includes( 'select:' ) ) {
                 f = $( '<select class="form-select mb-2 form-select-sm">' );
-                __quickFetch( 'http://localhost/admin/'+ field.split( ':' )[1] +'/quick', res => {
+                console.log( field.split( ':' )[1] );
+                __quickFetch( 'http://localhost/admin/quick', {
+                    table: field.split( ':' )[1],
+                    columns: [ 'title', 'path' ] 
+                },
+                res => {
                     res.data.forEach( function( option, i ) {
-                        var option = $( '<option value="' + option.key + '">' + option.value + '</option>' );
+                        var option = $( '<option value="' + option.key + '">' + option.title + '</option>' );
                         f.append( option );
                     });
-                });
+                });*/
             } else if( field.includes( 'datalist:' ) ) {
-                f = $( '<input class="form-control mb-2 form-control-sm" list="datalist_' + field + '" id="' + field + '" placeholder="Type to search..." value="' + prop[key] + '">' );
-                var flist = $( '<datalist id="datalist_' + field + '">' );
-                __quickFetch( 'http://localhost/admin/'+ field.split( ':' )[1] +'/quick', res => {
+                f = $( '<input class="form-control mb-2 form-control-sm" list="option_' + field + '" id="' + field + '" placeholder="Type to search..." value="' + prop[key] + '">' );
+                var flist = $( '<datalist id="option_' + field + '">' );
+                console.log( field.split( ':' )[1] );
+                __quickFetch( 'http://localhost/admin/quick', {
+                    table: field.split( ':' )[1],
+                    columns: [ 'title' ] 
+                },
+                res => {
                     res.data.forEach( function( option, i ) {
-                        var option = $( '<option value="' + option.key + '">' + option.value + '</option>' );
+                        var option = $( '<option value="' + option.key + '">' + option.title + '</option>' );
                         flist.append( option );
                     });
                 });
                 f.append( flist );
+            } else if( field === 'textarea' ) {
+                f = $( '<textarea class="form-control mb-2 form-control-sm">' + prop[key] + '</textarea>' );
             } else {
                 f = $( '<input class="form-control mb-2 form-control-sm" type="' + field + '" value="' + prop[key] + '">' );
             }
@@ -166,11 +178,11 @@ if( isset($ID) ) {
                     $( '[name="token"]' ).val( res.data.token );
                     _reload( res.data.token );
                 } else {
-                    console.log( res.message );
+                    __alert( '#alert', res.message );
                 }
             },
             error: (xhr, status, error) => {
-                console.log( error );
+                    try{ __alert( '#alert', JSON.parse(xhr.responseText).message ); } catch(e) {}
             }
         });
     }
@@ -246,7 +258,7 @@ if( isset($ID) ) {
 
 <form method="POST">
     <input type="hidden" name="token" value="<?= $page->token ?? '' ?>">
-    <input type="hidden" name="blocks" value="<?= $blocks ?? '' ?>">
+    <input type="hidden" name="blocks" value="<?= htmlentities($blocks) ?? '' ?>">
     <div class="row">
 
         <div class="col-md-2">
@@ -402,8 +414,7 @@ if( isset($ID) ) {
                 unspin( '#create' );
             },
             error: (xhr, status, error) => {
-                console.error(error); // Check for any AJAX errors
-                __alert( '#alert', error );
+                try{ __alert( '#alert', JSON.parse(xhr.responseText).message ); } catch(e) {}
                 unspin( '#create' );
             }
         } );

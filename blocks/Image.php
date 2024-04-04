@@ -7,22 +7,23 @@ use simpl\includes\Db;
 
 class Image implements BaseBlock{
     
-    public $definition = [
-        'name' => 'Image',
-        'icon' => 'image-outline',
-        'fields' => [
-            'image' => 'datalist:images',
-            'alt' => 'text'
-        ],
-        // These are the defaults
-        'props' => [
-            'name' => 'Image',
-            'image' => 'media:1',
-            'alt' => 'Lorem ipsum'
-        ]
-    ];
+    public $definition = [];
 
     public function __construct( BlockManager $blockManager ) {
+        $this->definition = [
+            'name' => 'Image',
+            'icon' => 'image-outline',
+            'fields' => [
+                'image' => 'datalist:media',
+                'alt' => 'text'
+            ],
+            // These are the defaults
+            'props' => [
+                'name' => 'Image',
+                'image' => 'media|1',
+                'alt' => 'Lorem ipsum'
+            ]
+        ];
         $blockManager->add( $this->definition );
     }
 

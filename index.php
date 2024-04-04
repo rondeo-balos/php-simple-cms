@@ -79,7 +79,6 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     $group->get( '/media/delete/{ID}', MediaController::class . ':delete' );
 
     // Page actions
-    $group->map(['POST','GET'], '/pages/quick', PageController::class . ':quickFetch' );
     $group->get( '/pages', PageController::class . ':get' );
     $group->get( '/pages/create', PageController::class . ':create' );
     $group->post( '/pages/create', PageController::class . ':post' );
@@ -94,6 +93,9 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     $group->get( '/users/edit/{ID}', UserController::class . ':getEdit' );
     $group->post( '/users/edit/{ID}', UserController::class . ':edit' );
     $group->get( '/users/delete/{ID}', UserController::class . ':delete' );
+
+    // Quick fetch
+    $group->map(['POST','GET'], '/quick', GeneralController::class . ':quickFetch' );
 
 })->add($auth);
 

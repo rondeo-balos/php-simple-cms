@@ -168,8 +168,7 @@
                 }
             },
             error: (xhr, status, error) => {
-                console.error(error); // Check for any AJAX errors
-                __alert( '#alert', 'An error occurred. Please try again.' );
+                try{ __alert( '#alert', JSON.parse(xhr.responseText).message ); } catch(e) {}
             }
         } );
 

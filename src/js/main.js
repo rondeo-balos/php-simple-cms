@@ -17,14 +17,17 @@ const __alert = (e, txt, cls = 'danger') => {
     $( e ).html( div );
 }
 
-const __quickFetch = ( url, callback ) => {
+const __quickFetch = ( url, data, callback, err ) => {
     $.ajax({
         url: url,
         type: 'GET',
         dataType: 'json',
-        data: [],
+        data: data,
         success: res => {
             callback( res );
+        },
+        error: (xhr, status, error) => {
+            try{ __alert( '#alert', JSON.parse(xhr.responseText).message ); } catch(e) {}
         }
     });
 }

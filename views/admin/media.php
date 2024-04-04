@@ -50,7 +50,7 @@ defined( 'ABSPATH' ) || exit;
                 },
                 error: (xhr, status, error) => {
                     console.error(error); // Check for any AJAX errors
-                    __alert( '#alert', error );
+                    try{ __alert( '#alert', JSON.parse(xhr.responseText).message ); } catch(e) {}
                     unspin( '#create' );
                 }
             });
@@ -129,7 +129,7 @@ defined( 'ABSPATH' ) || exit;
                 },
                 error: (xhr, status, error) => {
                     console.error(error); // Check for any AJAX errors
-                    __alert( '#alert', error );
+                    try{ __alert( '#alert', JSON.parse(xhr.responseText).message ); } catch(e) {}
                     unspin( '#create' );
                 }
             });

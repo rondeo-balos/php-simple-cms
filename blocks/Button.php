@@ -7,22 +7,23 @@ use simpl\includes\Db;
 
 class Button implements BaseBlock{
     
-    public $definition = [
-        'name' => 'Button',
-        'icon' => 'link-outline',
-        'fields' => [
-            'link' => 'datalist:pages',
-            'label' => 'text'
-        ],
-        // These are the defaults
-        'props' => [
-            'name' => 'Button',
-            'link' => '',
-            'label' => 'Let\'s go!'
-        ]
-    ];
+    public $definition = [];
 
     public function __construct( BlockManager $blockManager ) {
+        $this->definition = [
+            'name' => 'Button',
+            'icon' => 'link-outline',
+            'fields' => [
+                'link' => 'datalist:pages',
+                'label' => 'text'
+            ],
+            // These are the defaults
+            'props' => [
+                'name' => 'Button',
+                'link' => '',
+                'label' => 'Let\'s go!'
+            ]
+        ];
         $blockManager->add( $this->definition );
     }
 
