@@ -16,7 +16,7 @@ class LoginController extends BaseController {
     
         Auth::logout();
     
-        return $renderer->render( $response, '../views/login.php', [ 'title' => 'Simpl.Login' ] );
+        return $renderer->render( $response, __VIEWS__ . '/login.php', [ 'title' => 'Simpl.Login' ] );
     }
 
     public function login( Request $request, Response $response, $args ): Response {

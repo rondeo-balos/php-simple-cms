@@ -1,7 +1,7 @@
 <?php
-namespace simpl\blocks;
+namespace simpl\public\blocks;
 
-use simpl\blocks\BaseBlock;
+use simpl\public\blocks\BaseBlock;
 
 class BlockManager {
 
@@ -12,7 +12,7 @@ class BlockManager {
     }
 
     public static function autoloadBlocks( BlockManager $blockManager ) {
-        $blockNamespace = 'simpl\\blocks\\';
+        $blockNamespace = 'simpl\\public\\blocks\\';
         $blocksDirectory = __DIR__;
 
         $blockClasses = [];

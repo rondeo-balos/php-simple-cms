@@ -1,8 +1,8 @@
 <?php
 
-namespace simpl\blocks;
+namespace simpl\public\blocks;
 
-use simpl\blocks\BaseBlock;
+use simpl\public\blocks\BaseBlock;
 use simpl\includes\Db;
 
 class Button extends BaseBlock{
@@ -25,7 +25,7 @@ class Button extends BaseBlock{
     public function settings() {
         ?>
             <label class="form-label">Link</label>
-            <input type="text" class="form-control form-control-sm mb-2" name="link">
+            <input type="text" class="form-control form-control-sm mb-2" list="pages" display="title" name="link">
 
             <label class="form-label">Label</label>
             <input type="text" class="form-control form-control-sm mb-2" name="label">
@@ -34,7 +34,7 @@ class Button extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <a href="<?= Db::formatter($props['link'], 'path', __ROOT__ ) ?>">
+            <a href="<?= Db::formatter($props['link'], 'path', __ROOT__ ) ?>" class="btn btn-primary mb-2">
                 <?= $props['label'] ?>
             </a>
         <?php

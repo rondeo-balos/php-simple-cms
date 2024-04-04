@@ -18,7 +18,7 @@ class UserController extends BaseController{
             'title' => 'Users', 
             'get' => $get
         ];
-        return $renderer->render( $response, '../views/admin/users.php', $data );
+        return $renderer->render( $response, __VIEWS__ . '/users.php', $data );
     }
 
     public function getCreate( Request $request, Response $response, $args ) {
@@ -29,7 +29,7 @@ class UserController extends BaseController{
             'title' => 'Create new user', 
             'get' => $get
         ];
-        return $renderer->render( $response, '../views/admin/users-create.php', $data );
+        return $renderer->render( $response, __VIEWS__ . '/users-create.php', $data );
     }
     
     public function create( Request $request, Response $response, $args ): Response {
@@ -79,7 +79,7 @@ class UserController extends BaseController{
             'get' => $get,
             'ID' => $ID
         ];
-        return $renderer->render( $response, '../views/admin/users-create.php', $data );
+        return $renderer->render( $response, __VIEWS__ . '/users-create.php', $data );
     }
 
     public function edit( Request $request, Response $response, $args ): Response {

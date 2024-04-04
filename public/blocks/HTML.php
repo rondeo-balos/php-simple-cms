@@ -1,9 +1,8 @@
 <?php
 
-namespace simpl\blocks;
+namespace simpl\public\blocks;
 
-use simpl\blocks\BaseBlock;
-use simpl\includes\Db;
+use simpl\public\blocks\BaseBlock;
 
 class HTML extends BaseBlock{
 
@@ -26,8 +25,8 @@ class HTML extends BaseBlock{
      */
     public function settings() {
         ?>
-            <label class="form-label">Content</label>
-            <textarea class="form-control form-control-sm mb-2" name="content"></textarea>
+            <label class="form-label">HTML</label>
+            <textarea class="form-control form-control mb-2" name="content"></textarea>
         <?php
     }
 

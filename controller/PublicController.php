@@ -5,30 +5,30 @@ use simpl\includes\Db;
 use simpl\model\Page;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use simpl\model\Preview;
 use Slim\Routing\RouteCollectorProxy;
 use Psr\Container\ContainerInterface;
 
 class PublicController extends BaseController{
 
     public function home( Request $request, Response $response, $args ): Response {
-        $renderer = $this->container->get( 'renderers' )['default'];
         $get = $request->getQueryParams();
-    
-        /**
-         * For preview
-         */
-        if( isset( $get['__p'] ) ) {
-            return $renderer->render( $response, '../views/preview.php', [ 'get' => $get ] );
-        }
     
         try {
             Db::createInstance();
-            $data = Page::where( 'path', '=', '/' )->firstOrFail();
-            return $renderer->render( $response, '../views/index.php', [ 'get' => $get, 'data' => $data ] );
+            if( isset( $get['__p'] ) ) {
+                $preview = Preview::where( 'token', '=', $get['__p'] )->firstOrFail();
+                $data = json_decode( $preview->data );
+            } else {
+                $data = Page::where( 'path', '=', '/' )->firstOrFail();
+            }
+            $renderer = $this->container->get( 'renderers' )[$data->layout];
+            return $renderer->render( $response, 'views/index.php', [ 'get' => $get, 'data' => $data ] );
         } catch( \Exception $e ) {}
     
         // for actual document
-        return $renderer->render( $response, '../views/404.php', [] );
+        $renderer = $this->container->get( 'renderers' )['default'];
+        return $renderer->render( $response, 'views/404.php', [] );
     }
 
     public static function fetchPages( RouteCollectorProxy $group, ContainerInterface $container ) {
@@ -39,10 +39,9 @@ class PublicController extends BaseController{
             ->get( ['*'] );
         foreach( $pages as $page ) {
             $group->map( ['GET', 'POST'], ltrim( $page->path, '/' ), function( Request $request, Response $response, array $args) use ($page, $container) {
-                $renderer = $container->get( 'renderers' )['default'];
                 $get = $request->getQueryParams();
-
-                return $renderer->render( $response, '../views/index.php', [ 'get' => $get, 'data' => $page ] );
+                $renderer = $container->get( 'renderers' )[$page->layout];
+                return $renderer->render( $response, 'views/index.php', [ 'get' => $get, 'data' => $page ] );
             });
         }
     }

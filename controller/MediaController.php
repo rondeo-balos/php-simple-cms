@@ -20,7 +20,7 @@ class MediaController extends BaseController {
             'title' => 'Media', 
             'get' => $get
         ];
-        return $renderer->render( $response, '../views/admin/media.php', $data );
+        return $renderer->render( $response, __VIEWS__ . '/media.php', $data );
     }
 
     public function edit( Request $request, Response $response, $args ): Response {

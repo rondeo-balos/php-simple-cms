@@ -11,7 +11,7 @@ class GeneralController extends BaseController {
     public function dashboard( Request $request, Response $response, $args ): Response {
         $renderer = $this->container->get( 'admin-renderer' );
 
-        return $renderer->render( $response, '../views/admin/dashboard.php', [ 'title' => 'Dashboard' ] );
+        return $renderer->render( $response, __VIEWS__ . '/dashboard.php', [ 'title' => 'Dashboard' ] );
     }
 
     public function quickFetch( Request $request, Response $response, $args ): Response {

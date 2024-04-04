@@ -1,0 +1,35 @@
+dlist {
+    margin-top:-1px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    background-color: rgba(var(--bs-body-bg-rgb), var(--bs-bg-opacity)) !important;
+    border: 1px solid #404449;
+    border-radius: 0 0 4px 4px;
+    font-family: sans-serif;
+    padding: 5px;
+    max-height: 10rem;
+    /*border: 1px solid #db9c2e;
+    box-shadow: 0px 0px 3px 0px #db9c2e;*/
+}
+
+option {
+    padding: 4px;
+    margin-bottom: 1px;
+    cursor: pointer;
+    display:block;
+}
+
+option:hover{
+    background-color: #3f4348;
+    color: #fff;
+}
+
+#editor {
+    min-height: 300px;
+}
+
+#editor * {
+    font-family: inherit !important;
+}

@@ -1,8 +1,8 @@
 <?php
 
-namespace simpl\blocks;
+namespace simpl\public\blocks;
 
-use simpl\blocks\BaseBlock;
+use simpl\public\blocks\BaseBlock;
 use simpl\includes\Db;
 
 class Image extends BaseBlock{
@@ -34,7 +34,7 @@ class Image extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <img src="<?= Db::formatter($props['image'], 'filepath', ROOT ) ?>" alt="<?= $props['alt'] ?>">
+            <img src="<?= Db::formatter($props['image'], 'filepath', ROOT ) ?>" alt="<?= $props['alt'] ?>" class="img-fluid">
         <?php
     }
 

@@ -8,7 +8,7 @@ use simpl\includes\Response as ResponseData;
 use simpl\includes\Db;
 use simpl\model\Preview;
 use simpl\model\Page;
-use simpl\blocks\BlockManager;
+use simpl\public\blocks\BlockManager;
 
 class PageController extends BaseController {
 
@@ -20,7 +20,7 @@ class PageController extends BaseController {
             'title' => 'Pages', 
             'get' => $get
         ];
-        return $renderer->render( $response, '../views/admin/pages.php', $data );
+        return $renderer->render( $response, __VIEWS__ . '/pages.php', $data );
     }
 
     public function create( Request $request, Response $response, $args ): Response {
@@ -35,7 +35,7 @@ class PageController extends BaseController {
             'get' => $get,
             'blockManager' => $blockManager
         ];
-        return $renderer->render( $response, '../views/admin/pages-create.php', $data );
+        return $renderer->render( $response, __VIEWS__ . '/pages-create.php', $data );
     }
 
     public function getEdit( Request $request, Response $response, $args ): Response {
@@ -53,29 +53,30 @@ class PageController extends BaseController {
             'ID' => $ID,
             'blockManager' => $blockManager
         ];
-        return $renderer->render( $response, '../views/admin/pages-create.php', $data );
+        return $renderer->render( $response, __VIEWS__ . '/pages-create.php', $data );
     }
 
     public function post( Request $request, Response $response, $args ): Response {
         $ID = $args['ID'] ?? null;
         $post = $request->getParsedBody();
 
-        $token = $post['token'];
-
-        $blocks = $post['blocks'];
-        $status = $post['status'];
-        $path = $post['path'];
         $title = $post['title'];
         $description = $post['description'];
         $visibility = $post['visibility'];
+        $path = $post['path'];
+        $blocks = $post['blocks'];
+        $layout = $post['layout'];
+        $status = $post['status'];
+        $token = $post['token'];
 
         $page_data = [
-            'blocks' => $blocks,
-            'status' => $status,
-            'path' => $path,
             'title' => $title,
             'description' => $description,
+            'path' => $path,
             'visibility' => $visibility,
+            'blocks' => $blocks,
+            'layout' => $layout,
+            'status' => $status,
             'token' => $token
         ];
 
@@ -111,20 +112,22 @@ class PageController extends BaseController {
             $token = bin2hex( random_bytes(32) );
         }
 
-        $blocks = $post['blocks'];
-        $status = $post['status'];
-        $path = $post['path'];
         $title = $post['title'];
         $description = $post['description'];
         $visibility = $post['visibility'];
+        $path = $post['path'];
+        $blocks = $post['blocks'];
+        $layout = $post['layout'];
+        $status = $post['status'];
 
         $data = [
-            'blocks' => $blocks,
-            'status' => $status,
-            'path' => $path,
             'title' => $title,
             'description' => $description,
-            'visibility' => $visibility
+            'visibility' => $visibility,
+            'path' => $path,
+            'blocks' => $blocks,
+            'layout' => $layout,
+            'status' => $status
         ];
         $data = json_encode( $data );
 

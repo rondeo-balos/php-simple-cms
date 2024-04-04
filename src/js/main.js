@@ -1,3 +1,4 @@
+;
 const spin = e => {
     var div = $( '<div class="spinner-border spinner-border-sm" role="status">' );
     div.append( '<span class="visually-hidden">Loading...</span>' );

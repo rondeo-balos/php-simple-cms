@@ -9,7 +9,8 @@ use simpl\controller\UserController;
 use simpl\controller\MediaController;
 use simpl\includes\Auth;
 use simpl\includes\Init;
-use simpl\blocks\BlockManager;
+use simpl\public\blocks\BlockManager;
+use simpl\public\LayoutManager;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Views\PhpRenderer;
@@ -20,6 +21,7 @@ session_start();
 if( !defined( 'ABSPATH' ) ) { define( 'ABSPATH', __DIR__ . '/' ); }
 if( !defined( 'ROOT' ) ) { define( 'ROOT', (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/' ); }
 if( !defined( '__ROOT__' ) ) { define( '__ROOT__', (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] ); }
+if( !defined( '__VIEWS__' ) ) { define( '__VIEWS__', '../layout/views/' ); }
 
 require __DIR__ . '/vendor/autoload.php';
 if( file_exists( ABSPATH . 'config.php' ) ) {
@@ -40,18 +42,6 @@ $container->set( 'admin-renderer', $admin_renderer );
 $admin_full = new PhpRenderer( 'layout', [] );
 $admin_full->setLayout( 'admin-full.php' );
 $container->set( 'admin-full', $admin_full );
-
-// Public renderer
-$default = new PhpRenderer( 'layout', [] );
-$default->setLayout( 'default.php' );
-$renderers = [
-    'default' => $default
-];
-$container->set( 'renderers', $renderers );
-
-// Block Manager
-$blockManager = new BlockManager;
-$container->set( 'blockManager', $blockManager );
 
 // App factory
 AppFactory::setContainer( $container );
@@ -105,5 +95,14 @@ $app->group( '/', function( RouteCollectorProxy $group ) {
     PublicController::fetchPages( $group, $this );
 
 })->add( $init );
+
+// Block Manager
+$blockManager = new BlockManager;
+$container->set( 'blockManager', $blockManager );
+
+// Public renderer
+$layoutManager = LayoutManager::autoload();
+$renderers = $layoutManager->generateRenderers();
+$container->set( 'renderers', $renderers );
 
 $app->run();

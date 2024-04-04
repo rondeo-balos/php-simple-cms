@@ -20,7 +20,7 @@ class InstallController extends BaseController {
         Auth::logout();
     
         $renderer = $this->container->get( 'admin-full' );
-        return $renderer->render( $response, '../views/install.php', [ 'title' => 'Simpl.Installation' ] );
+        return $renderer->render( $response, __VIEWS__ . '/install.php', [ 'title' => 'Simpl.Installation' ] );
     }
     
     public function install( Request $request, Response $response, $args ): Response {
@@ -127,7 +127,7 @@ class InstallController extends BaseController {
     }
 
     private static function createUsersTable( $manager ) {
-        $create_user_table = 'CREATE TABLE IF NOT EXISTS users (
+        $create_user_table = "CREATE TABLE IF NOT EXISTS users (
             ID int AUTO_INCREMENT PRIMARY KEY,
             email varchar(255),
             password text,
@@ -139,12 +139,12 @@ class InstallController extends BaseController {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             UNIQUE(email)
-        )';
+        )";
         $manager->statement( $create_user_table );
     }
 
     private static function createPageTable( $manager ) {
-        $create_page_table = 'CREATE TABLE IF NOT EXISTS pages (
+        $create_page_table = "CREATE TABLE IF NOT EXISTS pages (
             ID int AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
             description varchar(255),
@@ -152,29 +152,30 @@ class InstallController extends BaseController {
             path varchar(255),
             blocks json,
             fields json,
+            layout varchar(255) DEFAULT 'default',
             status int DEFAULT 0,
             author int,
             token varchar(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             UNIQUE(path)
-        )';
+        )";
         $manager->statement( $create_page_table );
     }
 
     private static function createPreviewTable( $manager ) {
-        $create_preview_table = 'CREATE TABLE IF NOT EXISTS previews (
+        $create_preview_table = "CREATE TABLE IF NOT EXISTS previews (
             ID int AUTO_INCREMENT PRIMARY KEY,
             token varchar(255),
             data json,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        )';
+        )";
         $manager->statement( $create_preview_table );
     }
 
     private static function createMediaTable( $manager ) {
-        $create_media_table = 'CREATE TABLE IF NOT EXISTS media (
+        $create_media_table = "CREATE TABLE IF NOT EXISTS media (
             ID int AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
             alt text,
@@ -183,7 +184,7 @@ class InstallController extends BaseController {
             thumb text,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        )';
+        )";
         $manager->statement( $create_media_table );
     }
 

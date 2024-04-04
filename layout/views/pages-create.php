@@ -3,6 +3,7 @@ use simpl\includes\Db;
 use simpl\includes\FlashSession;
 use simpl\model\Page;
 use simpl\model\Preview;
+use simpl\public\LayoutManager;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,214 +27,17 @@ if( isset($ID) ) {
 
     }
 }
+
+$layoutManager = LayoutManager::autoload();
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.min.js"></script>
+<link href="<?= ROOT ?>src/css/builder.css" rel="stylesheet">
+<script src="<?= ROOT ?>src/js/builder.js"></script>
 <script>
     const _definitions = <?= json_encode( $blockManager->definitions ) ?>;
     let _props = <?= $blocks ?? '[]' ?>;
-    let index = -1;
-
-    const _addBlock = ( name ) => {
-        let newProps = JSON.parse(JSON.stringify(_definitions[name].props));
-        if( index < 0 ) {
-            _props.push( newProps );
-        } else {
-            _props.splice( index, 0, newProps );
-            $( '#blocks' ).attr( 'index', index + 1 );
-        }
-        index = -1;
-        _renderBlocks();
-    }
-
-    $( document ).on( 'tabShown', '#blocks [data-bs-toggle="tab"]', function(e) {
-        var index = $( '#blocks' ).attr( 'index' );
-
-        if( index < 0 ) {
-            alert();
-            $( '#block' ).parent().addClass( 'd-none' );
-            return;
-        }
-
-        var prop = _props[index];
-        var definition = _definitions[prop.name];
-
-        let tab = $( '#block-tab' );
-        tab.empty();
-        
-        tab.html( he.decode(definition.settings) );
-        Object.keys( prop ).forEach( function( key ) {
-            tab.find( `[name="${key}"]` ).val( prop[key] );
-        });
-
-        tab.find( 'input, textarea, select' ).on( 'keyup change', function(e) {
-            prop[ $(this).attr( 'name' ) ] = $( this ).val();
-            _preview();
-        });
-
-        /*Object.keys(definition.fields).forEach( function( key ) {
-            var field = definition.fields[key];
-            
-            var label = $( '<label class="form-label text-capitalize">' );
-            label.text( key );
-
-            var f = null;
-            if( Array.isArray( field ) ) {
-                f = $( '<select class="form-select mb-2">' );
-                field.forEach( function( option, i ) {
-                    var option = $( '<option>' + option + '</option>' );
-                    f.append( option );
-                });
-            } else if( field.includes( 'select:' ) ) {
-                f = $( '<select class="form-select mb-2 form-select-sm">' );
-                console.log( field.split( ':' )[1] );
-                __quickFetch( 'http://localhost/admin/quick', {
-                    table: field.split( ':' )[1],
-                    columns: [ 'title', 'path' ] 
-                },
-                res => {
-                    res.data.forEach( function( option, i ) {
-                        var option = $( '<option value="' + option.key + '">' + option.title + '</option>' );
-                        f.append( option );
-                    });
-                });
-            } else if( field.includes( 'datalist:' ) ) {
-                f = $( '<input class="form-control mb-2 form-control-sm" list="option_' + field + '" id="' + field + '" placeholder="Type to search..." value="' + prop[key] + '">' );
-                var flist = $( '<datalist id="option_' + field + '">' );
-                console.log( field.split( ':' )[1] );
-                __quickFetch( 'http://localhost/admin/quick', {
-                    table: field.split( ':' )[1],
-                    columns: [ 'title' ] 
-                },
-                res => {
-                    res.data.forEach( function( option, i ) {
-                        var option = $( '<option value="' + option.key + '">' + option.title + '</option>' );
-                        flist.append( option );
-                    });
-                });
-                f.append( flist );
-            } else if( field === 'textarea' ) {
-                f = $( '<textarea class="form-control mb-2 form-control-sm">' + prop[key] + '</textarea>' );
-            } else {
-                f = $( '<input class="form-control mb-2 form-control-sm" type="' + field + '" value="' + prop[key] + '">' );
-            }
-            
-            f.on( 'keyup change', function(e) {
-                prop[key] = $( this ).val();
-                _preview();
-            });
-
-            tab.append( label );
-            tab.append( f );
-        });*/
-
-        $( '#block' ).parent().removeClass( 'd-none' );
-        $( '#block' ).click();
-    });
-
-    const _renderBlocks = () => {
-        var blocks = $( '#blocks' );
-        blocks.empty();
-        _props.forEach( function( prop, i ) {
-            var blockIndex = blocks.attr( 'index' );
-            var definition = _definitions[prop.name];
-            
-            var button = $( '<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button">' );
-            button.text( definition.name );
-            if( blockIndex == i ) button.addClass( 'active' );
-            button.on( 'click', function(e) {
-                e.preventDefault();
-                $( '#blocks' ).attr( 'index', i );
-                $( this ).trigger( 'tabShown' );
-            });
-
-            var icon = $( '<ion-icon size="small" class="me-2">' );
-            icon.attr( 'name', definition.icon );
-            button.prepend( icon );
-
-            button.append( '<span class="flex-fill">' )
-
-            var addBefore = $( '<ion-icon size="small" class="hover-blue block-actions" name="add-outline" data-bs-toggle="tooltip" title="Add block before">' );
-            addBefore.on( 'click', function(e) {
-                e.preventDefault();
-                index = i;
-                let myModal = new bootstrap.Modal(document.getElementById('addBlock'), {});
-                myModal.show();
-            });
-            var deleteBlock = $( '<ion-icon size="small" class="hover-red block-actions" name="trash-outline" data-bs-toggle="tooltip" title="Delete block">' );
-            deleteBlock.on( 'click', function(e) {
-                e.preventDefault();
-                _props.splice( i, 1 );
-                _renderBlocks();
-            });
-
-            button.append( addBefore );
-            button.append( deleteBlock );
-
-            blocks.append( button );
-        });
-        
-        _preview();
-    }
-
-    const _preview = () => {
-        $( '[name="blocks"]' ).val( JSON.stringify( _props ) );
-        $.ajax({
-            url: '<?= ROOT ?>admin/pages/preview',
-            type: 'POST',
-            dataType: 'json',
-            data: $( 'form' ).serialize(),
-            success: res => {
-                console.log( res );
-                if( res.code === 200 ) {
-                    $( '[name="token"]' ).val( res.data.token );
-                    _reload( res.data.token );
-                } else {
-                    __alert( '#alert', res.message );
-                }
-            },
-            error: (xhr, status, error) => {
-                    try{ __alert( '#alert', JSON.parse(xhr.responseText).message ); } catch(e) {}
-            }
-        });
-    }
-
-    const _reload = ( token ) => {
-        $( '#preview_blank' ).attr( 'href', '<?= ROOT ?>?__p=' + token );
-        // Get the iframe element
-        var iframe = document.getElementById('preview_iframe');
-
-        // Create a new document for the iframe
-        var iframeDocument = iframe.contentWindow.document;
-
-        // Make an AJAX request using Zepto
-        $.ajax({
-            url: '<?= ROOT ?>?__p=' + token,
-            type: 'GET',
-            dataType: 'html',
-            success: function (data) {
-                // When the request is successful, load the content into the iframe
-                iframeDocument.open();
-                iframeDocument.write(data);
-                iframeDocument.close();
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching content:', error);
-            }
-        });
-        //$( 'iframe' ).attr( 'src',  );
-    }
-
-    $( document ).ready( function(){
-        $( '#_title' ).on( 'keyup', function(e) {
-            $( '#title' ).val( $( this ).val() );
-        });
-        $( '#title' ).on( 'keyup', function(e) {
-            $( '#_title' ).val( $( this ).val() );
-        });
-
-        _renderBlocks();
-    });
+    const builder = _initBuilder( '<?= ROOT ?>', _definitions, _props );
 </script>
 
 <div class="modal fade modal-lg" id="addBlock" tabindex="-1" aria-labelledby="Add Block" aria-hidden="true">
@@ -250,7 +54,7 @@ if( isset($ID) ) {
                     <?php foreach( $blockManager->definitions as $name => $definition ): ?>
                         <div class="col-md-2 p-2">
                             <div class="w-100 ratio ratio-1x1">
-                                <button data-bs-dismiss="modal" class="border-rounded btn btn-outline-secondary d-flex justify-content-center align-items-center w-100 flex-column" onclick="javascript:_addBlock( '<?= $definition['name'] ?>' )">
+                                <button data-bs-dismiss="modal" class="border-rounded btn btn-outline-secondary d-flex justify-content-center align-items-center w-100 flex-column" onclick="javascript:builder.addBlock( '<?= $definition['name'] ?>' )">
                                     <div>
                                         <ion-icon name="<?= $definition['icon'] ?>" size="small"></ion-icon>
                                         <p><?= $definition['name'] ?></p>
@@ -341,6 +145,15 @@ if( isset($ID) ) {
                             <input type="text" name="path" id="path" class="form-control form-control-sm" autocomplete="off" value="<?= $page->path ?? '/' ?>" required>
                         </div>
                         <div class="mb-2"><?= $public_url ?? '' ?></div>
+
+                        <div class="form-group mb-2">
+                            <label for="layout" class="form-label">Layout</label>
+                            <select class="form-select form-select-sm" name="layout" id="layout">
+                                <?php foreach( $layoutManager->layout as $layout ): ?>
+                                    <option <?= isset($page) ? ($page->layout == $layout['name'] ? 'selected' : '') : '' ?>><?= $layout['name'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
                     </div>
                     <div class="tab-pane fade" id="seo-tab" role="tabpanel" aria-labelledby="seo" tabindex="0">

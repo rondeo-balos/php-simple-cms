@@ -1,6 +1,6 @@
 <?php
 
-namespace simpl\blocks;
+namespace simpl\public\blocks;
 
 class BaseBlock {
 
