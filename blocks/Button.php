@@ -5,19 +5,14 @@ namespace simpl\blocks;
 use simpl\blocks\BaseBlock;
 use simpl\includes\Db;
 
-class Button implements BaseBlock{
-    
-    public $definition = [];
+class Button extends BaseBlock{
 
     public function __construct( BlockManager $blockManager ) {
         $this->definition = [
             'name' => 'Button',
             'icon' => 'link-outline',
-            'fields' => [
-                'link' => 'datalist:pages',
-                'label' => 'text'
-            ],
             // These are the defaults
+            'settings' => $this->saveSettings(),
             'props' => [
                 'name' => 'Button',
                 'link' => '',
@@ -25,6 +20,16 @@ class Button implements BaseBlock{
             ]
         ];
         $blockManager->add( $this->definition );
+    }
+
+    public function settings() {
+        ?>
+            <label class="form-label">Link</label>
+            <input type="text" class="form-control form-control-sm mb-2" name="link">
+
+            <label class="form-label">Label</label>
+            <input type="text" class="form-control form-control-sm mb-2" name="label">
+        <?php
     }
 
     public static function render( array $props ) {

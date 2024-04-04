@@ -28,6 +28,7 @@ if( isset($ID) ) {
 }
 ?>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.min.js"></script>
 <script>
     const _definitions = <?= json_encode( $blockManager->definitions ) ?>;
     let _props = <?= $blocks ?? '[]' ?>;
@@ -59,8 +60,18 @@ if( isset($ID) ) {
 
         let tab = $( '#block-tab' );
         tab.empty();
+        
+        tab.html( he.decode(definition.settings) );
+        Object.keys( prop ).forEach( function( key ) {
+            tab.find( `[name="${key}"]` ).val( prop[key] );
+        });
 
-        Object.keys(definition.fields).forEach( function( key ) {
+        tab.find( 'input, textarea, select' ).on( 'keyup change', function(e) {
+            prop[ $(this).attr( 'name' ) ] = $( this ).val();
+            _preview();
+        });
+
+        /*Object.keys(definition.fields).forEach( function( key ) {
             var field = definition.fields[key];
             
             var label = $( '<label class="form-label text-capitalize">' );
@@ -73,7 +84,7 @@ if( isset($ID) ) {
                     var option = $( '<option>' + option + '</option>' );
                     f.append( option );
                 });
-            /*} else if( field.includes( 'select:' ) ) {
+            } else if( field.includes( 'select:' ) ) {
                 f = $( '<select class="form-select mb-2 form-select-sm">' );
                 console.log( field.split( ':' )[1] );
                 __quickFetch( 'http://localhost/admin/quick', {
@@ -85,7 +96,7 @@ if( isset($ID) ) {
                         var option = $( '<option value="' + option.key + '">' + option.title + '</option>' );
                         f.append( option );
                     });
-                });*/
+                });
             } else if( field.includes( 'datalist:' ) ) {
                 f = $( '<input class="form-control mb-2 form-control-sm" list="option_' + field + '" id="' + field + '" placeholder="Type to search..." value="' + prop[key] + '">' );
                 var flist = $( '<datalist id="option_' + field + '">' );
@@ -114,7 +125,7 @@ if( isset($ID) ) {
 
             tab.append( label );
             tab.append( f );
-        });
+        });*/
 
         $( '#block' ).parent().removeClass( 'd-none' );
         $( '#block' ).click();

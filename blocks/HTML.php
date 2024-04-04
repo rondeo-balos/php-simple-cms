@@ -5,21 +5,13 @@ namespace simpl\blocks;
 use simpl\blocks\BaseBlock;
 use simpl\includes\Db;
 
-class HTML implements BaseBlock{
-    
-    public $definition = [];
+class HTML extends BaseBlock{
 
     public function __construct( BlockManager $blockManager ) {
         $this->definition = [
             'name' => 'HTML',
             'icon' => 'code-slash-outline',
-            /**
-             * This will generate field settings
-             * downside is it's tedious and prone to breaking
-             */
-            'fields' => [
-                'content' => 'textarea'
-            ],
+            'settings' => $this->saveSettings(),
             // These are the defaults
             'props' => [
                 'name' => 'HTML',
@@ -34,7 +26,8 @@ class HTML implements BaseBlock{
      */
     public function settings() {
         ?>
-            <textarea class="form-control" name="content"></textarea>
+            <label class="form-label">Content</label>
+            <textarea class="form-control form-control-sm mb-2" name="content"></textarea>
         <?php
     }
 

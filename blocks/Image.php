@@ -5,18 +5,13 @@ namespace simpl\blocks;
 use simpl\blocks\BaseBlock;
 use simpl\includes\Db;
 
-class Image implements BaseBlock{
-    
-    public $definition = [];
+class Image extends BaseBlock{
 
     public function __construct( BlockManager $blockManager ) {
         $this->definition = [
             'name' => 'Image',
             'icon' => 'image-outline',
-            'fields' => [
-                'image' => 'datalist:media',
-                'alt' => 'text'
-            ],
+            'settings' => $this->saveSettings(),
             // These are the defaults
             'props' => [
                 'name' => 'Image',
@@ -25,6 +20,16 @@ class Image implements BaseBlock{
             ]
         ];
         $blockManager->add( $this->definition );
+    }
+
+    public function settings() {
+        ?>
+            <label class="form-label">Image</label>
+            <input type="text" class="form-control form-control-sm mb-2" name="image">
+
+            <label class="form-label">Alt</label>
+            <input type="text" class="form-control form-control-sm mb-2" name="alt">
+        <?php
     }
 
     public static function render( array $props ) {
