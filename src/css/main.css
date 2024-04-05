@@ -44,3 +44,7 @@ html[data-bs-theme="dark"] #logo svg [fill="black"] {
 .btn:hover {
     /*color: rgb(var(--bs-primary-rgb)) !important;*/
 }
+
+.btn.bg-body:hover {
+    background-color: var(--bs-btn-hover-bg) !important;
+}

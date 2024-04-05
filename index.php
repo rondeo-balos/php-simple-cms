@@ -67,6 +67,7 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     $group->post( '/media/create', MediaController::class . ':upload' );
     $group->post( '/media/edit/{ID}', MediaController::class . ':edit' );
     $group->get( '/media/delete/{ID}', MediaController::class . ':delete' );
+    $group->map( ['POST','GET','PATCH'], '/media/regenerate', MediaController::class . ':regenerateThumbnails' );
 
     // Page actions
     $group->get( '/pages', PageController::class . ':get' );

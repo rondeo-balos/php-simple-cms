@@ -95,6 +95,22 @@ const _initBuilder = ( root, _definitions, _props ) => {
         datalist.css( 'display', 'none' );
     }
 
+    const debounce = (func, wait, immediate) => {
+        let timeout;
+        return function () {
+            const context = this;
+            const args = arguments;
+            const later = function () {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            const callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+
     $( document ).on( 'tabShown', '#blocks [data-bs-toggle="tab"]', function(e) {
         var index = $( '#blocks' ).attr( 'index' );
 
@@ -115,10 +131,10 @@ const _initBuilder = ( root, _definitions, _props ) => {
             tab.find( `[name="${key}"]` ).val( prop[key] );
         });
 
-        tab.find( 'input, textarea, select' ).on( 'keyup change', function(e) {
+        tab.find( 'input, textarea, select, #editor' ).on( 'keyup change input blure mouseup mousedrag', debounce(function(e) {
             prop[ $(this).attr( 'name' ) ] = $( this ).val();
             _preview();
-        });
+        }, 300));
 
         tab.find( '[list]' ).each( function(e) {
             _generateDatalist( $(this) );
@@ -131,6 +147,9 @@ const _initBuilder = ( root, _definitions, _props ) => {
     const _renderBlocks = () => {
         var blocks = $( '#blocks' );
         blocks.empty();
+
+        var blockElements = [];
+
         _props.forEach( function( prop, i ) {
             if ( prop === null ) {
                 _props.slice( i, 1 );
@@ -140,14 +159,9 @@ const _initBuilder = ( root, _definitions, _props ) => {
             var definition = _definitions[prop.name];
 
             if( definition ) {
-                var button = $( '<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button">' );
+                var button = $( `<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button" index="${i}">` );
                 button.text( definition.name );
                 if( blockIndex == i ) button.addClass( 'active' );
-                button.on( 'click', function(e) {
-                    e.preventDefault();
-                    $( '#blocks' ).attr( 'index', i );
-                    $( this ).trigger( 'tabShown' );
-                });
 
                 var icon = $( '<ion-icon size="small" class="me-2">' );
                 icon.attr( 'name', definition.icon );
@@ -172,11 +186,20 @@ const _initBuilder = ( root, _definitions, _props ) => {
                 button.append( addBefore );
                 button.append( deleteBlock );
 
-                blocks.append( button );
+                blockElements.push( button );
             } else {
                 _props.slice( i, 1 );
             }
         });
+
+        
+        blocks.on( 'click', '.btn-block', function(e) {
+            e.preventDefault();
+            $( '#blocks' ).attr( 'index', $( this ).attr( 'index' ) );
+            $( this ).trigger( 'tabShown' );
+        });
+
+        blocks.append( blockElements );
         
         _preview();
     }
@@ -189,7 +212,6 @@ const _initBuilder = ( root, _definitions, _props ) => {
             dataType: 'json',
             data: $( 'form' ).serialize(),
             success: res => {
-                console.log( res );
                 if( res.code === 200 ) {
                     $( '[name="token"]' ).val( res.data.token );
                     _reload( res.data.token );
@@ -237,14 +259,15 @@ const _initBuilder = ( root, _definitions, _props ) => {
             $( '#_title' ).val( $( this ).val() );
         });
 
-        $( 'input, select, textarea' ).on( 'keyup change', function(e) {
+        /*$( 'input, select, textarea' ).on( 'keyup change', function(e) {
             _preview();
-        });
+        });*/
 
         _renderBlocks();
     });
 
     return {
-        addBlock: _addBlock
+        addBlock: _addBlock,
+        preview: _preview
     }
 }

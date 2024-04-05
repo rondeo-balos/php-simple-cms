@@ -40,7 +40,7 @@ $( document ).ready( () => {
         alertModal.find( '.modal-body' ).html( message );
         alertModal.find( '#alertConfirm' ).attr( 'href', link );
     
-        let modal = new bootstrap.Modal( document.getElementById( 'alertModal' ) );
+        let modal = bootstrap.Modal.getOrCreateInstance( '#alertModal' ); //new bootstrap.Modal( document.getElementById( 'alertModal' ) );
         modal.show();
     }
 
@@ -50,6 +50,17 @@ $( document ).ready( () => {
         __modal( 'Confirm deletion', $(this).attr( 'href' ) );
     });
 });
+
+const __message = ( title, message, link, linkText = 'Okay' ) => {
+    let msgModal = $( '#msgModal' );
+    msgModal.find( '#msgTitle' ).html( title );
+    msgModal.find( '.modal-body' ).html( message );
+    msgModal.find( '#msgConfirm' ).attr( 'href', link );
+    msgModal.find( '#msgConfirm' ).html( linkText );
+
+    let modal = bootstrap.Modal.getOrCreateInstance( '#msgModal' ); //new bootstrap.Modal( document.getElementById( 'msgModal' ) );
+    modal.show();
+}
 
 //const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 //const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));

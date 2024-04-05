@@ -75,6 +75,23 @@ class MediaController extends BaseController {
                 ->withStatus( 302 );
     }
 
+    public function regenerateThumbnails( Request $request, Response $response, $args ): Response {
+        Db::createInstance();
+
+        $media = Media::all( ['ID', 'filepath', 'thumb'] );
+        foreach( $media as $image ) {
+            $thumb = $image->thumb;
+            $filepath = $image->filepath;
+
+            self::make_thumb( file_get_contents( ABSPATH . $filepath ), ABSPATH . $thumb, 512 );
+        }
+
+        $response_data = new ResponseData( 200, 'Thumbnails regenerated successfully!', [ 'redirect' => ROOT . 'admin/media' ] );
+        $payload = json_encode( $response_data() );
+        $response->getBody()->write( $payload );
+        return $response->withHeader( 'Content-Type', 'application/json' );
+    }
+
     public function upload( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
         $files = $request->getUploadedFiles();
@@ -88,7 +105,7 @@ class MediaController extends BaseController {
                 $base = 'src/media/';
                 $filename = self::moveUploadedFile( 'src/media', $file );
                 $thumb = 'src/thumbs/' . $filename;
-                self::make_thumb( file_get_contents( ABSPATH . $base . $filename ), ABSPATH . $thumb, 200 );
+                self::make_thumb( file_get_contents( ABSPATH . $base . $filename ), ABSPATH . $thumb, 256 );
 
                 $media_data = [
                     'title' => $file->getClientFilename(),

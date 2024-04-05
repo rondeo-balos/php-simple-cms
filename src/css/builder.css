@@ -26,10 +26,6 @@ option:hover{
     color: #fff;
 }
 
-#editor {
-    min-height: 300px;
-}
-
 #editor * {
     font-family: inherit !important;
 }

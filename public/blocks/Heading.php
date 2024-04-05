@@ -15,7 +15,8 @@ class Heading extends BaseBlock{
             'props' => [
                 'name' => 'Heading',
                 'type' => 'h1',
-                'content' => 'Lorem ipsum'
+                'content' => 'Lorem ipsum',
+                'width' => '1000'
             ]
         ];
 
@@ -36,12 +37,15 @@ class Heading extends BaseBlock{
 
             <label class="form-label">Content</label>
             <input type="text" class="form-control form-control-sm mb-2" name="content">
+
+            <label class="form-label">Width (px)</label>
+            <input type="range" class="form-range" min="0" max="1000" name="width">
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <<?= $props['type'] ?>>
+            <<?= $props['type'] ?> style="max-width: <?= $props['width'] ?>px;">
                 <?= $props['content'] ?>
             </<?= $props['type'] ?>>
         <?php

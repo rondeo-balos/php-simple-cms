@@ -127,6 +127,20 @@
             </div>
         </div>
 
+        <div class="modal fade" id="msgModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Message" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header p-0">
+                        <h2 class="h6 mb-0 p-2 ps-3" id="msgTitle"></h2>
+                    </div>
+                    <div class="modal-body p-2"></div>
+                    <div class="modal-footer p-2">
+                        <a href="#"  class="btn btn-danger btn-sm" id="msgConfirm"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
             $( `#sidebarMenu [href="${document.location.href.split('?')[0]}"]` ).addClass( 'text-body' );
             $( `#sidebarMenu [href="${document.location.href.split('?')[0]}"]` ).css( 'font-weight', 700 );

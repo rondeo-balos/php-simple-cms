@@ -15,7 +15,13 @@ if( isset($ID) ) {
         $new_password = 'New Password';
         $update_url = 'admin/users/edit/'.$ID;
     } catch( \Exception $e ) {
-        
+        ?>
+            <script>
+                $( document ).ready( function(){
+                    __message( 'User Not Found', 'Are you sure this is the right one? It seems that we were unable to locate the user you were looking for. ', '<?= ROOT ?>admin/users', 'Go back' );
+                });
+            </script>
+        <?php
     }
 }
 

@@ -9,7 +9,10 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 
+<div class="d-flex flex-row justify-content-between align-items-center mb-2">
 <h1 class="h5"><?= $title ?></h1>
+<a href="<?= ROOT ?>admin/media/regenerate" class="btn btn-outline-primary btn-sm">Regenerate Thumbnails</a>
+</div>
 
 <div id="alert"></div>
 

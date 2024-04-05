@@ -24,7 +24,13 @@ if( isset($ID) ) {
         $url = __ROOT__ . $page->path;
         $public_url = '<label>Public URL</label><br><a target="_blank" title="Opens in new tab" href="'. $url . '">' . $url . '</a>';
     } catch( \Exception $e ) {
-
+        ?>
+            <script>
+                $( document ).ready( function(){
+                    __message( 'Page Not Found', 'Are you sure this is the right one? It seems that we were unable to locate the page you were looking for. ', '<?= ROOT ?>admin/pages', 'Go back' );
+                });
+            </script>
+        <?php
     }
 }
 
@@ -32,6 +38,8 @@ $layoutManager = LayoutManager::autoload();
 ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.0-rc.5/dist/quill.js"></script>
 <link href="<?= ROOT ?>src/css/builder.css" rel="stylesheet">
 <script src="<?= ROOT ?>src/js/builder.js"></script>
 <script>
@@ -93,7 +101,7 @@ $layoutManager = LayoutManager::autoload();
                 <a href="#" id="preview_blank" class="me-3 btn btn-outline-secondary btn-sm" target="_blank">
                     <ion-icon name="open-outline" data-bs-toggle="tooltip" title="Open preview in new tab"></ion-icon>
                 </a>
-                <button type="button" class="me-3 btn btn-outline-secondary btn-sm">
+                <button type="button" class="me-3 btn btn-outline-secondary btn-sm" onclick="javascript:builder.preview();">
                     <ion-icon name="refresh-outline" data-bs-toggle="tooltip" title="Reload preview"></ion-icon>
                 </button>
                 <button type="submit" role="submit" class="btn btn-primary btn-sm" id="create" text="<?= $update_text ?? 'Publish' ?>"><?= $update_text ?? 'Publish' ?></button>

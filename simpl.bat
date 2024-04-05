@@ -3,6 +3,8 @@ IF "%1"=="serve" (
     php -S localhost:80
 ) ELSE IF "%1"=="build" (
     echo Not yet implemented
-) ELSE (
+) ELSE IF "%1"=="help" (
     echo Usage: %0 serve
+) ELSE (
+    php -S localhost:80
 )
