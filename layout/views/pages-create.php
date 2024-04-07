@@ -77,6 +77,26 @@ $layoutManager = LayoutManager::autoload();
     </div>
 </div>
 
+<div class="modal fade modal-xl" id="getMedia" tabindex="-1" aria-labelledby="Get Media" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header p-0">
+                <h2 class="h6 mb-0 p-2 ps-3">Media</h2>
+                <div class="p-2 border-start rounded-0 ms-auto">
+                    <button type="button" class="btn-close btn-sm m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body p-5">
+                <iframe src="<?= ROOT ?>admin/media/selectable" style="width: 100%; height: 100%"></iframe>
+            </div>
+            
+            <div class="modal-footer p-2">
+                <button class="btn btn-primary btn-sm" data-bs-dismiss="modal" id="selectMedia">Select Media</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="alert"></div>
 
 <form method="POST">
@@ -233,7 +253,6 @@ $layoutManager = LayoutManager::autoload();
             dataType: 'json',
             data: $( 'form' ).serialize(),
             success: res => {
-                console.log( res );
                 if( res.code === 200 ) {
                     __alert( '#alert', res.message, 'success' );
                     if( typeof res.data.redirect !== 'undefined' ) {

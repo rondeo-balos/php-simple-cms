@@ -11,6 +11,7 @@ class Button extends BaseBlock{
         $this->definition = [
             'name' => 'Button',
             'icon' => 'link-outline',
+            'type' => 'normal',
             // These are the defaults
             'settings' => $this->saveSettings(),
             'props' => [

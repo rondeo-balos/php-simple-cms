@@ -10,6 +10,7 @@ class Heading extends BaseBlock{
         $this->definition = [
             'name' => 'Heading',
             'icon' => 'text-outline',
+            'type' => 'normal',
             // These are the defaults
             'settings' => $this->saveSettings(),
             'props' => [

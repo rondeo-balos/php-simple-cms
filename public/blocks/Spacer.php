@@ -10,6 +10,7 @@ class Spacer extends BaseBlock{
         $this->definition = [
             'name' => 'Spacer',
             'icon' => 'chevron-expand-outline',
+            'type' => 'normal',
             'settings' => $this->saveSettings(),
             // These are the defaults
             'props' => [

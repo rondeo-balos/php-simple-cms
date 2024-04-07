@@ -10,6 +10,7 @@ class HTML extends BaseBlock{
         $this->definition = [
             'name' => 'HTML',
             'icon' => 'code-slash-outline',
+            'type' => 'normal',
             'settings' => $this->saveSettings(),
             // These are the defaults
             'props' => [

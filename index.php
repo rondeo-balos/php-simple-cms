@@ -5,6 +5,8 @@ use simpl\controller\InstallController;
 use simpl\controller\LoginController;
 use simpl\controller\PageController;
 use simpl\controller\PublicController;
+use simpl\controller\SeoController;
+use simpl\controller\SettingsController;
 use simpl\controller\UserController;
 use simpl\controller\MediaController;
 use simpl\includes\Auth;
@@ -63,6 +65,7 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     $group->get( '', GeneralController::class . ':dashboard');
 
     // Media actions
+    $group->get( '/media/selectable', MediaController::class . ':selectable' );
     $group->get( '/media', MediaController::class . ':get'  );
     $group->post( '/media/create', MediaController::class . ':upload' );
     $group->post( '/media/edit/{ID}', MediaController::class . ':edit' );
@@ -87,6 +90,14 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
 
     // Quick fetch
     $group->map(['POST','GET'], '/quick', GeneralController::class . ':quickFetch' );
+
+    // Settings
+    $group->get( '/settings', SettingsController::class . ':get' );
+    $group->post( '/settings', SettingsController::class . ':post' );
+
+    // SEO
+    $group->get( '/seo', SeoController::class . ':get' );
+    $group->post( '/seo', SeoController::class . ':post' );
 
 })->add($auth);
 

@@ -48,3 +48,15 @@ html[data-bs-theme="dark"] #logo svg [fill="black"] {
 .btn.bg-body:hover {
     background-color: var(--bs-btn-hover-bg) !important;
 }
+
+.rounded-start-end > .border {
+    margin-top: -1px;
+}
+.rounded-start-end > .border:first-child {
+    border-top-left-radius: var(--bs-border-radius) !important;
+    border-top-right-radius: var(--bs-border-radius) !important;
+}
+.rounded-start-end > .border:last-child {
+    border-bottom-left-radius: var(--bs-border-radius) !important;
+    border-bottom-right-radius: var(--bs-border-radius) !important;
+}

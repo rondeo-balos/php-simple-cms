@@ -14,87 +14,6 @@ const _initBuilder = ( root, _definitions, _props ) => {
         _renderBlocks();
     }
 
-    const _generateDatalist = ( el ) => {
-        var table = el.attr( 'list' );
-        var column = el.attr('display');
-        __quickFetch( `${root}admin/quick`, {
-            table: table,
-            columns: [column]
-        },
-        res => {
-            var datalist = $( `<dlist id="${table}">` );
-            res.data.forEach( function( option, i ) {
-                var option = $( '<option value="' + option.key + '">' + option[column] + '</option>' );
-                datalist.append( option );
-            });
-            el.after( datalist );
-            _fancyDropdown( el );
-        });
-    }
-
-    const _fancyDropdown = ( el ) => {
-        var datalist = el.next( 'dlist' );
-        var minWidth = datalist.width();
-
-        function outputSize() {
-            if( el.width() < minWidth ) {
-                datalist.css( 'min-width', `${el.width()}px` );
-            } else {
-                datalist.css( 'width', `${el.width()}px` );
-            }
-        }
-
-        new ResizeObserver( outputSize ).observe( el[0] );
-
-        el.on( 'input', function(e) {
-            datalist.css( 'display', 'block' );
-            var text = $( this ).val().toUpperCase();
-            var hide = 1;
-            
-            datalist.find( 'option' ).each( function(){
-                var option = $(this);
-                if( option.val().toUpperCase().indexOf( text ) > -1 ) {
-                    option.css( 'display', 'block' );
-                    hide = 0;
-                } else {
-                    option.css( 'display', 'none' );
-                }
-            });
-            
-            if( hide ) {
-                datalist.css( 'display', 'none' );
-            }
-        });
-
-        el.on( 'click', function(e) {
-            var hide = 1;
-            datalist.find( 'option' ).each( function() {
-                var option = $(this);
-                if( option.css( 'display' ) === 'block' ) {
-                    hide = 0;
-                    //return false; // exit loop early
-                }
-            });
-
-            if( datalist.css( 'display' ) === 'block' || hide === 1 ) {
-                datalist.css( 'display', 'none' );
-            } else {
-                datalist.css( 'display', 'block' );
-            }
-        });
-
-        $( document ).on( 'click', function(e) {
-            if( $(e.target).is('option') ) {
-                el.val( $(e.target).val() ).trigger( 'change' );
-            }
-            if( !$(e.target).is( 'dlist' ) && !$(e.target).is( 'input' ) ) {
-                datalist.css( 'display', 'none' );
-            }
-        });
-
-        datalist.css( 'display', 'none' );
-    }
-
     const debounce = (func, wait, immediate) => {
         let timeout;
         return function () {
@@ -126,18 +45,31 @@ const _initBuilder = ( root, _definitions, _props ) => {
         let tab = $( '#block-tab' );
         tab.empty();
         
+        
         tab.html( he.decode(definition.settings) );
         Object.keys( prop ).forEach( function( key ) {
+            if( definition.type === 'repeater' ) {
+                _populateRepeater( tab );
+                return;
+            }
+
             tab.find( `[name="${key}"]` ).val( prop[key] );
         });
 
-        tab.find( 'input, textarea, select, #editor' ).on( 'keyup change input blure mouseup mousedrag', debounce(function(e) {
-            prop[ $(this).attr( 'name' ) ] = $( this ).val();
+        tab.find( 'input, textarea, select, #editor' ).on( 'keyup change input blur mouseup mousedrag',debounce(function(e) {
+            var name = $(this).attr( 'name' );
+            prop[name] = $( this ).val();
             _preview();
-        }, 300));
+        }, 100));
 
-        tab.find( '[list]' ).each( function(e) {
-            _generateDatalist( $(this) );
+        tab.on( 'click', '.repeater .repeater-add', function(e) {
+            e.preventDefault();
+            _populateRepeater( $(this) );
+        });
+    
+        tab.on( 'click', '.repeater-remove', function(e) {
+            e.preventDefault();
+            $( this ).closest( '.repeater-clone' ).remove();
         });
 
         $( '#block' ).parent().removeClass( 'd-none' );
@@ -173,7 +105,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
                 addBefore.on( 'click', function(e) {
                     e.preventDefault();
                     index = i;
-                    let myModal = new bootstrap.Modal(document.getElementById('addBlock'), {});
+                    let myModal = bootstrap.Modal.getOrCreateInstance( '#addModal' ); // new bootstrap.Modal(document.getElementById('addBlock'), {});
                     myModal.show();
                 });
                 var deleteBlock = $( '<ion-icon size="small" class="hover-red block-actions" name="trash-outline" data-bs-toggle="tooltip" title="Delete block">' );
@@ -266,8 +198,19 @@ const _initBuilder = ( root, _definitions, _props ) => {
         _renderBlocks();
     });
 
+    const _populateRepeater = (el) => {
+        var base = el.parent().find( '.repeater-base' );
+
+        var clone = base.clone();
+        clone.removeClass( 'repeater-base' );
+        clone.addClass( 'repeater-clone' );
+        clone.find( 'input, textarea, select, #editor' ).val( '' );
+        base.after( clone );
+    }
+
     return {
         addBlock: _addBlock,
-        preview: _preview
+        preview: _preview,
+        populateRepeater: _populateRepeater
     }
 }

@@ -3,6 +3,7 @@ namespace simpl\controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use simpl\model\Collections;
 use simpl\model\User;
 use simpl\includes\Auth;
 use simpl\includes\Response as ResponseData;
@@ -92,6 +93,13 @@ class InstallController extends BaseController {
             self::createPageTable( $manager );
             self::createPreviewTable( $manager );
             self::createMediaTable( $manager );
+            self::createCollectionsTable( $manager );
+
+            $settings = new Collections( [ 'name' => 'settings', 'data' => '{"link":[],"label":[], "copyright":""}' ] );
+            $settings->save();
+
+            $seo = new Collections( [ 'name' => 'seo', 'data' => '{"position": "before", "basetitle": "Site Title", "separator": "|", "sharingimage": "media|1", "icon": "media|1", "orgimage": "media|1"}' ] );
+            $seo->save();
 
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $charactersLength = strlen($characters);
@@ -186,6 +194,17 @@ class InstallController extends BaseController {
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_media_table );
+    }
+
+    private static function createCollectionsTable( $manager ) {
+        $create_collections_table = "CREATE TABLE IF NOT EXISTS collections(
+            ID int AUTO_INCREMENT PRIMARY KEY,
+            name varchar(255),
+            data json,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )";
+        $manager->statement( $create_collections_table );
     }
 
 }

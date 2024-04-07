@@ -64,8 +64,4 @@
 
         return false;
     } );
-
-    // Theme
-    let currentTheme = localStorage.getItem('theme') || 'light';
-    $('html').attr('data-bs-theme', currentTheme);
 </script>

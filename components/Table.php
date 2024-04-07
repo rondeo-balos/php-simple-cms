@@ -152,7 +152,9 @@ class Table {
                     <a href="#" class="me-3 btn btn-outline-secondary btn-sm <?= isset( $_GET['column'] ) ? 'border border-2 border-primary': ''; ?>" data-bs-toggle="modal" data-bs-target="#filter">
                         <ion-icon name="funnel" data-bs-toggle="tooltip" title="Filter <?= $table ?>s"></ion-icon>
                     </a>
-                    <a href="<?= $create_url ?>" class="btn btn-primary btn-sm">Add <?= $table ?></a>
+                    <?php if( strlen( $create_url ) > 0 ): ?>
+                        <a href="<?= $create_url ?>" class="btn btn-primary btn-sm">Add <?= $table ?></a>
+                    <?php endif; ?>
                 </div>
 
                 <div class="modal fade modal-lg" id="filter" tabindex="-1" aria-labelledby="Filter <?= $table ?>s" aria-hidden="true">

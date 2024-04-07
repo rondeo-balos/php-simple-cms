@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="<?= ROOT ?>favicon.ico">
         <title><?= $title ?> - Simpl</title>
         <!-- Zepto -->
         <script src="https://zeptojs.com/zepto.min.js" crossorigin="anonymous"></script>
@@ -17,7 +18,9 @@
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         <!-- Custom -->
         <link href="<?= ROOT ?>src/css/main.css" rel="stylesheet">
+        <link href="<?= ROOT ?>src/css/dynamic.css" rel="stylesheet">
         <script src="<?= ROOT ?>src/js/main.js"></script>
+        <script src="<?= ROOT ?>src/js/dynamic.js"></script>
     </head>
     <body>
         

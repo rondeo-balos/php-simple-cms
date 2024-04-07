@@ -11,8 +11,19 @@ use simpl\model\Media;
 
 class MediaController extends BaseController {
 
+    public function selectable( Request $request, Response $response, $args ): Response {
+        $renderer = $this->container->get( 'admin-full' );
+
+        $get = $request->getQueryParams();
+        $data = [
+            'title' => 'Media', 
+            'get' => $get
+        ];
+
+        return $renderer->render( $response, __VIEWS__ . '/media-selectable.php', $data );
+    }
+
     public function get( Request $request, Response $response, $args ): Response {
-        global $app;
         $renderer = $this->container->get( 'admin-renderer' );
 
         $get = $request->getQueryParams();

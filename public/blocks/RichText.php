@@ -10,6 +10,7 @@ class RichText extends BaseBlock{
         $this->definition = [
             'name' => 'RichText',
             'icon' => 'document-text-outline',
+            'type' => 'normal',
             'settings' => $this->saveSettings(),
             // These are the defaults
             'props' => [
