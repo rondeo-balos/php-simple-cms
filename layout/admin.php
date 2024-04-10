@@ -23,8 +23,6 @@
         <script src="<?= ROOT ?>src/js/dynamic.js"></script>
     </head>
     <body>
-        
-        
         <div class="min-vh-100 bg-body-tertiary">
 
             <div class="p-3 px-4 border-bottom d-flex flex-row justify-content-between align-items-center bg-body">

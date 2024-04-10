@@ -17,7 +17,8 @@ class Heading extends BaseBlock{
                 'name' => 'Heading',
                 'type' => 'h1',
                 'content' => 'Lorem ipsum',
-                'width' => '1000'
+                'width' => '100',
+                'align' => 'text-center'
             ]
         ];
 
@@ -40,14 +41,21 @@ class Heading extends BaseBlock{
             <input type="text" class="form-control form-control-sm mb-2" name="content">
 
             <label class="form-label">Width (px)</label>
-            <input type="range" class="form-range" min="0" max="1000" name="width">
+            <input type="range" class="form-range" min="0" max="100" name="width">
+
+            <label class="form-label">Text align</label>
+            <select class="form-select" name="align">
+                <option value="text-start">Left</option>
+                <option value="text-center">Center</option>
+                <option value="text-end">Right</option>
+            </select>
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <<?= $props['type'] ?> style="max-width: <?= $props['width'] ?>px;">
-                <?= $props['content'] ?>
+            <<?= $props['type'] ?> style="max-width: <?= $props['width'] ?>%;" class="<?= $props['align'] ?? '' ?>">
+                <?= $props['content'] ?? '' ?>
             </<?= $props['type'] ?>>
         <?php
     }

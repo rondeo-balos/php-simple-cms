@@ -1,5 +1,6 @@
 ;
 const _initBuilder = ( root, _definitions, _props ) => {
+    
     let index = -1;
 
     const _addBlock = ( name ) => {
@@ -44,24 +45,59 @@ const _initBuilder = ( root, _definitions, _props ) => {
 
         let tab = $( '#block-tab' );
         tab.empty();
-        
-        
         tab.html( he.decode(definition.settings) );
-        Object.keys( prop ).forEach( function( key ) {
-            if( definition.type === 'repeater' ) {
-                _populateRepeater( tab );
-                return;
-            }
 
+        if( definition.type === 'repeater' ) {
+            Object.defineProperty(document.querySelector('.repeater'), 'value', {
+                get: function() {
+                    var data = tab.find('.repeater .repeater-container').map(function(i, o) {
+                        var item = {};
+                        $(o).find('input, textarea, select').each(function() {
+                            var name = $(this).prop('tagName');
+                            var value = $(this).val();
+                            item[name] = value;
+                        });
+                        return item;
+                    }).get();
+                    return data;
+                },
+                set: function(value) {
+                    // Reverse the process based on the get function
+                    for (var i = tab.find('.repeater .repeater-container').length; i < value.length; i++) {
+                        _populateRepeater( tab.find( '.repeater .repeater-add' ) );
+                    }
+                    tab.find('.repeater .repeater-container').each(function(i, o) {
+                        if (i < value.length) {
+                            var item = value[i];
+                            $(o).find('input, textarea, select').each(function() {
+                                var name = $(this).prop('tagName');
+                                if (item[name] !== undefined) {
+                                    $(this).val(item[name]);
+                                }
+                            });
+                        } else {
+                            // If there are more .repeater elements than values in the data array,
+                            // set the values to empty for those extra elements
+                            $(o).find('input, textarea, select').val('');
+                        }
+                    });
+                }
+            });
+        }
+
+        Object.keys( prop ).forEach( function( key, i ) {
             tab.find( `[name="${key}"]` ).val( prop[key] );
         });
 
-        tab.find( 'input, textarea, select, #editor' ).on( 'keyup change input blur mouseup mousedrag',debounce(function(e) {
+        tab.find( 'input, textarea, select, #editor, .repeater' ).on( 'keyup change input blur mouseup mousedrag',debounce(function(e) {
             var name = $(this).attr( 'name' );
             prop[name] = $( this ).val();
             _preview();
         }, 100));
 
+        /**
+         * Temporary
+         */
         tab.on( 'click', '.repeater .repeater-add', function(e) {
             e.preventDefault();
             _populateRepeater( $(this) );
@@ -69,8 +105,9 @@ const _initBuilder = ( root, _definitions, _props ) => {
     
         tab.on( 'click', '.repeater-remove', function(e) {
             e.preventDefault();
-            $( this ).closest( '.repeater-clone' ).remove();
+            $( this ).closest( '.repeater-container' ).remove();
         });
+        // End of temporary
 
         $( '#block' ).parent().removeClass( 'd-none' );
         $( '#block' ).click();
@@ -105,7 +142,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
                 addBefore.on( 'click', function(e) {
                     e.preventDefault();
                     index = i;
-                    let myModal = bootstrap.Modal.getOrCreateInstance( '#addModal' ); // new bootstrap.Modal(document.getElementById('addBlock'), {});
+                    let myModal = new bootstrap.Modal(document.getElementById('addBlock'), {});
                     myModal.show();
                 });
                 var deleteBlock = $( '<ion-icon size="small" class="hover-red block-actions" name="trash-outline" data-bs-toggle="tooltip" title="Delete block">' );
@@ -199,13 +236,13 @@ const _initBuilder = ( root, _definitions, _props ) => {
     });
 
     const _populateRepeater = (el) => {
-        var base = el.parent().find( '.repeater-base' );
+        var base = el.parent().find( '.repeater-container' ).first();
 
         var clone = base.clone();
-        clone.removeClass( 'repeater-base' );
-        clone.addClass( 'repeater-clone' );
+        //clone.removeClass( 'repeater-container' );
+        //clone.addClass( 'repeater-clone' );
         clone.find( 'input, textarea, select, #editor' ).val( '' );
-        base.after( clone );
+        el.parent().find( '.repeater-container' ).last().after( clone );
     }
 
     return {
