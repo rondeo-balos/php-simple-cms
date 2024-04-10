@@ -2,7 +2,7 @@
     "name": "rondeo-balos/simpl-cms",
     "description": "Simpl.CMS is a powerful CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching, and many more.",
     "type": "template",
-    "license": "gnu",
+    "license": "GPL-3.0-or-later",
     "authors":[
         {
             "name": "Rondeo Balos",
