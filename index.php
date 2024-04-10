@@ -57,8 +57,8 @@ $auth = new Auth( $app );
 // Ajaxes
 $app->get( '/install', InstallController::class . ':get');
 $app->post( '/install', InstallController::class . ':install' );
-$app->get( '/admin/login', LoginController::class . ':get')->add($init);
-$app->post( '/admin/login', LoginController::class . ':login' )->add($init);
+$app->get( '/admin/login', LoginController::class . ':get')->add( $init );
+$app->post( '/admin/login', LoginController::class . ':login' )->add( $init );
 
 $app->group( '/admin', function( RouteCollectorProxy $group ) {
 
@@ -104,7 +104,9 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
 $app->group( '/', function( RouteCollectorProxy $group ) {
 
     $group->get( '', PublicController::class . ':home');
-    PublicController::fetchPages( $group, $this );
+    if( file_exists( ABSPATH . 'config.php' ) ) {
+        PublicController::fetchPages( $group, $this );
+    }
 
 })->add( $init );
 
