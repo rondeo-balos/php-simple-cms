@@ -1,6 +1,8 @@
 A simple CMS built using PHP
 
+WIP:
+
 Start Server
 ```bash
-> simple serve
+> simpl
 ```
