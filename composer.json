@@ -10,6 +10,12 @@
         }
     ],
     "minimum-stability": "dev",
+    "scripts": {
+        "simpl:run": [
+            "Composer\\Config::disableProcessTimeout",
+            "php -S localhost:80"
+        ]
+    },
     "require": {
         "slim/slim": "4.*",
         "slim/psr7": "^1.6",

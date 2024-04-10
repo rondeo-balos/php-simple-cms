@@ -9,5 +9,5 @@ Install simpl-cms
 
 Start Server
 ```bash
-> simpl
+> composer simpl:run
 ```

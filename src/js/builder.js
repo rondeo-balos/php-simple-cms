@@ -117,6 +117,8 @@ const _initBuilder = ( root, _definitions, _props ) => {
         var blocks = $( '#blocks' );
         blocks.empty();
 
+        var spacePlaceholder = $( '<button class="space-placeholder"></button>' );
+
         var blockElements = [];
 
         _props.forEach( function( prop, i ) {
@@ -136,7 +138,40 @@ const _initBuilder = ( root, _definitions, _props ) => {
                 icon.attr( 'name', definition.icon );
                 button.prepend( icon );
 
-                button.append( '<span class="flex-fill">' )
+                button.append( '<span class="flex-fill">' );
+
+                var originalIndex = null;
+                var draggingItem = null;
+                var reorder = $( '<ion-icon size="small" class="hove-blue block-actions" name="reorder-three-outline" data-bs-toggle="tooltip" title="Reorder block">' );
+                reorder.css( 'cursor', 'grab' );
+                reorder.on( 'mousedown', function(e) {
+                    e.preventDefault();
+                    draggingItem = $( this ).parent();
+                    draggingItem.addClass( 'dragging' );
+                    spacePlaceholder.addClass( 'space-dragging' );
+                    originalIndex = draggingItem.index();
+                });
+
+                $( document ).on( 'mousemove', function(e) {
+                    if( draggingItem ) {
+                        var mouseY = e.clientY - blocks.offset().top;
+                        draggingItem.css( 'top', mouseY );
+                        var newIndex = Math.floor(mouseY / draggingItem[0].getBoundingClientRect().height);
+
+                        if (newIndex >= 0 && newIndex < blocks.children().length && newIndex !== originalIndex) {
+                            blocks.children().eq(newIndex).before( spacePlaceholder );
+                            blocks.children().eq(newIndex).before(draggingItem);
+                        }
+                    }
+                });
+
+                $( document ).on( 'mouseup', function(e) {
+                    if( draggingItem ) {
+                        draggingItem.removeClass( 'dragging' );
+                        spacePlaceholder.removeClass( 'space-dragging' );
+                        draggingItem = null;
+                    }
+                });
 
                 var addBefore = $( '<ion-icon size="small" class="hover-blue block-actions" name="add-outline" data-bs-toggle="tooltip" title="Add block before">' );
                 addBefore.on( 'click', function(e) {
@@ -152,6 +187,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
                     _renderBlocks();
                 });
 
+                button.append( reorder );
                 button.append( addBefore );
                 button.append( deleteBlock );
 

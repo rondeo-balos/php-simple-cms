@@ -106,7 +106,7 @@ $layoutManager = LayoutManager::autoload();
 
         <div class="col-md-2">
             <strong>Blocks</strong>
-            <div class="nav flex-column nav-pills me-3 py-2" id="blocks" role="tablist" aria-orientation="vertical"> </div>
+            <div class="nav flex-column nav-pills me-3 py-2" id="blocks" role="tablist" aria-orientation="vertical"></div>
             <a href="#" data-bs-toggle="modal" data-bs-target="#addBlock" class="text-decoration-none"><ion-icon name="add-outline"></ion-icon> Add block </a>
         </div>
         
