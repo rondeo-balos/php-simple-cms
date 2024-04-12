@@ -117,7 +117,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
         var blocks = $( '#blocks' );
         blocks.empty();
 
-        var spacePlaceholder = $( '<button class="space-placeholder"></button>' );
+        //var spacePlaceholder = $( '<div class="space-placeholder"></div>' );
 
         var blockElements = [];
 
@@ -148,28 +148,47 @@ const _initBuilder = ( root, _definitions, _props ) => {
                     e.preventDefault();
                     draggingItem = $( this ).parent();
                     draggingItem.addClass( 'dragging' );
-                    spacePlaceholder.addClass( 'space-dragging' );
+                    //spacePlaceholder.addClass( 'space-dragging' );
+                    //draggingItem.before( spacePlaceholder );
                     originalIndex = draggingItem.index();
+                    var mouseY = e.clientY - blocks.offset().top;
+                    //startDragging( mouseY );
                 });
 
                 $( document ).on( 'mousemove', function(e) {
+                    var mouseY = e.clientY - blocks.offset().top;
                     if( draggingItem ) {
-                        var mouseY = e.clientY - blocks.offset().top;
-                        draggingItem.css( 'top', mouseY );
-                        var newIndex = Math.floor(mouseY / draggingItem[0].getBoundingClientRect().height);
-
-                        if (newIndex >= 0 && newIndex < blocks.children().length && newIndex !== originalIndex) {
-                            blocks.children().eq(newIndex).before( spacePlaceholder );
-                            blocks.children().eq(newIndex).before(draggingItem);
-                        }
+                        startDragging( mouseY );
                     }
                 });
 
+                function startDragging( mouseY ) {
+                    blocks.find( 'active' ).removeClass( 'active' );
+                    draggingItem.css( 'top', mouseY );
+                    var newIndex = Math.floor(mouseY / draggingItem.height());
+
+                    if (newIndex >= 0 && newIndex < blocks.children().length && newIndex !== originalIndex) {
+                        //blocks.children().eq(newIndex).before( spacePlaceholder );
+                        blocks.children().eq(newIndex).before(draggingItem);
+                    }
+                }
+
                 $( document ).on( 'mouseup', function(e) {
                     if( draggingItem ) {
+                        // Update the _props array to reflect the new order
+                        var originalIndex = draggingItem.attr( 'index' );
+                        var newIndex = draggingItem.index();
+                        console.log( originalIndex, newIndex );
+                        var movedProp = _props.splice(originalIndex, 1)[0];
+                        _props.splice(newIndex, 0, movedProp);
+
+                        
+
                         draggingItem.removeClass( 'dragging' );
-                        spacePlaceholder.removeClass( 'space-dragging' );
+                        //spacePlaceholder.removeClass( 'space-dragging' );
                         draggingItem = null;
+
+                        _renderBlocks();
                     }
                 });
 
@@ -205,6 +224,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
         });
 
         blocks.append( blockElements );
+        blocks.append( '<div class="invisible">' );
         
         _preview();
     }
