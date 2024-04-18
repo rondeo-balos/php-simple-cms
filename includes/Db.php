@@ -7,7 +7,7 @@ class Db {
     
     public static function createInstance() : Manager {
         $settings = [
-            'driver' => 'mysql',
+            'driver' => DB_DRIVER,
             'host' => DB_HOST,
             'database' => DB_NAME,
             'username' => DB_USERNAME,

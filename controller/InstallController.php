@@ -27,46 +27,46 @@ class InstallController extends BaseController {
     public function install( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
         
-        $email = $post['email'];
-        $password = $post['password'];
-        $db_driver = $post['db_driver'];
-        $db_host = $post['db_host'];
-        $db_name = $post['db_name'];
-        $db_username = $post['db_username'];
-        $db_password = $post['db_password'];
-    
-        $settings = [
-            'driver' => $db_driver,
-            'host' => $db_host,
-            'database' => '',
-            'username' => $db_username,
-            'password' => $db_password,
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-        ];
-        
-
-        // Create file if sqlite
-
-        if( $db_driver === 'sqlite' ) {
-            file_put_contents( '../' . ltrim( '/', $db_driver ), 0 );
-            $settings['database'] = $db_name;
-        }
-
-        $capsule = new Manager();
-        $capsule->addConnection($settings);
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
-    
         try {
-            $connection = $capsule->getConnection();
-            $connection->getPdo();
+            $email = $post['email'];
+            $password = $post['password'];
+            $db_driver = $post['db_driver'];
+            $db_host = $post['db_host'];
+            $db_name = $post['db_name'];
+            $db_username = $post['db_username'];
+            $db_password = $post['db_password'];
+        
+            $settings = [
+                'driver' => $db_driver,
+                'host' => $db_host,
+                'database' => '',
+                'username' => $db_username,
+                'password' => $db_password,
+                'charset'   => 'utf8',
+                'collation' => 'utf8_unicode_ci',
+                'prefix'    => '',
+            ];
+        
+            // Create file if sqlite
+            if( $db_driver === 'sqlite' ) {
+                $db_name = ltrim($db_name, '/' );
+                file_put_contents( $db_name, '' );
+                $settings['database'] = $db_name;
+            } else {
+                $capsule = new Manager();
+                $capsule->addConnection($settings);
+                $capsule->setAsGlobal();
+                $capsule->bootEloquent();
     
-            // Create database
-            $manager = $capsule->getDatabaseManager();
-            $manager->statement( 'CREATE DATABASE IF NOT EXISTS ' . $db_name );
-    
+                $connection = $capsule->getConnection();
+                $connection->getPdo();
+                
+                // Create database
+                $manager = $capsule->getDatabaseManager();
+                $manager->statement( 'CREATE DATABASE IF NOT EXISTS ' . $db_name );
+            }
+
+
             // Re-test the connection
             $settings = [
                 'driver' => $db_driver,
@@ -123,6 +123,7 @@ class InstallController extends BaseController {
                 "ini_set('post_max_size', '16M');\n" .
                 "ini_set('upload_max_filesize', '16M');\n" .
                 "\n\n" .
+                "define( 'DB_DRIVER', '" . $db_driver . "' );\n" .
                 "define( 'DB_NAME', '" . $db_name . "' );\n" .
                 "define( 'DB_USERNAME', '" . $db_username . "' );\n" .
                 "define( 'DB_PASSWORD', '" . $db_password . "' );\n" .
@@ -154,9 +155,9 @@ class InstallController extends BaseController {
             status int DEFAULT 0,
             token text DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(email)
-        )";
+        )"; // ON UPDATE CURRENT_TIMESTAMP
         $manager->statement( $create_user_table );
     }
 
@@ -174,7 +175,7 @@ class InstallController extends BaseController {
             author int,
             token varchar(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(path)
         )";
         $manager->statement( $create_page_table );
@@ -186,7 +187,7 @@ class InstallController extends BaseController {
             token varchar(255),
             data json,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_preview_table );
     }
@@ -200,7 +201,7 @@ class InstallController extends BaseController {
             filepath text,
             thumb text,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_media_table );
     }
@@ -211,7 +212,7 @@ class InstallController extends BaseController {
             name varchar(255),
             data json,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_collections_table );
     }
