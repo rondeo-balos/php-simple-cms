@@ -145,7 +145,7 @@ class InstallController extends BaseController {
             status int DEFAULT 0,
             token text DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             UNIQUE(email)
         )";
         $manager->statement( $create_user_table );
@@ -165,7 +165,7 @@ class InstallController extends BaseController {
             author int,
             token varchar(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             UNIQUE(path)
         )";
         $manager->statement( $create_page_table );
@@ -177,7 +177,7 @@ class InstallController extends BaseController {
             token varchar(255),
             data json,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_preview_table );
     }
@@ -191,7 +191,7 @@ class InstallController extends BaseController {
             filepath text,
             thumb text,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_media_table );
     }
@@ -202,7 +202,7 @@ class InstallController extends BaseController {
             name varchar(255),
             data json,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_collections_table );
     }
