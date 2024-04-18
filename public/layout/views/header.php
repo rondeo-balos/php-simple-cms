@@ -16,7 +16,7 @@ use simpl\includes\Db;
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <?php foreach ($settings->link as $key => $link): ?>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="<?= Db::formatter($link, 'path', __ROOT__) ?>"><?= $settings->label[$key] ?></a>
+                        <a class="nav-link text-uppercase ms-4" aria-current="page" href="<?= Db::formatter($link, 'path', __ROOT__) ?>"><?= $settings->label[$key] ?></a>
                     </li>
                 <?php endforeach; ?>
             </ul>

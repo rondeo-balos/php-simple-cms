@@ -53,7 +53,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
                     var data = tab.find('.repeater .repeater-container').map(function(i, o) {
                         var item = {};
                         $(o).find('input, textarea, select').each(function() {
-                            var name = $(this).prop('tagName');
+                            var name = $(this).attr('id');
                             var value = $(this).val();
                             item[name] = value;
                         });
@@ -70,7 +70,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
                         if (i < value.length) {
                             var item = value[i];
                             $(o).find('input, textarea, select').each(function() {
-                                var name = $(this).prop('tagName');
+                                var name = $(this).attr('id');
                                 if (item[name] !== undefined) {
                                     $(this).val(item[name]);
                                 }

@@ -220,7 +220,7 @@ $layoutManager = LayoutManager::autoload();
                         </div>
 
                     </div>
-                    <div class="tab-pane fade" id="block-tab" role="tabpanel" aria-labelledby="block" tabindex="0">
+                    <div class="tab-pane fade" id="block-tab" role="tabpanel" aria-labelledby="block" tabindex="0" style="height: 75vh; overflow-y: auto;">
                         ...
                     </div>
                 </div>

@@ -16,7 +16,7 @@ class Image extends BaseBlock{
             // These are the defaults
             'props' => [
                 'name' => 'Image',
-                'image' => 'media|1',
+                'image' => 'https://placehold.co/600x400',
                 'alt' => 'Lorem ipsum'
             ]
         ];

@@ -33,7 +33,7 @@ class Spacer extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <div style="height: <?= $props['space'] ?>px;"></div>
+            <div class="w-100" style="height: <?= $props['space'] ?>px;"></div>
         <?php
     }
 
