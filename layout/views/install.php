@@ -54,22 +54,22 @@
                             </select>
                         </div>
 
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3" class="_db_host">
                             <label for="db_host" class="mb-1">Database Host </label>
                             <input type="text" class="form-control" id="db_host" name="db_host" placeholder="Host" value="localhost" required>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <label for="db_name" class="mb-1">Database Name </label>
+                        <div class="form-group mb-3" class="_db_name">
+                            <label for="db_name" class="mb-1">Database Name  / Path</label>
                             <input type="text" class="form-control" id="db_name" name="db_name" placeholder="Database" required>
                         </div>
 
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3" class="_db_username">
                             <label for="db_username" class="mb-1">Database Username </label>
                             <input type="text" class="form-control" id="db_username" name="db_username" placeholder="Username" required>
                         </div>
 
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-3" class="_db_password">
                             <label for="db_password" class="mb-1">Database Password </label>
                             <input type="text" class="form-control" id="db_password" name="db_password" placeholder="Password" required>
                         </div>
@@ -96,7 +96,7 @@
                                 <th>Database Host</th><td class="db_host"></td>
                             </tr>
                             <tr>
-                                <th>Database Name</th><td class="db_name"></td>
+                                <th>Database Name / Path</th><td class="db_name"></td>
                             </tr>
                             <tr>
                                 <th>Database Username</th><td class="db_username"></td>
@@ -166,21 +166,21 @@
     $( '#db_driver' ).on( 'change', e => {
         var value = $( '#db_driver' ).val();
         switch ( value ) {
-            case 'mysql':
-                $( '#db_host' ).hide();
-                $( '#db_host' ).val( 'null' );
-                $( '#db_username' ).hide();
-                $( '#db_username' ).val( 'null' );
-                $( '#db_password' ).hide();
-                $( '#db_password' ).val( 'null' );
+            case 'sqlite':
+                $( '._db_host' ).hide();
+                $( '._db_host' ).val( 'null' );
+                $( '._db_username' ).hide();
+                $( '._db_username' ).val( 'null' );
+                $( '._db_password' ).hide();
+                $( '._db_password' ).val( 'null' );
                 break;
             default:
-                $( '#db_host' ).show();
-                $( '#db_host' ).val( '' );
-                $( '#db_username' ).show();
-                $( '#db_username' ).val( '' );
-                $( '#db_password' ).show();
-                $( '#db_password' ).val( '' );
+                $( '._db_host' ).show();
+                $( '._db_host' ).val( '' );
+                $( '._db_username' ).show();
+                $( '._db_username' ).val( '' );
+                $( '._db_password' ).show();
+                $( '._db_password' ).val( '' );
                 break;
         }
     });

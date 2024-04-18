@@ -45,6 +45,14 @@ class InstallController extends BaseController {
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
         ];
+        
+
+        // Create file if sqlite
+
+        if( $db_driver === 'sqlite' ) {
+            file_put_contents( '../' . ltrim( '/', $db_driver ), 0 );
+            $settings['database'] = $db_name;
+        }
 
         $capsule = new Manager();
         $capsule->addConnection($settings);
