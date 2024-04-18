@@ -2,7 +2,7 @@
 
 if( $data ) {
 
-    $blocks = json_decode( $data->blocks );
+    $blocks = json_decode( $data->blocks ) ?? json_decode( stripcslashes( $data->blocks ) );
 
     foreach( $blocks as $block ) {
         $blockClass = "simpl\\public\\blocks\\" . $block->name;

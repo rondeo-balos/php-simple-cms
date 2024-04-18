@@ -86,7 +86,7 @@ class InstallController extends BaseController {
             $manager = $capsule->getDatabaseManager();
     
             // Add tables to the database
-            self::createUsersTable( $manager );
+            self::createUsersTable( $manager, $db_driver );
             // Insert User
             $user_data = [
                 'email' => $email,
@@ -99,10 +99,10 @@ class InstallController extends BaseController {
             $user = new User( $user_data );
             $user->save();
 
-            self::createPageTable( $manager );
-            self::createPreviewTable( $manager );
-            self::createMediaTable( $manager );
-            self::createCollectionsTable( $manager );
+            self::createPageTable( $manager, $db_driver );
+            self::createPreviewTable( $manager, $db_driver );
+            self::createMediaTable( $manager, $db_driver );
+            self::createCollectionsTable( $manager, $db_driver );
 
             $settings = new Collections( [ 'name' => 'settings', 'data' => '{"link":[],"label":[], "copyright":""}' ] );
             $settings->save();
@@ -144,16 +144,16 @@ class InstallController extends BaseController {
         return $response->withHeader( 'Content-Type', 'application/json' );
     }
 
-    private static function createUsersTable( $manager ) {
+    private static function createUsersTable( $manager, $driver ) {
         $create_user_table = "CREATE TABLE IF NOT EXISTS users (
-            ID int AUTO_INCREMENT PRIMARY KEY,
-            email varchar(255),
-            password text,
-            firstname varchar(255),
-            lastname varchar(255),
-            administrator int DEFAULT 0,
-            status int DEFAULT 0,
-            token text DEFAULT NULL,
+            ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
+            email VARCHAR(255),
+            password TEXT,
+            firstname VARCHAR(255),
+            lastname VARCHAR(255),
+            administrator INTEGER DEFAULT 0,
+            status INTEGER DEFAULT 0,
+            token TEXT DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(email)
@@ -161,19 +161,19 @@ class InstallController extends BaseController {
         $manager->statement( $create_user_table );
     }
 
-    private static function createPageTable( $manager ) {
+    private static function createPageTable( $manager, $driver ) {
         $create_page_table = "CREATE TABLE IF NOT EXISTS pages (
-            ID int AUTO_INCREMENT PRIMARY KEY,
-            title varchar(255),
-            description varchar(255),
-            visibility varchar(255),
-            path varchar(255),
-            blocks json,
-            fields json,
-            layout varchar(255) DEFAULT 'default',
-            status int DEFAULT 0,
-            author int,
-            token varchar(255),
+            ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
+            title VARCHAR(255),
+            description VARCHAR(255),
+            visibility VARCHAR(255),
+            path VARCHAR(255),
+            blocks JSON,
+            fields JSON,
+            layout VARCHAR(255) DEFAULT 'default',
+            status INTEGER DEFAULT 0,
+            author INTEGER,
+            token VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(path)
@@ -181,36 +181,36 @@ class InstallController extends BaseController {
         $manager->statement( $create_page_table );
     }
 
-    private static function createPreviewTable( $manager ) {
+    private static function createPreviewTable( $manager, $driver ) {
         $create_preview_table = "CREATE TABLE IF NOT EXISTS previews (
-            ID int AUTO_INCREMENT PRIMARY KEY,
-            token varchar(255),
-            data json,
+            ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
+            token VARCHAR(255),
+            data JSON,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_preview_table );
     }
 
-    private static function createMediaTable( $manager ) {
+    private static function createMediaTable( $manager, $driver ) {
         $create_media_table = "CREATE TABLE IF NOT EXISTS media (
-            ID int AUTO_INCREMENT PRIMARY KEY,
-            title varchar(255),
-            alt text,
-            type int,
-            filepath text,
-            thumb text,
+            ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
+            title VARCHAR(255),
+            alt TEXT,
+            type INTEGER,
+            filepath TEXT,
+            thumb TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
         $manager->statement( $create_media_table );
     }
 
-    private static function createCollectionsTable( $manager ) {
+    private static function createCollectionsTable( $manager, $driver ) {
         $create_collections_table = "CREATE TABLE IF NOT EXISTS collections(
-            ID int AUTO_INCREMENT PRIMARY KEY,
-            name varchar(255),
-            data json,
+            ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
+            name VARCHAR(255),
+            data JSON,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
