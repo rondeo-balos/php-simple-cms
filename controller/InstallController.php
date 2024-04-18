@@ -29,13 +29,14 @@ class InstallController extends BaseController {
         
         $email = $post['email'];
         $password = $post['password'];
+        $db_driver = $post['db_driver'];
         $db_host = $post['db_host'];
         $db_name = $post['db_name'];
         $db_username = $post['db_username'];
         $db_password = $post['db_password'];
     
         $settings = [
-            'driver' => 'mysql',
+            'driver' => $db_driver,
             'host' => $db_host,
             'database' => '',
             'username' => $db_username,
@@ -60,7 +61,7 @@ class InstallController extends BaseController {
     
             // Re-test the connection
             $settings = [
-                'driver' => 'mysql',
+                'driver' => $db_driver,
                 'host' => $db_host,
                 'database' => $db_name,
                 'username' => $db_username,

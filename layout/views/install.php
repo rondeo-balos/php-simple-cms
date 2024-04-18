@@ -21,7 +21,7 @@
                             <li>Review</li>
                         </ul>
                         <p>Are you ready?</p>
-                        <a href="" class="btn btn-sm btn-outline-secondary next-step">Start the installation &rarr;</a>
+                        <a href="" class="btn btn-sm btn-primary next-step">Start the installation &rarr;</a>
                     </div>
                     
                     <div class="col p-4 step overflow-hidden d-none">
@@ -38,13 +38,21 @@
                             <input type="text" class="form-control" id="password" name="password" placeholder="Password" validate-password="true" required>
                         </div>
                         
-                        <a href="" class="btn btn-sm btn-outline-secondary prev-step">&larr; Back</a> 
-                        <a href="" class="btn btn-sm btn-outline-secondary next-step">Next &rarr;</a>
+                        <a href="" class="btn btn-sm btn-secondary prev-step">&larr; Back</a> 
+                        <a href="" class="btn btn-sm btn-primary next-step">Next &rarr;</a>
                     </div>
 
                     <div class="col p-4 step overflow-hidden d-none">
                         <h2 class="h4">Database Setup</h2>
                         <p>Configure your database connection for Simpl.CMS.</p>
+
+                        <div class="form-group mb-3">
+                            <label for="db_driver" class="mb-1">Database Driver</label>
+                            <select id="db_driver" class="form-select" name="db_driver">
+                                <option value="mysql">MySQL</option>
+                                <option value="sqlite">SQLite</option>
+                            </select>
+                        </div>
 
                         <div class="form-group mb-3">
                             <label for="db_host" class="mb-1">Database Host </label>
@@ -66,8 +74,8 @@
                             <input type="text" class="form-control" id="db_password" name="db_password" placeholder="Password" required>
                         </div>
 
-                        <a href="" class="btn btn-sm btn-outline-secondary prev-step">&larr; Back</a> 
-                        <a href="" class="btn btn-sm btn-outline-secondary next-step">Next &rarr;</a>
+                        <a href="" class="btn btn-sm btn-secondary prev-step">&larr; Back</a> 
+                        <a href="" class="btn btn-sm btn-primary next-step">Next &rarr;</a>
                     </div>
                     
                     <div class="col p-4 step overflow-hidden d-none">
@@ -80,6 +88,9 @@
                             </tr>
                             <tr>
                                 <th>Password</th><td><span class="password d-none"></span> <i>Your chosen password</i></td>
+                            </tr>
+                            <tr>
+                                <th>Database Driver</th><td class="db_driver"></td>
                             </tr>
                             <tr>
                                 <th>Database Host</th><td class="db_host"></td>
@@ -95,8 +106,8 @@
                             </tr>
                         </table>
                         
-                        <a href="" class="btn btn-sm btn-outline-secondary prev-step">&larr; Back</a> 
-                        <button type="submit" role="submit" class="btn btn-sm btn-outline-primary">Let's go</a>
+                        <a href="" class="btn btn-sm btn-secondary prev-step">&larr; Back</a> 
+                        <button type="submit" role="submit" class="btn btn-sm btn-primary">Let's go</a>
                     </div>
 
                     <div class="col-4" style="background-image: url(<?= ROOT ?>src/images/pattern.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -150,6 +161,29 @@
             document.querySelector( '.' + name ).innerHTML = element.value;
         } );
     };
+
+    
+    $( '#db_driver' ).on( 'change', e => {
+        var value = $( '#db_driver' ).val();
+        switch ( value ) {
+            case 'mysql':
+                $( '#db_host' ).hide();
+                $( '#db_host' ).val( 'null' );
+                $( '#db_username' ).hide();
+                $( '#db_username' ).val( 'null' );
+                $( '#db_password' ).hide();
+                $( '#db_password' ).val( 'null' );
+                break;
+            default:
+                $( '#db_host' ).show();
+                $( '#db_host' ).val( '' );
+                $( '#db_username' ).show();
+                $( '#db_username' ).val( '' );
+                $( '#db_password' ).show();
+                $( '#db_password' ).val( '' );
+                break;
+        }
+    });
 
     $( 'form' ).on( 'submit', e => {
         e.preventDefault();
