@@ -66,7 +66,7 @@ class Table {
                     It seems that this colllection doesn't have items.<br> 
                     Go ahead and add a new item!
                 </p>
-                <a href="<?= $create_url ?>" class="btn btn-primary btn-sm">Add <?= $table ?></a>
+                <a href="<?= $create_url ?>" class="btn btn-primary btn-sm" id="create">Add <?= $table ?></a>
             </div>
         <?php endif; ?>
         <script>
@@ -153,7 +153,7 @@ class Table {
                         <ion-icon name="funnel" data-bs-toggle="tooltip" title="Filter <?= $table ?>s"></ion-icon>
                     </a>
                     <?php if( strlen( $create_url ) > 0 ): ?>
-                        <a href="<?= $create_url ?>" class="btn btn-primary btn-sm">Add <?= $table ?></a>
+                        <a href="<?= $create_url ?>" class="btn btn-primary btn-sm" id="create">Add <?= $table ?></a>
                     <?php endif; ?>
                 </div>
 

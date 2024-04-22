@@ -1,4 +1,5 @@
 <?php
+use simpl\includes\Auth;
 use simpl\includes\Db;
 use simpl\includes\FlashSession;
 use simpl\model\User;
@@ -8,7 +9,12 @@ defined( 'ABSPATH' ) || exit;
 if( isset($ID) ) {
     Db::createInstance();
     try{ 
-        $user = User::findOrFail( $ID );
+        if( $ID === 'me' ) {
+            $token = Auth::getSession();
+            $user = User::where( 'token', '=', $token )->firstOrFail();
+        } else {
+            $user = User::findOrFail( $ID );
+        }
         $fullname = '<span class="text-primary">' . $user->firstname.' '.$user->lastname . '</span>';
         $update_text = 'Update';
         $password_class = 'col-md-10 d-none border-start password-container';

@@ -94,7 +94,8 @@ class MediaController extends BaseController {
             $thumb = $image->thumb;
             $filepath = $image->filepath;
 
-            self::make_thumb( file_get_contents( ABSPATH . $filepath ), ABSPATH . $thumb, 512 );
+            if( exif_imagetype( $filepath ) )
+                self::make_thumb( file_get_contents( ABSPATH . $filepath ), ABSPATH . $thumb, 512 );
         }
 
         $response_data = new ResponseData( 200, 'Thumbnails regenerated successfully!', [ 'redirect' => ROOT . 'admin/media' ] );
@@ -115,8 +116,11 @@ class MediaController extends BaseController {
                 
                 $base = 'src/media/';
                 $filename = self::moveUploadedFile( 'src/media', $file );
-                $thumb = 'src/thumbs/' . $filename;
-                self::make_thumb( file_get_contents( ABSPATH . $base . $filename ), ABSPATH . $thumb, 256 );
+                $thumb = 'src/images/video_thumbnail.png';
+                if( exif_imagetype( $base . $filename ) ) {
+                    $thumb = 'src/thumbs/' . $filename;
+                    self::make_thumb( file_get_contents( ABSPATH . $base . $filename ), ABSPATH . $thumb, 256 );
+                }
 
                 $media_data = [
                     'title' => $file->getClientFilename(),

@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 <div id="alert"></div>
 
 <form method="POST" id="upload">
-    <input type="file" id="file" name="file[]" class="d-none" accept="image/png, image/jpeg, image/webp" multiple="multiple">
+    <input type="file" id="file" name="file[]" class="d-none" accept="image/png, image/jpeg, image/webp, application/pdf, application/docx, video/mp4, video/webm, video/mov" multiple="multiple">
     <script>
         function _upload() {
             $( '#file' ).trigger( 'click' );

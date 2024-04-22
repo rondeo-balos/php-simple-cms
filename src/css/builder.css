@@ -39,3 +39,7 @@
 .space-placeholder.space-dragging {
     display: block;
 }
+
+.nested-blocks {
+    margin-left: 10px;
+}

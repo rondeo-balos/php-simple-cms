@@ -7,7 +7,18 @@ Install simpl-cms
 > composer create-project rondeo-balos/simpl-cms . --remove-vcs dev-main
 ```
 
+Update dependencies
+```bash
+> composer update rondeo-balos/simpl-cms
+```
+
 Start Server
 ```bash
 > composer simpl:run
 ```
+
+enable these php extensions if not by default
+extension=gd
+extension=pdo_sqlite
+extension=mbstring
+extension=exif

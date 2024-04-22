@@ -41,4 +41,18 @@ class BlockManager {
         }
     }
 
+    public static function renderBlocks( $blocks, $before = '', $after = '' ) {
+        foreach( $blocks as $block ) {
+            $blockClass = "simpl\\public\\blocks\\" . $block->name;
+            
+            if (class_exists($blockClass)) {
+                echo $before;
+                $blockClass::render( get_object_vars($block) );
+                echo $after;
+            } else {
+                echo "Block class $block->name not found.";
+            }
+        }
+    }
+
 }

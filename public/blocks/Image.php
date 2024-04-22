@@ -26,7 +26,7 @@ class Image extends BaseBlock{
     public function settings() {
         ?>
             <label class="form-label">Image</label>
-            <input type="text" class="form-control form-control-sm mb-2" name="image" show="media" readonly>
+            <input type="text" class="form-control form-control-sm mb-2" name="image" show="media">
 
             <label class="form-label">Alt</label>
             <input type="text" class="form-control form-control-sm mb-2" name="alt">

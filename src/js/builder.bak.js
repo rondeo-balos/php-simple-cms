@@ -2,22 +2,16 @@
 const _initBuilder = ( root, _definitions, _props ) => {
     
     let index = -1;
-    let parent = -1;
 
     const _addBlock = ( name ) => {
         let newProps = JSON.parse(JSON.stringify(_definitions[name].props));
         if( index < 0 ) {
             _props.push( newProps );
         } else {
-            if( parent >= 0 ) {
-                _props[parent]['blocks'].splice( index, 0, newProps );
-            } else {
-                _props.splice( index, 0, newProps );
-            }
+            _props.splice( index, 0, newProps );
             $( '#blocks' ).attr( 'index', index + 1 );
         }
         index = -1;
-        parent = -1;
         _renderBlocks( _props );
     }
 
@@ -39,7 +33,6 @@ const _initBuilder = ( root, _definitions, _props ) => {
 
     $( document ).on( 'tabShown', '#blocks [data-bs-toggle="tab"]', function(e) {
         var index = $( '#blocks' ).attr( 'index' );
-        var parent = $( '#blocks' ).attr( 'parent' );
 
         if( index < 0 ) {
             alert();
@@ -48,9 +41,6 @@ const _initBuilder = ( root, _definitions, _props ) => {
         }
 
         var prop = _props[index];
-        if( parent >= 0 ) {
-            prop = _props[parent]['blocks'][index];
-        }
         var definition = _definitions[prop.name];
 
         let tab = $( '#block-tab' );
@@ -123,7 +113,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
         $( '#block' ).click();
     });
 
-    const _renderBlocks = ( props, level = 0, parentIndex = -1, blocks = $( '#blocks' ) ) => {
+    const _renderBlocks = ( props, level = 0, parentIndex = '', blocks = $( '#blocks' ) ) => {
         //var blocks = $( '#blocks' );
         if( level === 0 )
             blocks.empty();
@@ -143,7 +133,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
 
             if( definition ) {
 
-                var button = $( `<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button" index="${i}" parent="${parentIndex}">` );
+                var button = $( `<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button" index="${i}">` );
                 button.text( definition.name );
                 if( blockIndex == i ) button.addClass( 'active' );
 
@@ -195,6 +185,8 @@ const _initBuilder = ( root, _definitions, _props ) => {
                         var movedProp = _props.splice(originalIndex, 1)[0];
                         _props.splice(newIndex, 0, movedProp);
 
+                        
+
                         draggingItem.removeClass( 'dragging' );
                         //spacePlaceholder.removeClass( 'space-dragging' );
                         draggingItem = null;
@@ -207,19 +199,13 @@ const _initBuilder = ( root, _definitions, _props ) => {
                 addBefore.on( 'click', function(e) {
                     e.preventDefault();
                     index = i;
-                    parent = parentIndex;
                     let myModal = new bootstrap.Modal(document.getElementById('addBlock'), {});
                     myModal.show();
                 });
                 var deleteBlock = $( '<ion-icon size="small" class="hover-red block-actions" name="trash-outline" data-bs-toggle="tooltip" title="Delete block">' );
                 deleteBlock.on( 'click', function(e) {
                     e.preventDefault();
-                    if( parentIndex >= 0 ) {
-                        console.log( i, parentIndex );
-                        _props[parentIndex]['blocks'].splice( i, 1 );
-                    } else {
-                        _props.splice( i, 1 );
-                    }
+                    _props.splice( i, 1 );
                     _renderBlocks( _props );
                 });
 
@@ -227,14 +213,13 @@ const _initBuilder = ( root, _definitions, _props ) => {
                 button.append( addBefore );
                 button.append( deleteBlock );
 
-                blockElements.push( button );
-
                 if( prop.blocks && prop.blocks.length > 0 ) {
                     var nestedBlocks = $( '<div class="nested-blocks">' );
-                    _renderBlocks( prop.blocks, level + 1, i, nestedBlocks );
-                    blockElements.push( nestedBlocks );
-                    //button.after( nestedBlocks );
+                    _renderBlocks( prop.blocks, level + 1, blockIndex, nestedBlocks );
+                    button.append( nestedBlocks );
                 }
+
+                blockElements.push( button );
             } else {
                 _props.slice( i, 1 );
             }
@@ -244,7 +229,6 @@ const _initBuilder = ( root, _definitions, _props ) => {
         blocks.on( 'click', '.btn-block', function(e) {
             e.preventDefault();
             $( '#blocks' ).attr( 'index', $( this ).attr( 'index' ) );
-            $( '#blocks' ).attr( 'parent', $( this ).attr( 'parent' ) );
             $( this ).trigger( 'tabShown' );
         });
 

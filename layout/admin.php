@@ -64,7 +64,7 @@
                         <ion-icon name="moon" size="small"></ion-icon>
                     </a>
 
-                    <a href="<?= ROOT ?>admin/profile" class="text-secondary px-2 hover-blue" data-bs-toggle="tooltip" data-bs-title="Profile">
+                    <a href="<?= ROOT ?>admin/users/edit/me" class="text-secondary px-2 hover-blue" data-bs-toggle="tooltip" data-bs-title="Profile">
                         <ion-icon name="person-circle-outline" size="small"></ion-icon>
                     </a>
                     <a href="<?= ROOT ?>admin/login" class="text-secondary px-2 hover-blue" data-bs-toggle="tooltip" data-bs-title="Sign out">
