@@ -1,6 +1,6 @@
 phpmyadmin/
 config.php
-src/thumbs/
+src/thumbs/*
 !src/thumbs/index.php
-src/media/
+src/media/*
 !src/media/index.php
