@@ -2,6 +2,7 @@
 
 use simpl\includes\Db;
 use simpl\model\Page;
+use simpl\includes\FlashSession;
 use simpl\components\Table;
 
 defined( 'ABSPATH' ) || exit;
@@ -9,6 +10,8 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <h1 class="h5"><?= $title ?></h1>
+
+<div id="alert"></div>
 
 <?php
     Db::createInstance();
@@ -61,3 +64,10 @@ defined( 'ABSPATH' ) || exit;
         ]
     ]);
     $table->paginate();
+?>
+
+<script>
+    <?php if( FlashSession::hasKey( 'message' ) ): ?>
+        __alert( '#alert', '<?= FlashSession::get( 'message' ) ?>', 'info' );
+    <?php endif; ?>
+</script>

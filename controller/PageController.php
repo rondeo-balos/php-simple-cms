@@ -104,6 +104,23 @@ class PageController extends BaseController {
         }
     }
 
+    public function delete( Request $request, Response $response, $args ): Response {
+        $ID = $args['ID'] ?? -1;
+
+        try{
+            Db::createInstance();
+            Page::where( 'ID', $ID )->delete();
+
+            FlashSession::set( 'message', 'Page deleted succcessfully' );
+        } catch( \Exception $e ) {
+            FlashSession::set( 'message', 'Error: ' . $e->getMessage() );
+        }
+
+        return $response = $response
+                ->withHeader( 'Location', ROOT . 'admin/pages' )
+                ->withStatus( 302 );
+    }
+
     public function preview( Request $request, Response $response, $args ): Response {
         $post = $request->getParsedBody();
 

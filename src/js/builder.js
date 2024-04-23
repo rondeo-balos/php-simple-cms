@@ -105,20 +105,6 @@ const _initBuilder = ( root, _definitions, _props ) => {
             _preview();
         }, 100));
 
-        /**
-         * Temporary
-         */
-        tab.on( 'click', '.repeater .repeater-add', function(e) {
-            e.preventDefault();
-            _populateRepeater( $(this) );
-        });
-    
-        tab.on( 'click', '.repeater-remove', function(e) {
-            e.preventDefault();
-            $( this ).closest( '.repeater-container' ).remove();
-        });
-        // End of temporary
-
         $( '#block' ).parent().removeClass( 'd-none' );
         $( '#block' ).click();
     });
@@ -255,6 +241,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
     }
 
     const _preview = () => {
+        console.log( 'preview' );
         $( '[name="blocks"]' ).val( JSON.stringify( _props ) );
         $.ajax({
             url: `${root}admin/pages/preview`,
@@ -314,6 +301,22 @@ const _initBuilder = ( root, _definitions, _props ) => {
         });*/
 
         _renderBlocks( _props );
+
+        let tab = $( '#block-tab' );
+
+        /**
+         * Temporary
+         */
+        tab.on( 'click', '.repeater .repeater-add', function(e) {
+            e.preventDefault();
+            _populateRepeater( $(this) );
+        });
+    
+        tab.on( 'click', '.repeater-remove', function(e) {
+            e.preventDefault();
+            $( this ).closest( '.repeater-container' ).remove();
+        });
+        // End of temporary
     });
 
     const _populateRepeater = (el) => {

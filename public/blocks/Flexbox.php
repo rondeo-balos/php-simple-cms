@@ -43,17 +43,17 @@ class Flexbox extends BaseBlock{
         ?>
             <label class="form-label">Direction</label>
             <select class="form-select" name="direction">
-                <option value="flex-row">Row</option>
-                <option value="flex-row-reverse">Row Reverse</option>
-                <option value="flex-column">Column</option>
-                <option value="flex-column-reverse">Column Reverse</option>
+                <option value="flex-md-row">Row</option>
+                <option value="flex-md-row-reverse">Row Reverse</option>
+                <option value="flex-md-column">Column</option>
+                <option value="flex-md-column-reverse">Column Reverse</option>
             </select>
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <div class="d-flex <?= $props['direction'] ?>">
+            <div class="d-flex flex-column <?= $props['direction'] ?>">
                 <?php
                     if( !empty( $props['blocks'] ) ) {
                         BlockManager::renderBlocks( $props['blocks'], '<div class="flex-fill">', '</div>' );

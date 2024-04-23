@@ -78,6 +78,7 @@ $app->group( '/admin', function( RouteCollectorProxy $group ) {
     $group->post( '/pages/create', PageController::class . ':post' );
     $group->get( '/pages/edit/{ID}', PageController::class . ':getEdit' );
     $group->post( '/pages/edit/{ID}', PageController::class . ':post' );
+    $group->get( '/pages/delete/{ID}', PageController::class . ':delete' );
     $group->post( '/pages/preview', PageController::class . ':preview' );
 
     // User actions

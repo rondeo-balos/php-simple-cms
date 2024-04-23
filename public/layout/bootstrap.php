@@ -37,6 +37,8 @@ $orgimage = Db::formatter( $seo->orgimage ?? '', 'filepath', ROOT );
         <link rel="icon" href="<?= $icon ?? '' ?>">
 
         <link rel="canonical" href="<?= __ROOT__ . $data->path ?>">
+        <!-- Zepto -->
+        <script src="https://zeptojs.com/zepto.min.js" crossorigin="anonymous"></script>
         <!-- Bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -54,14 +56,14 @@ $orgimage = Db::formatter( $seo->orgimage ?? '', 'filepath', ROOT );
             }
         </style>
     </head>
-    <body style="background: #070e27;">
+    <body style="background: #030712;">
         <div class="container">
             <?php
                 $settings = Collections::where( 'name', 'settings' )->first();
                 $settings = json_decode( $settings->data );
             ?>
             <?= $this->fetch( __VIEWS__ . 'header.php', ['settings' => $settings, 'logo' => $orgimage] ) ?>
-            <div class="container">
+            <div class="container py-5">
                 <?= $content ?>
             </div>
         </div>
