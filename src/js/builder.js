@@ -3,22 +3,35 @@ const _initBuilder = ( root, _definitions, _props ) => {
     
     let index = -1;
     let parent = -1;
+    let indices = [];
+    let depth = 0;
 
     const _addBlock = ( name ) => {
         let newProps = JSON.parse(JSON.stringify(_definitions[name].props));
         if( index < 0 ) {
             _props.push( newProps );
         } else {
-            if( parent >= 0 ) {
+            if( depth > 1 ) {
+                indices = indices.reverse();
+                var currentProps = _props[indices[0]];
+                for( var j = 1; j < indices.length - 1; j ++ ) {
+                    currentProps = currentProps.blocks[indices[j]];
+                }
+                currentProps['blocks'].splice( index, 0, newProps );
+            }else if( depth > 0 ) {
                 _props[parent]['blocks'].splice( index, 0, newProps );
             } else {
                 _props.splice( index, 0, newProps );
             }
-            $( '#blocks' ).attr( 'index', index + 1 );
+            //$( '#blocks' ).attr( 'index', index + 1 );
+            $( '#blocks' ).attr( 'index', '-1' );
         }
         index = -1;
         parent = -1;
+        indices = [];
+        depth = 0;
         _renderBlocks( _props );
+        _preview();
     }
 
     const debounce = (func, wait, immediate) => {
@@ -37,9 +50,38 @@ const _initBuilder = ( root, _definitions, _props ) => {
         };
     }
 
+    // Recursive
+    const getPropWithDepth = ( indices, depth, props ) => {
+        if( depth === 0 ) {
+            return props[indices[depth]];
+        }
+
+        if( props[indices[depth]] && props[indices[depth]].blocks ) {
+            // Recursively call the function until we get the properties
+            return getPropWithDepth( indices, depth - 1, props[indices[depth]].blocks );
+        }
+
+        return null;
+    }
+
+    const getIndices = ( initialElement, depth ) => {
+        var indices = [];
+        var temp = initialElement;
+
+        // Traverse up the hierarchy to collect indices at each level
+        for (var i = depth; i >= 0; i--) {
+            indices.push( temp.attr( 'index' ) );
+            temp = temp.parent().prev( '.btn-block' );
+        }
+
+        return indices;
+    }
+
     $( document ).on( 'tabShown', '#blocks [data-bs-toggle="tab"]', function(e) {
         var index = $( '#blocks' ).attr( 'index' );
+        var indices = $( '#blocks' ).attr( 'indices' );
         var parent = $( '#blocks' ).attr( 'parent' );
+        var depth = $( '#blocks' ).attr( 'depth' );
 
         if( index < 0 ) {
             alert();
@@ -47,10 +89,14 @@ const _initBuilder = ( root, _definitions, _props ) => {
             return;
         }
 
-        var prop = _props[index];
-        if( parent >= 0 ) {
-            prop = _props[parent]['blocks'][index];
+        let prop = null;
+        if( depth > 0 ) {
+            var indices = indices.split( ',' );
+            prop = getPropWithDepth( indices, depth, _props );
+        } else {
+            prop = _props[index];
         }
+        
         var definition = _definitions[prop.name];
 
         let tab = $( '#block-tab' );
@@ -129,7 +175,7 @@ const _initBuilder = ( root, _definitions, _props ) => {
 
             if( definition ) {
 
-                var button = $( `<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button" index="${i}" parent="${parentIndex}">` );
+                var button = $( `<button class="btn-block btn btn-sm btn-outline-secondary w-100 rounded-0 mb-1 d-flex flex-row p-2" data-bs-toggle="tab" type="button" index="${i}" parent="${parentIndex}" depth="${level}">` );
                 button.text( definition.name );
                 if( blockIndex == i ) button.addClass( 'active' );
 
@@ -177,7 +223,6 @@ const _initBuilder = ( root, _definitions, _props ) => {
                         // Update the _props array to reflect the new order
                         var originalIndex = draggingItem.attr( 'index' );
                         var newIndex = draggingItem.index();
-                        console.log( originalIndex, newIndex );
                         var movedProp = _props.splice(originalIndex, 1)[0];
                         _props.splice(newIndex, 0, movedProp);
 
@@ -194,19 +239,29 @@ const _initBuilder = ( root, _definitions, _props ) => {
                     e.preventDefault();
                     index = i;
                     parent = parentIndex;
+                    indices = getIndices( button, level );
+                    depth = level;
                     let myModal = new bootstrap.Modal(document.getElementById('addBlock'), {});
                     myModal.show();
                 });
                 var deleteBlock = $( '<ion-icon size="small" class="hover-red block-actions" name="trash-outline" data-bs-toggle="tooltip" title="Delete block">' );
                 deleteBlock.on( 'click', function(e) {
                     e.preventDefault();
-                    if( parentIndex >= 0 ) {
-                        console.log( i, parentIndex );
+                    if( level > 1 ) {
+                        var indices = getIndices( button, level );
+                        indices = indices.reverse();
+                        var currentProps = _props[indices[0]];
+                        for( var j = 1; j < indices.length - 1; j ++ ) {
+                            currentProps = currentProps.blocks[indices[j]];
+                        }
+                        currentProps['blocks'].splice( i, 1 );
+                    } else if( level > 0 ) {
                         _props[parentIndex]['blocks'].splice( i, 1 );
                     } else {
                         _props.splice( i, 1 );
                     }
                     _renderBlocks( _props );
+                    _preview();
                 });
 
                 button.append( reorder );
@@ -226,22 +281,11 @@ const _initBuilder = ( root, _definitions, _props ) => {
             }
         });
 
-        
-        blocks.on( 'click', '.btn-block', function(e) {
-            e.preventDefault();
-            $( '#blocks' ).attr( 'index', $( this ).attr( 'index' ) );
-            $( '#blocks' ).attr( 'parent', $( this ).attr( 'parent' ) );
-            $( this ).trigger( 'tabShown' );
-        });
-
         blocks.append( blockElements );
         blocks.append( '<div class="invisible">' );
-        
-        _preview();
     }
 
     const _preview = () => {
-        console.log( 'preview' );
         $( '[name="blocks"]' ).val( JSON.stringify( _props ) );
         $.ajax({
             url: `${root}admin/pages/preview`,
@@ -301,9 +345,9 @@ const _initBuilder = ( root, _definitions, _props ) => {
         });*/
 
         _renderBlocks( _props );
+        _preview();
 
         let tab = $( '#block-tab' );
-
         /**
          * Temporary
          */
@@ -317,6 +361,20 @@ const _initBuilder = ( root, _definitions, _props ) => {
             $( this ).closest( '.repeater-container' ).remove();
         });
         // End of temporary
+
+        let blocks = $( '#blocks' );
+        blocks.on( 'click', '.btn-block', function(e) {
+            e.preventDefault();
+            var depth = $( this ).attr( 'depth' );
+            $( '#blocks' ).attr( 'index', $( this ).attr( 'index' ) );
+            $( '#blocks' ).attr( 'parent', $( this ).attr( 'parent' ) );
+            $( '#blocks' ).attr( 'depth', depth );
+            if( depth > 0 ) {
+                var indices = getIndices( $(this), depth );
+                $( '#blocks' ).attr( 'indices', indices );
+            }
+            $( this ).trigger( 'tabShown' );
+        });
     });
 
     const _populateRepeater = (el) => {

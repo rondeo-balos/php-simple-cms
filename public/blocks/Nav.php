@@ -5,24 +5,24 @@ namespace simpl\public\blocks;
 use simpl\public\blocks\BaseBlock;
 use simpl\includes\Db;
 
-class CardItems extends BaseBlock{
+class Nav extends BaseBlock{
 
     public function __construct( BlockManager $blockManager ) {
         $this->definition = [
-            'name' => 'CardItems',
+            'name' => 'Nav',
             'icon' => 'list-outline',
             'type' => 'repeater',
             'settings' => $this->saveSettings(),
             // These are the defaults
             'props' => [
-                'name' => 'CardItems',
+                'name' => 'Nav',
                 'content' => [[
-                    'icon' => 'checkmark-circle-outline',
-                    'title' => 'Title',
-                    'content' => 'Description',
+                    'label' => 'Label',
                     'link' => ''
                 ]],
-                'columns' => '3',
+                'direction' => 'flex-row',
+                'align' => '',
+                'width' => '100',
                 'class' => ''
             ]
         ];
@@ -36,14 +36,9 @@ class CardItems extends BaseBlock{
         ?>
             <div class="rounded-start-end repeater" name="content">
                 <div class="form-group p-3 repeater-container border">
-                    <label class="form-label">Icon</label>
-                    <input type="text" class="form-control form-control-sm mb-2" id="icon">
 
-                    <label class="form-label">Title</label>
-                    <input type="text" class="form-control form-control-sm mb-2" id="title">
-                    
-                    <label class="form-label">Description</label>
-                    <textarea class="form-control form-control-sm mb-2" id="description"></textarea>
+                    <label class="form-label">Label</label>
+                    <input type="text" class="form-control form-control-sm mb-2" id="label">
                     
                     <label class="form-label">Link/Page</label>
                     <input type="text" class="form-control form-control-sm mb-2" list="pages" display="title" id="link">
@@ -53,31 +48,36 @@ class CardItems extends BaseBlock{
                 <button class="btn btn-outline-secondary btn-sm repeater-add w-100 rounded-0 rounded-bottom" style="margin-top: -1px;">Add Item</button>
             </div>
 
-            <label class="form-label">Columns per Row</label>
-            <input type="number" class="form-control" min="0" max="12" name="columns">
+            <label class="form-label">Direction</label>
+            <select class="form-select" name="direction">
+                <option value="flex-row">Horizontal</option>
+                <option value="flex-column">Vertical</option>
+            </select>
+
+            <label class="form-label">Align</label>
+            <select class="form-select" name="align">
+                <option value="justify-content-start">Start</option>
+                <option value="justify-content-center">Center</option>
+                <option value="justify-content-end">End</option>
+            </select>
+
+            <label class="form-label">Minimum Width (px)</label>
+            <input type="number" class="form-control" min="0" max="1000" step="1" name="width">
             
             <label class="form-label">Additional Class</label>
             <input type="text" class="form-control" name="class">
-
         <?php
     }
 
     public static function render( array $props ) {
-        $column_width = 12 / $props['columns'];
         ?>
-            <div class="d-flex flex-wrap <?= $props['class'] ?>">
+            <ul class="nav <?= $props['direction'] ?> <?= $props['align'] ?> <?= $props['class'] ?>" style="min-width: <?= $props['width'] ?>px">
                 <?php foreach( $props['content'] as $key => $item ): ?>
-                    <div class="col-md-<?= $column_width ?> p-3">
-                        <a class="text-decoration-none d-block h-100" href="<?= Db::formatter($item->link, 'path', __ROOT__ ) ?>">
-                            <div class="card shadow-sm p-4 h-100">
-                                <ion-icon size="large" name="<?= $item->icon ?>" class="mb-4"></ion-icon>
-                                <h3 class="h5 mb-3"><?= $item->title ?></h5>
-                                <p class="m-0"><small><?= $item->description ?></small></p>
-                            </div>
-                        </a>
-                </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= Db::formatter( $item->link, 'path', __ROOT__ ) ?>"><?= $item->label ?></a>
+                    </li>
                 <?php endforeach; ?>
-            </div>
+            </ul>
         <?php
     }
 

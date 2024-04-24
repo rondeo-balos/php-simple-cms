@@ -17,7 +17,8 @@ class RichText extends BaseBlock{
                 'name' => 'RichText',
                 'content' => 'Lorem ipsum',
                 'width' => '100',
-                'align' => 'text-center'
+                'align' => 'text-center',
+                'class' => ''
             ]
         ];
         $blockManager->add( $this->definition );
@@ -61,12 +62,15 @@ class RichText extends BaseBlock{
                 <option value="text-center">Center</option>
                 <option value="text-end">Right</option>
             </select>
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <div style="max-width: <?= $props['width'] ?>%;" class="<?= $props['align'] ?? '' ?>">
+            <div style="max-width: <?= $props['width'] ?>%;" class="<?= $props['align'] ?? '' ?> <?= $props['class'] ?>">
                 <?= $props['content'] ?>
             </div>
         <?php

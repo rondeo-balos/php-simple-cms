@@ -17,6 +17,7 @@ class Flexbox extends BaseBlock{
             'props' => [
                 'name' => 'Flexbox',
                 'direction' => 'flex-row',
+                'class' => '',
                 'blocks' => [
                     [
                         
@@ -48,12 +49,15 @@ class Flexbox extends BaseBlock{
                 <option value="flex-md-column">Column</option>
                 <option value="flex-md-column-reverse">Column Reverse</option>
             </select>
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <div class="d-flex flex-column <?= $props['direction'] ?>">
+            <div class="d-flex flex-column <?= $props['direction'] ?> <?= $props['class'] ?>">
                 <?php
                     if( !empty( $props['blocks'] ) ) {
                         BlockManager::renderBlocks( $props['blocks'], '<div class="flex-fill">', '</div>' );

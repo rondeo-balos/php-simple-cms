@@ -19,7 +19,8 @@ class Accordion extends BaseBlock{
                     'INPUT' => 'Heading',
                     'TEXTAREA' => 'Description'
                 ]],
-                'width' => '100'
+                'width' => '100',
+                'class' => ''
             ]
         ];
         $blockManager->add( $this->definition );
@@ -45,13 +46,16 @@ class Accordion extends BaseBlock{
 
             <label class="form-label">Width (px)</label>
             <input type="range" class="form-range" min="0" max="100" name="width">
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
 
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <div class="accordion" id="<?= $props['name'] ?>" style="max-width: <?= $props['width'] ?>%; margin-left: auto; margin-right: auto;">
+            <div class="accordion <?= $props['class'] ?>" id="<?= $props['name'] ?>" style="max-width: <?= $props['width'] ?>%; margin-left: auto; margin-right: auto;">
                 <?php foreach( $props['content'] as $key => $item ): ?>
                     <div class="accordion-item p-2 mb-2 rounded border-1 bg-body" style="box-shadow: none;">
                         <h3 class="accordion-header">

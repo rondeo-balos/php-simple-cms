@@ -15,7 +15,8 @@ class VerticalDivider extends BaseBlock{
             'settings' => $this->saveSettings(),
             'props' => [
                 'name' => 'VerticalDivider',
-                'height' => '20'
+                'height' => '20',
+                'class' => ''
             ]
         ];
 
@@ -26,12 +27,15 @@ class VerticalDivider extends BaseBlock{
         ?>
             <label class="form-label">Height (px)</label>
             <input type="range" class="form-range" min="0" max="500" name="height">
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <span class="d-block" style="width: 1px; height: <?= $props['height'] ?>px; background: linear-gradient(transparent, white); margin-left: auto; margin-right: auto;"></span>
+            <span class="d-block <?= $props['class'] ?>" style="width: 1px; height: <?= $props['height'] ?>px; background: linear-gradient(transparent, white); margin-left: auto; margin-right: auto;"></span>
         <?php
     }
 

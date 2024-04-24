@@ -17,7 +17,8 @@ class Image extends BaseBlock{
             'props' => [
                 'name' => 'Image',
                 'image' => 'https://placehold.co/600x400',
-                'alt' => 'Lorem ipsum'
+                'alt' => 'Lorem ipsum',
+                'class' => ''
             ]
         ];
         $blockManager->add( $this->definition );
@@ -30,12 +31,15 @@ class Image extends BaseBlock{
 
             <label class="form-label">Alt</label>
             <input type="text" class="form-control form-control-sm mb-2" name="alt">
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-            <img src="<?= Db::formatter($props['image'], 'filepath', ROOT ) ?>" alt="<?= $props['alt'] ?>" class="img-fluid">
+            <img src="<?= Db::formatter($props['image'], 'filepath', ROOT ) ?>" alt="<?= $props['alt'] ?>" class="img-fluid <?= $props['class'] ?>">
         <?php
     }
 

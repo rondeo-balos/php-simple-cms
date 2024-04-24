@@ -24,7 +24,8 @@ class CTA extends BaseBlock{
                 'link' => '',
                 'label' => 'Let\'s Go',
                 'background' => '#fff',
-                'color' => '#000'
+                'color' => '#000',
+                'class' => ''
             ]
         ];
 
@@ -75,13 +76,16 @@ class CTA extends BaseBlock{
 
             <label class="form-label">Button Text Color</label>
             <input type="color" class="form-control form-control-color form-control-sm mb-2" name="color">
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
         <?php
     }
 
     public static function render( array $props ) {
         $rand = rand( 1111, 99999 );
         ?>
-            <div style="max-width: <?= $props['width'] ?>%;">
+            <div style="max-width: <?= $props['width'] ?>%;" class="<?= $props['class'] ?>">
                 <<?= $props['type'] ?>  class="<?= $props['align'] ?? '' ?>">
                     <?= $props['heading'] ?? '' ?>
                 </<?= $props['type'] ?>>

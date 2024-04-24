@@ -19,7 +19,8 @@ class Button extends BaseBlock{
                 'link' => '',
                 'label' => 'Let\'s go!',
                 'background' => '#fff',
-                'color' => '#000'
+                'color' => '#000',
+                'class' => ''
             ]
         ];
         $blockManager->add( $this->definition );
@@ -38,13 +39,16 @@ class Button extends BaseBlock{
 
             <label class="form-label">Text Color</label>
             <input type="color" class="form-control form-control-color form-control-sm mb-2" name="color">
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
         <?php
     }
 
     public static function render( array $props ) {
         $rand = rand( 1111, 99999 );
         ?>
-            <a href="<?= Db::formatter($props['link'], 'path', __ROOT__ ) ?>" class="btn btn-primary mb-2 btn-<?= $rand ?>">
+            <a href="<?= Db::formatter($props['link'], 'path', __ROOT__ ) ?>" class="btn btn-primary mb-2 btn-<?= $rand ?> <?= $props['class'] ?>">
                 <?= $props['label'] ?>
             </a>
             <style>

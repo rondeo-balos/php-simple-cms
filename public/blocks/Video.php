@@ -16,7 +16,8 @@ class Video extends BaseBlock{
             // These are the defaults
             'props' => [
                 'name' => 'Video',
-                'source' => ''
+                'source' => '',
+                'class' => ''
             ]
         ];
         $blockManager->add( $this->definition );
@@ -26,12 +27,15 @@ class Video extends BaseBlock{
         ?>
             <label class="form-label">Source</label>
             <input type="text" class="form-control form-control-sm mb-2" name="source" show="media">
+            
+            <label class="form-label">Additional Class</label>
+            <input type="text" class="form-control" name="class">
         <?php
     }
 
     public static function render( array $props ) {
         ?>
-        <video width="100%" height="auto" controls class="object-fit-contain rounded">
+        <video width="100%" height="auto" controls class="object-fit-contain rounded <?= $props['class'] ?>">
             <source src="<?= Db::formatter($props['source'], 'filepath', ROOT ) ?>">
         </video>
         <?php
