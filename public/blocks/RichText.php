@@ -30,7 +30,7 @@ class RichText extends BaseBlock{
     public function settings() {
         ?>
             <label class="form-label">Content</label>
-            <div id="editor" name="content" class="mb-2"></div>
+            <div id="editor" name="content" class="mb-2 h-50"></div>
             <script>
                 const quill = new Quill( '#editor', {
                     modules: {

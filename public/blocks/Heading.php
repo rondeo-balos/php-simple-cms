@@ -17,6 +17,7 @@ class Heading extends BaseBlock{
                 'name' => 'Heading',
                 'type' => 'h1',
                 'content' => 'Lorem ipsum',
+                'kicker' => 'Lorem ipsum dolor sit amit',
                 'width' => '100',
                 'align' => 'text-center',
                 'class' => ''
@@ -40,6 +41,30 @@ class Heading extends BaseBlock{
 
             <label class="form-label">Content</label>
             <input type="text" class="form-control form-control-sm mb-2" name="content">
+            
+            <label class="form-label">Kicker</label>
+            <div id="editor" name="kicker" class="mb-2 h-50"></div>
+            <script>
+                const quill = new Quill( '#editor', {
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic'],
+                            ['link', 'blockquote'],
+                            [{list: 'ordered'}, {list: 'bullet'}]
+                        ]
+                    },
+                    theme: 'snow'
+                } );
+                var content = $( '#editor .ql-editor' );
+                Object.defineProperty( document.querySelector( '#editor' ), 'value', {
+                    get: function() {
+                        return content.html();
+                    },
+                    set: function( value ) {
+                        content.html( value );
+                    }
+                });
+            </script>
 
             <label class="form-label">Width (px)</label>
             <input type="range" class="form-range" min="0" max="100" name="width">
@@ -58,9 +83,10 @@ class Heading extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <<?= $props['type'] ?> class="<?= $props['class'] ?>" style="max-width: <?= $props['width'] ?>%;" class="<?= $props['align'] ?? '' ?>">
+            <<?= $props['type'] ?> style="max-width: <?= $props['width'] ?>%;" class="<?= $props['align'] ?? '' ?> <?= $props['class'] ?>">
                 <?= $props['content'] ?? '' ?>
             </<?= $props['type'] ?>>
+            <?= /*(isset( $props['kicker'] ) && strlen($props['kicker']) > 10) ? ('<p>'.$props['kicker'].'</p>') : ''*/ $props['kicker'] ?? '' ?>
         <?php
     }
 
