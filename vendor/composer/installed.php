@@ -3,7 +3,7 @@
         'name' => 'rondeo-balos/simpl-cms',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'e59ac7cc8d611802bf373bbd053f8b6376860785',
+        'reference' => '4208d4de32cef6dfc6b8e08d1a0a133289701cf6',
         'type' => 'template',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -62,7 +62,7 @@
         'illuminate/collections' => array(
             'pretty_version' => '11.x-dev',
             'version' => '11.9999999.9999999.9999999-dev',
-            'reference' => '19c6554c7eba0efabc3f8aa4c434815b7f6b4b7d',
+            'reference' => '48f73091423f46d9700a8cec482a11214f0ea193',
             'type' => 'library',
             'install_path' => __DIR__ . '/../illuminate/collections',
             'aliases' => array(),
@@ -125,7 +125,7 @@
         'illuminate/support' => array(
             'pretty_version' => '11.x-dev',
             'version' => '11.9999999.9999999.9999999-dev',
-            'reference' => 'ca4ddadac27afb24785f5c1cb649bc8b5204de90',
+            'reference' => '7d733a1dbeb96557ba287e778bbf7bc61e23c31d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../illuminate/support',
             'aliases' => array(),
@@ -145,7 +145,7 @@
         'nesbot/carbon' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '82c28278c1c8f7b82dcdab25692237f052ffc8d8',
+            'reference' => '8ff64b92c1b1ec84fcde9f8bb9ff2ca34cb8a77a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nesbot/carbon',
             'aliases' => array(
@@ -214,14 +214,12 @@
             ),
         ),
         'psr/http-factory' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
+            'pretty_version' => '1.1.0',
+            'version' => '1.1.0.0',
             'reference' => '2b4765fddfe3b508ac62f829e852b1501d3f6e8a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../psr/http-factory',
-            'aliases' => array(
-                0 => '1.0.x-dev',
-            ),
+            'aliases' => array(),
             'dev_requirement' => false,
         ),
         'psr/http-factory-implementation' => array(
@@ -301,7 +299,7 @@
         'rondeo-balos/simpl-cms' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'e59ac7cc8d611802bf373bbd053f8b6376860785',
+            'reference' => '4208d4de32cef6dfc6b8e08d1a0a133289701cf6',
             'type' => 'template',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -310,7 +308,7 @@
         'slim/php-view' => array(
             'pretty_version' => '3.x-dev',
             'version' => '3.9999999.9999999.9999999-dev',
-            'reference' => 'c514f7f664817d055dc9ca78a4b762346e2b754d',
+            'reference' => '81fbce8c4b7159df8f403ea4012e9e78ead23c54',
             'type' => 'library',
             'install_path' => __DIR__ . '/../slim/php-view',
             'aliases' => array(),
@@ -328,7 +326,7 @@
         'slim/slim' => array(
             'pretty_version' => '4.x-dev',
             'version' => '4.9999999.9999999.9999999-dev',
-            'reference' => '038fd5713d5a41636fdff0e8dcceedecdd17fc17',
+            'reference' => 'ad92887b00617246b2cb1be40bff4b4922a987a6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../slim/slim',
             'aliases' => array(),
@@ -337,7 +335,7 @@
         'slim/twig-view' => array(
             'pretty_version' => '3.x-dev',
             'version' => '3.9999999.9999999.9999999-dev',
-            'reference' => '600832de2efc6dc57116dc89844f21be47653316',
+            'reference' => '1b351536b9a07ed90a3563ee9d71a987c5d74610',
             'type' => 'library',
             'install_path' => __DIR__ . '/../slim/twig-view',
             'aliases' => array(),
@@ -361,7 +359,7 @@
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '2c438b99bb2753c1628c1e6f523991edea5b03a4',
+            'reference' => '0e0d29ce1f20deffb4ab1b016a7257c4f1e789a1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
             'aliases' => array(
@@ -372,7 +370,7 @@
         'symfony/polyfill-ctype' => array(
             'pretty_version' => '1.x-dev',
             'version' => '1.9999999.9999999.9999999-dev',
-            'reference' => 'ef4d7e442ca910c4764bce785146269b30cb5fc4',
+            'reference' => 'c9e59dec962d38cf2e0e4c61c4a1a1312f4dd7fe',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
             'aliases' => array(),
@@ -381,7 +379,7 @@
         'symfony/polyfill-mbstring' => array(
             'pretty_version' => '1.x-dev',
             'version' => '1.9999999.9999999.9999999-dev',
-            'reference' => '3cf95983a25d6439cac5f5164f0bfeeb1eb5d264',
+            'reference' => 'e642fbe7a7b73cdb05460555289a9057bfd6ead6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
             'aliases' => array(),
@@ -390,7 +388,7 @@
         'symfony/polyfill-php80' => array(
             'pretty_version' => '1.x-dev',
             'version' => '1.9999999.9999999.9999999-dev',
-            'reference' => '87b68208d5c1188808dd7839ee1e6c8ec3b02f1b',
+            'reference' => '7d191eb4022901cd3d91a816ec5464ca3a08a8aa',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
@@ -399,7 +397,7 @@
         'symfony/polyfill-php81' => array(
             'pretty_version' => '1.x-dev',
             'version' => '1.9999999.9999999.9999999-dev',
-            'reference' => 'c565ad1e63f30e7477fc40738343c62b40bc672d',
+            'reference' => 'c797154b59813aef081a21c2d1ed862050ed9325',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php81',
             'aliases' => array(),
@@ -408,7 +406,7 @@
         'symfony/polyfill-php83' => array(
             'pretty_version' => '1.x-dev',
             'version' => '1.9999999.9999999.9999999-dev',
-            'reference' => '4101e9edae47b36671a91857ab6cd359024faabd',
+            'reference' => '6e804bbb1bf1e2bfd02771d1c34fa8295c1f1af1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/polyfill-php83',
             'aliases' => array(),
@@ -417,7 +415,7 @@
         'symfony/translation' => array(
             'pretty_version' => '7.1.x-dev',
             'version' => '7.1.9999999.9999999-dev',
-            'reference' => 'ac4bf86689454815b2cc6c997835d13dbb0cbebe',
+            'reference' => '583d18e461eada8270ca44b7d99f07abf1ab048e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/translation',
             'aliases' => array(),
@@ -426,7 +424,7 @@
         'symfony/translation-contracts' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'af28c29f068dbbfae1420bfab90a5f9f4c86f59f',
+            'reference' => 'b9d2189887bb6b2e0367a9fc7136c5239ab9b05a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/translation-contracts',
             'aliases' => array(
@@ -443,7 +441,7 @@
         'twig/twig' => array(
             'pretty_version' => '3.x-dev',
             'version' => '3.9999999.9999999.9999999-dev',
-            'reference' => 'ad934312cd08b6b466932fdfdd5b97ae680bc28a',
+            'reference' => '0bdc73a5997fe0ab16ec44dc46351bc66edf7496',
             'type' => 'library',
             'install_path' => __DIR__ . '/../twig/twig',
             'aliases' => array(),

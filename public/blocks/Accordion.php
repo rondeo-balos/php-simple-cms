@@ -55,17 +55,17 @@ class Accordion extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <div class="accordion <?= $props['class'] ?>" id="<?= $props['name'] ?>" style="max-width: <?= $props['width'] ?>%; margin-left: auto; margin-right: auto;">
+            <div class="accordion <?= $props['class'] ?>" id="<?= $props['name'] ?? '' ?>" style="max-width: <?= $props['width'] ?? '' ?>%; margin-left: auto; margin-right: auto;">
                 <?php foreach( $props['content'] as $key => $item ): ?>
                     <div class="accordion-item p-2 mb-2 rounded border-1 bg-body" style="box-shadow: none;">
                         <h3 class="accordion-header">
                         <button class="accordion-button <?= $key === 0 ? '' : 'collapsed' ?> rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $key ?>" aria-expanded="<?= $key === 0 ? 'true' : 'false' ?>" aria-controls="collapse<?= $key ?>" style="box-shadow: none; background: transparent !important;">
-                            <strong><?= $item->INPUT ?></strong>
+                            <strong><?= $item->INPUT ?? '' ?></strong>
                         </button>
                         </h3>
-                        <div id="collapse<?= $key ?>" class="accordion-collapse collapse <?= $key === 0 ? 'show' : '' ?>" data-bs-parent="#<?= $props['name'] ?>">
+                        <div id="collapse<?= $key ?>" class="accordion-collapse collapse <?= $key === 0 ? 'show' : '' ?>" data-bs-parent="#<?= $props['name'] ?? '' ?>">
                             <div class="accordion-body">
-                                <small><?= $item->TEXTAREA ?></small>
+                                <small><?= $item->TEXTAREA ?? '' ?></small>
                             </div>
                         </div>
                     </div>

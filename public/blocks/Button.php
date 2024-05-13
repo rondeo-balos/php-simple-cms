@@ -48,15 +48,15 @@ class Button extends BaseBlock{
     public static function render( array $props ) {
         $rand = rand( 1111, 99999 );
         ?>
-            <a href="<?= Db::formatter($props['link'], 'path', __ROOT__ ) ?>" class="btn btn-primary mb-2 btn-<?= $rand ?> <?= $props['class'] ?>">
-                <?= $props['label'] ?>
+            <a href="<?= Db::formatter($props['link'] ?? '', 'path', __ROOT__ ) ?>" class="btn btn-primary mb-2 btn-<?= $rand ?> <?= $props['class'] ?? '' ?>">
+                <?= $props['label'] ?? '' ?>
             </a>
             <style>
                 .btn-<?= $rand ?> {
-                    --bs-btn-color: <?= $props['color'] ?>;
-                    --bs-btn-bg: <?= $props['background'] ?>;
-                    --bs-btn-border-color: <?= $props['background'] ?>;
-                    --bs-btn-hover-color: <?= $props['color'] ?>;
+                    --bs-btn-color: <?= $props['color'] ?? '' ?>;
+                    --bs-btn-bg: <?= $props['background'] ?? '' ?>;
+                    --bs-btn-border-color: <?= $props['background'] ?? '' ?>;
+                    --bs-btn-hover-color: <?= $props['color'] ?? '' ?>;
                     --bs-btn-hover-bg: #{shade-color(<?= $props['background'] ?>, 10%)};
                     --bs-btn-hover-border-color: #{shade-color(<?= $props['background'] ?>, 10%)};
                     --bs-btn-focus-shadow-rgb: <?= $props['background'] ?>;

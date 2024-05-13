@@ -39,7 +39,7 @@ class Image extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <img src="<?= Db::formatter($props['image'], 'filepath', ROOT ) ?>" alt="<?= $props['alt'] ?>" class="img-fluid <?= $props['class'] ?>">
+            <img src="<?= Db::formatter($props['image'] ?? '', 'filepath', ROOT ) ?>" alt="<?= $props['alt'] ?? '' ?>" class="img-fluid <?= $props['class'] ?? '' ?>">
         <?php
     }
 

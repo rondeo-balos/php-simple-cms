@@ -35,8 +35,8 @@ class Video extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-        <video width="100%" height="auto" controls class="object-fit-contain rounded <?= $props['class'] ?>">
-            <source src="<?= Db::formatter($props['source'], 'filepath', ROOT ) ?>">
+        <video width="100%" height="auto" controls class="object-fit-contain rounded <?= $props['class'] ?? '' ?>">
+            <source src="<?= Db::formatter($props['source'] ?? '', 'filepath', ROOT ) ?>">
         </video>
         <?php
     }

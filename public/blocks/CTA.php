@@ -85,28 +85,28 @@ class CTA extends BaseBlock{
     public static function render( array $props ) {
         $rand = rand( 1111, 99999 );
         ?>
-            <div style="max-width: <?= $props['width'] ?>%;" class="<?= $props['class'] ?>">
-                <<?= $props['type'] ?>  class="<?= $props['align'] ?? '' ?>">
+            <div style="max-width: <?= $props['width'] ?? '' ?>%;" class="<?= $props['class'] ?? '' ?>">
+                <<?= $props['type'] ?? 'h1' ?>  class="<?= $props['align'] ?? '' ?>">
                     <?= $props['heading'] ?? '' ?>
-                </<?= $props['type'] ?>>
+                </<?= $props['type'] ?? 'h1' ?>>
 
-                <p><?= $props['content']; ?></p>
+                <p><?= $props['content'] ?? ''; ?></p>
                 
-                <a href="<?= Db::formatter($props['link'], 'path', __ROOT__ ) ?>" class="btn btn-primary mb-2 btn-<?= $rand ?>">
-                    <?= $props['label'] ?>
+                <a href="<?= Db::formatter($props['link'] ?? '', 'path', __ROOT__ ) ?>" class="btn btn-primary mb-2 btn-<?= $rand ?>">
+                    <?= $props['label'] ?? '' ?>
                 </a>
                 <style>
                     .btn-<?= $rand ?> {
-                        --bs-btn-color: <?= $props['color'] ?>;
-                        --bs-btn-bg: <?= $props['background'] ?>;
-                        --bs-btn-border-color: <?= $props['background'] ?>;
-                        --bs-btn-hover-color: <?= $props['color'] ?>;
-                        --bs-btn-hover-bg: #{shade-color(<?= $props['background'] ?>, 10%)};
-                        --bs-btn-hover-border-color: #{shade-color(<?= $props['background'] ?>, 10%)};
-                        --bs-btn-focus-shadow-rgb: <?= $props['background'] ?>;
-                        --bs-btn-active-color: <?= $props['background'] ?>;
-                        --bs-btn-active-bg: #{shade-color(<?= $props['background'] ?>, 20%)};
-                        --bs-btn-active-border-color: #{shade-color(<?= $props['background'] ?>, 20%)};
+                        --bs-btn-color: <?= $props['color'] ?? '' ?>;
+                        --bs-btn-bg: <?= $props['background'] ?? '' ?>;
+                        --bs-btn-border-color: <?= $props['background'] ?? '' ?>;
+                        --bs-btn-hover-color: <?= $props['color'] ?? '' ?>;
+                        --bs-btn-hover-bg: #{shade-color(<?= $props['background'] ?? '' ?>, 10%)};
+                        --bs-btn-hover-border-color: #{shade-color(<?= $props['background'] ?? '' ?>, 10%)};
+                        --bs-btn-focus-shadow-rgb: <?= $props['background'] ?? '' ?>;
+                        --bs-btn-active-color: <?= $props['background'] ?? '' ?>;
+                        --bs-btn-active-bg: #{shade-color(<?= $props['background'] ?? '' ?>, 20%)};
+                        --bs-btn-active-border-color: #{shade-color(<?= $props['background'] ?? '' ?>, 20%)};
                     }
                 </style>
             </div>

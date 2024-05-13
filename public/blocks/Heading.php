@@ -83,9 +83,9 @@ class Heading extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <<?= $props['type'] ?> style="max-width: <?= $props['width'] ?>%;" class="<?= $props['align'] ?? '' ?> <?= $props['class'] ?>">
+            <<?= $props['type'] ?? 'h1' ?> style="max-width: <?= $props['width'] ?? '' ?>%;" class="<?= $props['align'] ?? '' ?> <?= $props['class'] ?? '' ?>">
                 <?= $props['content'] ?? '' ?>
-            </<?= $props['type'] ?>>
+            </<?= $props['type'] ?? 'h1' ?>>
             <?= /*(isset( $props['kicker'] ) && strlen($props['kicker']) > 10) ? ('<p>'.$props['kicker'].'</p>') : ''*/ $props['kicker'] ?? '' ?>
         <?php
     }

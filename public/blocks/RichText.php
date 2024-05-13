@@ -70,8 +70,8 @@ class RichText extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <div style="max-width: <?= $props['width'] ?>%;" class="<?= $props['align'] ?? '' ?> <?= $props['class'] ?>">
-                <?= $props['content'] ?>
+            <div style="max-width: <?= $props['width'] ?? '' ?>%;" class="<?= $props['align'] ?? '' ?> <?= $props['class'] ?? '' ?>">
+                <?= $props['content'] ?? '' ?>
             </div>
         <?php
     }

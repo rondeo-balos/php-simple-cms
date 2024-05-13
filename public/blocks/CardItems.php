@@ -65,14 +65,14 @@ class CardItems extends BaseBlock{
     public static function render( array $props ) {
         $column_width = 12 / $props['columns'];
         ?>
-            <div class="d-flex flex-wrap <?= $props['class'] ?>">
+            <div class="d-flex flex-wrap <?= $props['class'] ?? '' ?>">
                 <?php foreach( $props['content'] as $key => $item ): ?>
                     <div class="col-md-<?= $column_width ?> p-3">
-                        <a class="text-decoration-none d-block h-100" href="<?= Db::formatter($item->link, 'path', __ROOT__ ) ?>">
+                        <a class="text-decoration-none d-block h-100" href="<?= Db::formatter($item->link ?? '', 'path', __ROOT__ ) ?>">
                             <div class="card shadow-sm p-4 h-100">
-                                <ion-icon size="large" name="<?= $item->icon ?>" class="mb-4"></ion-icon>
-                                <h3 class="h5 mb-3"><?= $item->title ?></h5>
-                                <p class="m-0"><small><?= $item->description ?></small></p>
+                                <ion-icon size="large" name="<?= $item->icon ?? '' ?>" class="mb-4"></ion-icon>
+                                <h3 class="h5 mb-3"><?= $item->title ?? '' ?></h5>
+                                <p class="m-0"><small><?= $item->description ?? '' ?></small></p>
                             </div>
                         </a>
                 </div>

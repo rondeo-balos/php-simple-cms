@@ -32,7 +32,7 @@ class HTML extends BaseBlock{
     }
 
     public static function render( array $props ) {
-        echo $props['content'];
+        echo $props['content'] ?? '';
     }
 
 }

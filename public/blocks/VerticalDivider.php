@@ -35,7 +35,7 @@ class VerticalDivider extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <span class="d-block <?= $props['class'] ?>" style="width: 1px; height: <?= $props['height'] ?>px; background: linear-gradient(transparent, white); margin-left: auto; margin-right: auto;"></span>
+            <span class="d-block <?= $props['class'] ?? '' ?>" style="width: 1px; height: <?= $props['height'] ?? '' ?>px; background: linear-gradient(transparent, white); margin-left: auto; margin-right: auto;"></span>
         <?php
     }
 

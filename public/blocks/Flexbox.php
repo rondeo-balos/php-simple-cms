@@ -57,10 +57,10 @@ class Flexbox extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <div class="d-flex flex-column <?= $props['direction'] ?> <?= $props['class'] ?>">
+            <div class="d-flex flex-column <?= $props['direction'] ?? '' ?> <?= $props['class'] ?? '' ?>">
                 <?php
                     if( !empty( $props['blocks'] ) ) {
-                        BlockManager::renderBlocks( $props['blocks'], '<div class="flex-fill">', '</div>' );
+                        BlockManager::renderBlocks( $props['blocks'] ?? '', '<div class="flex-fill">', '</div>' );
                     }
                 ?>
             </div>

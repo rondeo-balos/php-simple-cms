@@ -31,6 +31,8 @@ use Twig\Node\Expression\Unary\AbstractUnary;
 use Twig\Node\ModuleNode;
 use Twig\Node\Node;
 use Twig\NodeVisitor\NodeVisitorInterface;
+use Twig\Runtime\EscaperRuntime;
+use Twig\RuntimeLoader\FactoryRuntimeLoader;
 use Twig\RuntimeLoader\RuntimeLoaderInterface;
 use Twig\TokenParser\TokenParserInterface;
 
@@ -41,12 +43,12 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    public const VERSION = '3.9.3';
-    public const VERSION_ID = 30903;
+    public const VERSION = '3.10.2-DEV';
+    public const VERSION_ID = 301002;
     public const MAJOR_VERSION = 3;
-    public const MINOR_VERSION = 9;
-    public const RELEASE_VERSION = 3;
-    public const EXTRA_VERSION = '';
+    public const MINOR_VERSION = 10;
+    public const RELEASE_VERSION = 2;
+    public const EXTRA_VERSION = 'DEV';
 
     private $charset;
     private $loader;
@@ -69,6 +71,7 @@ class Environment
     private $optionsHash;
     /** @var bool */
     private $useYield;
+    private $defaultRuntimeLoader;
 
     /**
      * Constructor.
@@ -127,9 +130,14 @@ class Environment
         $this->strictVariables = (bool) $options['strict_variables'];
         $this->setCache($options['cache']);
         $this->extensionSet = new ExtensionSet();
+        $this->defaultRuntimeLoader = new FactoryRuntimeLoader([
+            EscaperRuntime::class => function () { return new EscaperRuntime($this->charset); },
+        ]);
 
         $this->addExtension(new CoreExtension());
-        $this->addExtension(new EscaperExtension($options['autoescape']));
+        $escaperExt = new EscaperExtension($options['autoescape']);
+        $escaperExt->setEnvironment($this, false);
+        $this->addExtension($escaperExt);
         if (\PHP_VERSION_ID >= 80000) {
             $this->addExtension(new YieldNotReadyExtension($this->useYield));
         }
@@ -618,6 +626,10 @@ class Environment
             if (null !== $runtime = $loader->load($class)) {
                 return $this->runtimes[$class] = $runtime;
             }
+        }
+
+        if (null !== $runtime = $this->defaultRuntimeLoader->load($class)) {
+            return $this->runtimes[$class] = $runtime;
         }
 
         throw new RuntimeError(sprintf('Unable to load the "%s" runtime.', $class));

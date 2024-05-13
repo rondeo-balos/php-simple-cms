@@ -71,10 +71,10 @@ class Nav extends BaseBlock{
 
     public static function render( array $props ) {
         ?>
-            <ul class="nav <?= $props['direction'] ?> <?= $props['align'] ?> <?= $props['class'] ?>" style="min-width: <?= $props['width'] ?>px">
+            <ul class="nav <?= $props['direction'] ?? '' ?> <?= $props['align'] ?? '' ?> <?= $props['class'] ?? '' ?>" style="min-width: <?= $props['width'] ?? '' ?>px">
                 <?php foreach( $props['content'] as $key => $item ): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= Db::formatter( $item->link, 'path', __ROOT__ ) ?>"><?= $item->label ?></a>
+                        <a class="nav-link" href="<?= Db::formatter( $item->link ?? '', 'path', __ROOT__ ) ?>"><?= $item->label ?? '' ?></a>
                     </li>
                 <?php endforeach; ?>
             </ul>
