@@ -17,3 +17,4 @@ extension=gd
 extension=pdo_sqlite
 extension=mbstring
 extension=exif
+extension=zip

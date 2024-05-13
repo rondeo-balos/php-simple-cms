@@ -8,12 +8,12 @@ $destinationDir = __DIR__;
 
 // List of folders you want to extract from the package archive
 $foldersToExtract = [
-    'components',
-    'includes',
-    'model',
-    'layout',
-    'src',
-    'vendor'
+    'php-simple-cms-main/components',
+    'php-simple-cms-main/includes',
+    'php-simple-cms-main/model',
+    'php-simple-cms-main/layout',
+    'php-simple-cms-main/src',
+    'php-simple-cms-main/vendor'
     // Add more folders as needed
 ];
 
@@ -22,7 +22,10 @@ $packageArchive = file_get_contents($packageUrl);
 
 if ($packageArchive !== false) {
     // Extract the package archive to a temporary directory
-    $tempDir = sys_get_temp_dir() . '/package_temp';
+    $tempDir = sys_get_temp_dir() . '/simpl_temp';
+    if (!file_exists($tempDir)) {
+        mkdir($tempDir, 0777, true);
+    }
     file_put_contents($tempDir . '/package.zip', $packageArchive);
     $zip = new ZipArchive;
     if ($zip->open($tempDir . '/package.zip') === true) {
