@@ -20,7 +20,7 @@
             "php -S localhost:80"
         ],
         "simpl:update": [
-            "php update"
+            "php update.php"
         ]
     },
     "require": {
