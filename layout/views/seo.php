@@ -58,20 +58,29 @@ $data = json_decode( $seo->data );
                 </div>
             </div>
             <div class="tab-pane fade" id="images-tab" role="tabpanel" aria-labelledby="images" tabindex="0">
-                <div class="form-group p-4 border-bottom">
-                    <label class="form-label">Default Sharing Image</label>
-                    <input type="text" class="form-control form-control-sm mb-2" name="sharingimage" value="<?= $data->sharingimage ?? '' ?>" show="media" readonly>
-                    <img class="media-preview img-thumbnail" src="<?= Db::formatter( $data->sharingimage ?? '', 'filepath', ROOT ) ?>">
-                </div>
-                <div class="form-group p-4 border-bottom">
-                    <label class="form-label">Logo</label>
-                    <input type="text" class="form-control form-control-sm mb-2" name="orgimage" value="<?= $data->orgimage ?? '' ?>" show="media" readonly>
-                    <img class="media-preview img-thumbnail" src="<?= Db::formatter( $data->orgimage ?? '', 'filepath', ROOT ) ?>">
-                </div>
-                <div class="form-group p-4">
-                    <label class="form-label">Favicon</label>
-                    <input type="text" class="form-control form-control-sm mb-2" name="icon" value="<?= $data->icon ?? '' ?>" show="media" readonly>
-                    <img class="media-preview img-thumbnail" src="<?= Db::formatter( $data->icon ?? '', 'filepath', ROOT ) ?>">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group p-4">
+                            <label class="form-label">Default Sharing Image</label>
+                            <input type="text" class="form-control form-control-sm mb-2" name="sharingimage" value="<?= $data->sharingimage ?? '' ?>" show="media" readonly>
+                            <img class="media-preview img-thumbnail" src="<?= Db::formatter( $data->sharingimage ?? '', 'filepath', ROOT ) ?>">
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group p-4 border-start">
+                            <label class="form-label">Logo</label>
+                            <input type="text" class="form-control form-control-sm mb-2" name="orgimage" value="<?= $data->orgimage ?? '' ?>" show="media" readonly>
+                            <img class="media-preview img-thumbnail" src="<?= Db::formatter( $data->orgimage ?? '', 'filepath', ROOT ) ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group p-4 border-start">
+                            <label class="form-label">Favicon</label>
+                            <input type="text" class="form-control form-control-sm mb-2" name="icon" value="<?= $data->icon ?? '' ?>" show="media" readonly>
+                            <img class="media-preview img-thumbnail" src="<?= Db::formatter( $data->icon ?? '', 'filepath', ROOT ) ?>">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
