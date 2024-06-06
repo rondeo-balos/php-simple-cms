@@ -58,6 +58,23 @@ if ($packageArchive !== false) {
 }
 
 // Function to copy folder from extracted files to destination directory
+/*function copyPackageFolder($tempDir, $folderName, $destinationDir) {
+    $sourceDir = $tempDir . '/' . $folderName;
+    if (is_dir($sourceDir)) {
+        // Create destination directory if it doesn't exist
+        if (!is_dir($destinationDir)) {
+            mkdir($destinationDir, 0777, true);
+        }
+        // Copy folder recursively
+        copy( $sourceDir, $destinationDir );
+        //$cmd = "cp -r $sourceDir $destinationDir";
+        //exec($cmd);
+    } else {
+        echo "Source folder '$sourceDir' not found.";
+    }
+}*/
+
+// Function to copy folder from extracted files to destination directory
 function copyPackageFolder($tempDir, $folderName, $destinationDir) {
     $sourceDir = $tempDir . '/' . $folderName;
     if (is_dir($sourceDir)) {
@@ -66,9 +83,48 @@ function copyPackageFolder($tempDir, $folderName, $destinationDir) {
             mkdir($destinationDir, 0777, true);
         }
         // Copy folder recursively
-        $cmd = "cp -r $sourceDir $destinationDir";
-        exec($cmd);
+        copyDirectory($sourceDir, $destinationDir);
     } else {
         echo "Source folder '$sourceDir' not found.";
     }
+}
+
+// Function to recursively copy a directory and its contents
+function copyDirectory($sourceDir, $destinationDir) {
+    // Open source directory for reading
+    $dir = opendir($sourceDir);
+    if (!$dir) {
+        echo "Failed to open source directory: $sourceDir";
+        return false;
+    }
+
+    // Loop through files and directories in the source directory
+    while (($file = readdir($dir)) !== false) {
+        // Skip special directories (. and ..)
+        if ($file == '.' || $file == '..') {
+            continue;
+        }
+
+        // Build source and destination paths
+        $sourcePath = $sourceDir . '/' . $file;
+        $destinationPath = $destinationDir . '/' . $file;
+
+        // If the current item is a directory, recursively copy it
+        if (is_dir($sourcePath)) {
+            if (!copyDirectory($sourcePath, $destinationPath)) {
+                return false; // Failed to copy subdirectory
+            }
+        } else {
+            // If the current item is a file, copy it
+            if (!copy($sourcePath, $destinationPath)) {
+                echo "Failed to copy file: $sourcePath";
+                return false;
+            }
+        }
+    }
+
+    // Close the source directory handle
+    closedir($dir);
+
+    return true;
 }

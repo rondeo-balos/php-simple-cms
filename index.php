@@ -21,8 +21,8 @@ session_start();
 
 // Define path
 if( !defined( 'ABSPATH' ) ) { define( 'ABSPATH', __DIR__ . '/' ); }
-if( !defined( 'ROOT' ) ) { define( 'ROOT', (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/' ); }
-if( !defined( '__ROOT__' ) ) { define( '__ROOT__', (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] ); }
+if( !defined( 'ROOT' ) ) { define( 'ROOT', /*(!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://'*/ '//' . $_SERVER['HTTP_HOST'] . '/' ); }
+if( !defined( '__ROOT__' ) ) { define( '__ROOT__', /*(!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://'*/ '//' . $_SERVER['HTTP_HOST'] ); }
 if( !defined( '__VIEWS__' ) ) { define( '__VIEWS__', '../layout/views/' ); }
 
 require __DIR__ . '/vendor/autoload.php';

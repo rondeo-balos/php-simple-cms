@@ -83,7 +83,7 @@ $data = json_decode( $settings->data );
     }
 
     <?php
-        foreach( $data->link as $key => $link ) {
+        foreach( $data->link ?? [] as $key => $link ) {
             $label = $data->label[$key];
             echo '_addfields("' . $link . '","' . $label . '");';
         }
