@@ -145,7 +145,18 @@ class InstallController extends BaseController {
     }
 
     private static function createUsersTable( $manager, $driver ) {
-        $create_user_table = "CREATE TABLE IF NOT EXISTS users (
+        Manager::schema()->create( 'users', function( $table ) {
+            $table->increments( 'ID' );
+            $table->string( 'email' )->unique();
+            $table->text( 'password' );
+            $table->string( 'firstname' );
+            $table->string( 'lastname' );
+            $table->integer( 'administrator' )->default( 0 );
+            $table->integer( 'status' )->default( 0 );
+            $table->text( 'token' )->default( null );
+            $table->timestamps()->default( 'CURRENT_TIMESTAMP' );
+        });
+        /*$create_user_table = "CREATE TABLE IF NOT EXISTS users (
             ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
             email VARCHAR(255),
             password TEXT,
@@ -158,11 +169,25 @@ class InstallController extends BaseController {
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(email)
         )"; // ON UPDATE CURRENT_TIMESTAMP
-        $manager->statement( $create_user_table );
+        $manager->statement( $create_user_table );*/
     }
 
     private static function createPageTable( $manager, $driver ) {
-        $create_page_table = "CREATE TABLE IF NOT EXISTS pages (
+        Manager::schema()->create( 'pages', function( $table ) {
+            $table->increments( 'ID' );
+            $table->string( 'title' );
+            $table->string( 'description' );
+            $table->string( 'visibility' );
+            $table->string( 'path' )->unique();
+            $table->json( 'blocks' );
+            $table->json( 'fields' );
+            $table->string( 'layout' )->default( 'default' );
+            $table->integer( 'status' )->default( 0 );
+            $table->integer( 'author' );
+            $table->string( 'token' );
+            $table->timestamps()->default( 'CURRENT_TIMESTAMP' );
+        });
+        /*$create_page_table = "CREATE TABLE IF NOT EXISTS pages (
             ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
             title VARCHAR(255),
             description VARCHAR(255),
@@ -178,22 +203,37 @@ class InstallController extends BaseController {
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(path)
         )";
-        $manager->statement( $create_page_table );
+        $manager->statement( $create_page_table );*/
     }
 
     private static function createPreviewTable( $manager, $driver ) {
-        $create_preview_table = "CREATE TABLE IF NOT EXISTS previews (
+        Manager::schema()->create( 'previews', function( $table ) {
+            $table->increments( 'ID' );
+            $table->string( 'token' );
+            $table->json( 'data' );
+            $table->timestamps()->default( 'CURRENT_TIMESTAMP' );
+        });
+        /*$create_preview_table = "CREATE TABLE IF NOT EXISTS previews (
             ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
             token VARCHAR(255),
             data JSON,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
-        $manager->statement( $create_preview_table );
+        $manager->statement( $create_preview_table );*/
     }
 
     private static function createMediaTable( $manager, $driver ) {
-        $create_media_table = "CREATE TABLE IF NOT EXISTS media (
+        Manager::schema()->create( 'media', function( $table ) {
+            $table->increments( 'ID' );
+            $table->string( 'title' );
+            $table->text( 'alt' );
+            $table->integer( 'type' );
+            $table->text( 'filepath' );
+            $table->text( 'thumb' );
+            $table->timestamps()->default( 'CURRENT_TIMESTAMP' );
+        });
+        /*$create_media_table = "CREATE TABLE IF NOT EXISTS media (
             ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
             title VARCHAR(255),
             alt TEXT,
@@ -203,18 +243,24 @@ class InstallController extends BaseController {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
-        $manager->statement( $create_media_table );
+        $manager->statement( $create_media_table );*/
     }
 
     private static function createCollectionsTable( $manager, $driver ) {
-        $create_collections_table = "CREATE TABLE IF NOT EXISTS collections(
+        Manager::schema()->create( 'collections', function( $table ) {
+            $table->increments( 'ID' );
+            $table->string( 'name' );
+            $table->json( 'data' );
+            $table->timestamps()->default( 'CURRENT_TIMESTAMP' );
+        });
+        /*$create_collections_table = "CREATE TABLE IF NOT EXISTS collections(
             ID INTEGER PRIMARY KEY " . ($driver === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT')  . ",
             name VARCHAR(255),
             data JSON,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )";
-        $manager->statement( $create_collections_table );
+        $manager->statement( $create_collections_table );*/
     }
 
 }
