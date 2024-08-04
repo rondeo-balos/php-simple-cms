@@ -1,8 +1,14 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
+use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+Artisan::command( 'register-admin {name} {email} {password}', function( string $name, string $email, string $password ) {
+    $this->info( 'Creating admin: ' . $name . '(' . $email . ')' );
+    User::factory()->create([
+        'name' => $name,
+        'email' => $email,
+        'password' => $password
+    ]);
+    $this->info( 'Admin successfully created! You can now login on the frontend.' );
+})->purpose( 'Create an administrator account' );
