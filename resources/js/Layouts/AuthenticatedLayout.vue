@@ -112,10 +112,7 @@ const showingNavigationDropdown = ref(false);
                 </div>
 
                 <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
+                <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden" >
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
@@ -155,7 +152,7 @@ const showingNavigationDropdown = ref(false);
                             </Link>
                         </li>
                         <li>
-                            <Link :href="route('dashboard')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('media')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
                                 <Image class="w-6" />
                                 <span class="hidden sm:inline">Media</span>
                             </Link>
@@ -181,7 +178,7 @@ const showingNavigationDropdown = ref(false);
                     </ul>
 
                 </div>
-                <div class="flex-grow">
+                <div class="flex-grow h-[calc(100vh-70px)] overflow-y-auto p-2">
                     <!-- Page Heading -->
                     <header v-if="$slots.header">
                         <div class="max-w-screen-2xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
