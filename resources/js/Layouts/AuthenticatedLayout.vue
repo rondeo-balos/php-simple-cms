@@ -158,7 +158,7 @@ const showingNavigationDropdown = ref(false);
                             </Link>
                         </li>
                         <li>
-                            <Link :href="route('dashboard')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('user')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
                                 <People class="w-6" />
                                 <span class="hidden sm:inline">Users</span>
                             </Link>

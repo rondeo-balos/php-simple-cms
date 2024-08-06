@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,11 +25,16 @@ Route::middleware('auth')->group( function () {
 });
 
 Route::middleware( 'auth' )->group( function() {
+    // Media
     Route::get( '/admin/media', [MediaController::class, 'index'] )->name( 'media' );
     Route::get( '/admin/media/add', [MediaController::class, 'add'] )->name( 'media.add' );
     Route::post( '/admin/media', [MediaController::class, 'create'] )->name( 'media.create' );
     Route::patch( '/admin/media/{ID}', [MediaController::class, 'update'] )->name( 'media.update' );
     Route::delete( '/admin/media/{ID}', [MediaController::class, 'delete'] )->name( 'media.delete' );
+
+    // Users
+    Route::get( '/admin/users', [UserController::class, 'index'] )->name( 'user' );
+    Route::get( '/admin/users/add', [UserController::class, 'add'] )->name( 'user.add' );
 });
 
 require __DIR__.'/auth.php';
