@@ -7,18 +7,18 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
+Route::get('/', function() {
     return Inertia::render('Welcome', [
         //'canLogin' => Route::has('login'),
         //'canRegister' => Route::has('register'),
     ]);
 });
 
-Route::get('/admin/dashboard', function () {
+Route::get('/admin/dashboard', function() {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group( function () {
+Route::middleware('auth')->group( function() {
     Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/admin/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -38,6 +38,11 @@ Route::middleware( 'auth' )->group( function() {
     Route::get( '/admin/users/{ID}', [UserController::class, 'edit'] )->name( 'user.edit' );
 
     Route::delete( '/admin/users/{ID}', [UserController::class, 'delete'] )->name( 'user.delete' );
+
+    // Test
+    Route::get( '/test', function() {
+        return Inertia::render('Test');
+    } );
 });
 
 require __DIR__.'/auth.php';
