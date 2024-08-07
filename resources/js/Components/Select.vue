@@ -10,6 +10,9 @@ const definedProps = defineProps({
     },
     'selected': {
         type: String
+    },
+    'radio': {
+        type: Boolean
     }
 });
 
@@ -38,7 +41,7 @@ const triggerChange = (value) => {
             <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRadioButton">
                 <li v-for="option in options">
                     <div @click="triggerChange(option)" class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <input :checked="option === selected" :id="'filter-radio-' + option" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 checked:ring-blue-500 focus:ring-blue-500 checked:dark:ring-blue-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 checked:dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <input v-if="radio" :checked="option === selected" :id="'filter-radio-' + option" type="radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 checked:ring-blue-500 focus:ring-blue-500 checked:dark:ring-blue-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 checked:dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         <label :for="'filter-radio-' + option" class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">{{ option }}</label>
                     </div>
                 </li>

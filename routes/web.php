@@ -35,6 +35,9 @@ Route::middleware( 'auth' )->group( function() {
     // Users
     Route::get( '/admin/users', [UserController::class, 'index'] )->name( 'user' );
     Route::get( '/admin/users/add', [UserController::class, 'add'] )->name( 'user.add' );
+    Route::get( '/admin/users/{ID}', [UserController::class, 'edit'] )->name( 'user.edit' );
+
+    Route::delete( '/admin/users/{ID}', [UserController::class, 'delete'] )->name( 'user.delete' );
 });
 
 require __DIR__.'/auth.php';
