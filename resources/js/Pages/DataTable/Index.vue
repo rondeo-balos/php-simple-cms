@@ -124,7 +124,7 @@ onMounted(() => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="bg-white border-t dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50- dark:hover:bg-gray-600-" v-for="item in data.data">
+                            <tr v-if="data.data.length > 0" v-for="item in data.data" class="bg-white border-t dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50- dark:hover:bg-gray-600-">
                                 <td class="px-6 py-4" v-for="column in columns">{{ item[column] }}</td>
                                 <td class="px-6 py-4 text-right">
                                     <!-- Temporary -->
@@ -137,6 +137,9 @@ onMounted(() => {
                                         //router.delete( val )
                                     }" class="text-left"/>
                                 </td>
+                            </tr>
+                            <tr v-else class="bg-white border-t dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50- dark:hover:bg-gray-600-">
+                                <td class="px-6 py-4 text-center" :colspan="columns.length + 1"> No data </td>
                             </tr>
                         </tbody>
                     </table>

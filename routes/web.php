@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -39,12 +40,19 @@ Route::middleware( 'auth' )->group( function() {
 
     Route::delete( '/admin/users/{ID}', [UserController::class, 'delete'] )->name( 'user.delete' );
 
+    // Page
+    Route::get( '/admin/pages', [PageController::class, 'index'] )->name( 'page' );
+    Route::get( '/admin/pages/add', [PageController::class, 'add'] )->name( 'page.add' );
+    Route::get( '/admin/pages/{ID}', [PageController::class, 'edit'] )->name( 'page.edit' );
+
     // Test
+    Route::get( '/preview', function() {
+        return Inertia::render( 'Preview', [
+            'title' => 'Preview'
+        ]);
+    });
     Route::get( '/test', function() {
         return Inertia::render('Test', ['title' => 'Home']);
-    } );
-    Route::get( '/builder-test', function() {
-        return Inertia::render( 'Page/Builder' );
     } );
 });
 

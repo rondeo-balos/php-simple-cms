@@ -1,40 +1,72 @@
 <script setup>
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Nested from './Partials/Nested.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
-let items = ref([
-    {
-        name: 'image',
-        id: '123'
+const props = defineProps({
+    components: {
+        type: Array,
+        required: true
     },
-    {
-        name: 'text',
-        id: '1232'
-    },
-    {
-        name: 'container2',
-        id: '2134444',
-        nested: true,
-        list: []
-    },
-    {
-        name: 'container',
-        id: '1223',
-        nested: true,
-        list: [
-            {
-                name: 'yeah',
-                id: '11123'
-            }
-        ]
+    content: {
+        type: Array,
+        default: []
     }
-]);
+});
 
-const addComponent = (name) => {
-    items.value.push({ name });
-    console.log( items.value );
+/** Fetch available public components */
+let availableComponents = ref([]);
+const componentProps = async () => {
+    for( const index in props.components ) {
+        try {
+            const componentName = props.components[index];
+            const componentModule = await import(`../../Components/Public/${componentName}.vue`);
+            const componentProps = componentModule.default.props;
+            availableComponents.value.push({
+                name: componentName,
+                props: componentProps
+            });
+
+            console.log(`Fetched ${componentName}:`, componentProps);
+        } catch (error) {
+            console.error(`Error fetching:`, error);
+        }
+    } 
+}
+
+componentProps();
+
+/** Draggable code */
+let items = ref(props.content);
+
+const addComponent = (name, props) => {
+    let properProps = {};
+    Object.keys( props ).forEach( (key, index) => {
+        let def = props[key].default;
+        properProps[key] = def;
+    });
+    items.value.push({ 
+        name, 
+        props: properProps
+    });
 };
+
+const preview = () => {
+    const iframe = document.querySelector( 'iframe' );
+    const message = {
+        type: 'DATA',
+        payload: JSON.stringify(items.value)
+    };
+
+    if( iframe && iframe.contentWindow ) {
+        iframe.contentWindow.postMessage( message );
+    }
+};
+
+// Watch the items ref for changes
+watch(items, (newVal) => {
+    preview();
+}, { deep: true });
 
 const save = () => {
     console.log( JSON.stringify(items.value, null, 2) );
@@ -42,9 +74,20 @@ const save = () => {
 </script>
 
 <template>
-    <div>
-        
-        <div class="border shadow p-1 m-2 inline-block bg-slate-50 rounded">
+    <div class="flex flex-row">
+        <div class="shadow p-1 bg-gray-900 h-screen overflow-auto max-w-52">
+            <div class="flex flex-row flex-wrap">
+                <div class="w-1/2 flex-0 p-1" v-for="component in availableComponents">
+                    <PrimaryButton @click="addComponent(component.name, component.props)" class="w-full">Add {{ component.name }}</PrimaryButton>
+                </div>
+            </div>
+        </div>
+
+        <div class=" flex-grow">
+            <iframe src="http://127.0.0.1:8000/preview" class="w-full h-full"></iframe>
+        </div>
+
+        <div class="shadow p-1 bg-gray-900 h-screen overflow-y-auto">
             <Nested :list="items" />
         </div>
     </div>
