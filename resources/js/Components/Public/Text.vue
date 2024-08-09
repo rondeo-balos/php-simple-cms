@@ -2,11 +2,11 @@
 defineProps({
     content: {
         type: String,
-        required: true
+        default: 'This is a paragraph text'
     }
 });
 </script>
 
 <template>
-    <p>{{ content }}</p>
+    <p class=" text-black dark:text-gray-400">{{ content }}</p>
 </template>

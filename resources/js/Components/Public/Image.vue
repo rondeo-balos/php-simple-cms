@@ -2,15 +2,15 @@
 defineProps({
     src: {
         type: String,
-        required: true
+        default: 'https://placehold.co/600x400'
     },
     alt: {
         type: String,
-        required: true
+        default: 'Placeholder Image'
     }
 });
 </script>
 
 <template>
-    <img :src="src" :alt="alt" />
+    <img :src="src" :alt="alt" class="mx-auto" />
 </template>
