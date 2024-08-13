@@ -27,7 +27,7 @@ const dragOptions = computed(() => {
         <template #item="{element}">
             <div>
                 <div class="rounded shadow-sm m-2 p-2 w-52 bg-gray-700 text-white cursor-move">{{ element.name }}</div>
-                <Nested v-if="element.nested" :class="{ 'ms-6': element.nested }" :list="element.list" @update:list="newList => updateList(newList)" />
+                <Nested v-if="element.nested" :class="{ 'ms-6': element.nested }" :list="element.props.list" @update:list="newList => updateList(newList)" />
             </div>
         </template>
     </draggable>

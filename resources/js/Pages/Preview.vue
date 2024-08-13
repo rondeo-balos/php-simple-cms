@@ -1,7 +1,8 @@
 <script setup>
-import { ref, defineAsyncComponent, onMounted, onUnmounted } from 'vue';
+import { ref, defineAsyncComponent, onMounted, onUnmounted, getCurrentInstance } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head } from '@inertiajs/vue3';
+import Container from '@/Components/Public/Container.vue';
 
 const props = defineProps({
     title: {
@@ -18,16 +19,16 @@ const props = defineProps({
     }
 });
 
-const components = ref([]);
-
 const loadLayout = (layout) => {
     return defineAsyncComponent(() => import(`../Layouts/Public/${layout}.vue`));
 };
 
+const components = ref([]);
+
 const addComponent = (name, props = {}) => {
     const dynamicComponent = defineAsyncComponent(() => import(`../Components/Public/${name}.vue`));
     components.value.push({ dynamicComponent, props });
-    console.log('Component added:', components.value); // Debugging
+    //console.log('Component added:', components.value); // Debugging
 };
 
 const loadComponents = ( data ) => {
@@ -61,8 +62,8 @@ onUnmounted(() => {
     <div class="dark">
         <div class="bg-gray-200 dark:bg-gray-950">
             <component :is="layout">
+                <!--<Container :list="components" />-->
                 <div v-for="(item, index) in components" :key="index">
-                    <!-- Directly render the dynamically imported component -->
                     <component :is="item.dynamicComponent" v-bind="item.props" />
                 </div>
             </component>

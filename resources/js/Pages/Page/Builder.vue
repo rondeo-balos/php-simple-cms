@@ -47,11 +47,15 @@ const addComponent = (name, props) => {
     });
     items.value.push({ 
         name, 
+        nested: props.nested ?? false,
         props: properProps
     });
+
+    save();
 };
 
 const preview = () => {
+    console.log(JSON.stringify(items.value) );
     const iframe = document.querySelector( 'iframe' );
     const message = {
         type: 'DATA',
