@@ -27,7 +27,7 @@ const triggerChange = (value, index) => {
             <Ellipsis class="w-6" />
         </button>
         <!-- Dropdown menu -->
-        <div v-if="isOpen" class="z-10 min-w-32 bg-white divide-y divide-gray-100 rounded-lg overflow-hidden shadow-md dark:bg-gray-700 dark:divide-gray-600 absolute right-0 top-12">
+        <div v-if="isOpen" class="z-10 min-w-32 bg-white divide-y divide-gray-100 rounded-lg overflow-hidden shadow-md border dark:bg-gray-700 dark:divide-gray-600 fixed mt-2 -ml-16">
             <ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownRadioButton">
                 <li v-for="(option, index) in options">
                     <div @click="triggerChange(option, index)" class="flex items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">

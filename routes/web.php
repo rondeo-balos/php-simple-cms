@@ -57,3 +57,8 @@ Route::middleware( 'auth' )->group( function() {
 });
 
 require __DIR__.'/auth.php';
+
+// Link storage for production
+Route::get( '/linkstorage', function() {
+    Artisan::call( 'storage:link' );
+});

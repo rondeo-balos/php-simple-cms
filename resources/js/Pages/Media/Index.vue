@@ -100,7 +100,7 @@ const deleteMedia = (id) => {
                 </h2>
                 <form @submit.prevent="saveEdit">
                     <div class="mb-6">
-                        <img v-if="URL" :src="'/storage/' + URL" class="w-full mt-4 object-cover" />
+                        <img v-if="URL" :src="'/storage/' + URL" class="w-full mt-4 object-cover h-96" />
                     </div>
                     <div class="mb-6">
                         <InputLabel for="title" value="Title" class="sr-only" />
