@@ -1,8 +1,6 @@
 <script setup>
 import { ref, defineAsyncComponent, onMounted, onUnmounted, getCurrentInstance } from 'vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head } from '@inertiajs/vue3';
-import Container from '@/Components/Public/Container.vue';
 
 const props = defineProps({
     title: {
