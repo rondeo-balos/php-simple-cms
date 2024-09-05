@@ -45,10 +45,10 @@ const addComponent = (name, props) => {
         let def = props[key].default;
         properProps[key] = def;
     });
-    items.value.push({ 
+    items.value.push({
         name, 
         nested: props.nested ?? false,
-        props: properProps
+        props: JSON.parse(JSON.stringify(properProps)) // Deep copy
     });
 
     save();

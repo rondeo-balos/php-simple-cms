@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineAsyncComponent, onMounted, onUnmounted, getCurrentInstance } from 'vue';
+import { ref, defineAsyncComponent, onMounted, onUnmounted, markRaw } from 'vue';
 import { Head } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -24,7 +24,7 @@ const loadLayout = (layout) => {
 const components = ref([]);
 
 const addComponent = (name, props = {}) => {
-    const dynamicComponent = defineAsyncComponent(() => import(`../Components/Public/${name}.vue`));
+    const dynamicComponent = markRaw( defineAsyncComponent(() => import(`../Components/Public/${name}.vue`)) );
     components.value.push({ dynamicComponent, props });
     //console.log('Component added:', components.value); // Debugging
 };

@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent, ref, watch } from 'vue';
+import { defineAsyncComponent, markRaw, ref } from 'vue';
 
 const props = defineProps({
     list: {
@@ -15,7 +15,7 @@ const props = defineProps({
 const components = ref([]);
 
 const addComponent = (name, props = {}) => {
-    const dynamicComponent = defineAsyncComponent(() => import(`./${name}.vue`));
+    const dynamicComponent = markRaw( defineAsyncComponent(() => import(`./${name}.vue`)) );
     components.value.push({ dynamicComponent, props });
 };
 
@@ -31,7 +31,7 @@ loadComponents( props.list );
 
 <template>
     <div class="flex flex-row">
-        <div v-for="(item, index) in components" :key="index">
+        <div v-for="(item, index) in components" :key="item.id">
             <!-- Directly render the dynamically imported component -->
             <component :is="item.dynamicComponent" v-bind="item.props" />
         </div>

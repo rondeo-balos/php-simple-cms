@@ -1,10 +1,10 @@
 <script setup>
 import Search from '@/Icons/Search.vue';
-import Select from '@/Components/Select.vue';
+import Select from '@/Components/CustomComponents/Select.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
-import SelectAction from '@/Components/SelectAction.vue';
+import SelectAction from '@/Components/CustomComponents/SelectAction.vue';
 
 const definedProps = defineProps({
     'title': {
