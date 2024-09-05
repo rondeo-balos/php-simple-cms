@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
+import Dropdown from '@/Components/CustomComponents/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ThemeToggler from '@/Components/ThemeToggler.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
