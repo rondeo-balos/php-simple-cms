@@ -15,6 +15,10 @@ Route::get('/', function() {
     ]);
 });
 
+Route::get( '/admin', function() {
+    return Redirect::route( 'dashboard' );
+});
+
 Route::get('/admin/dashboard', function() {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

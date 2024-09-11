@@ -18,13 +18,13 @@ const props = defineProps({
 });
 
 const loadLayout = (layout) => {
-    return defineAsyncComponent(() => import(`../Layouts/Public/${layout}.vue`));
+    return defineAsyncComponent(() => import(`../Public/Layouts/${layout}.vue`));
 };
 
 const components = ref([]);
 
 const addComponent = (name, props = {}) => {
-    const dynamicComponent = markRaw( defineAsyncComponent(() => import(`../Components/Public/${name}.vue`)) );
+    const dynamicComponent = markRaw( defineAsyncComponent(() => import(`../Public/Components/${name}.vue`)) );
     components.value.push({ dynamicComponent, props });
     //console.log('Component added:', components.value); // Debugging
 };
@@ -61,7 +61,7 @@ onUnmounted(() => {
         <div class="bg-gray-200 dark:bg-gray-950">
             <component :is="layout">
                 <!--<Container :list="components" />-->
-                <div v-for="(item, index) in components" :key="index">
+                <div v-for="(item, index) in components" :key="index" class="border border-transparent hover:border-blue-700 cursor-pointer">
                     <component :is="item.dynamicComponent" v-bind="item.props" />
                 </div>
             </component>

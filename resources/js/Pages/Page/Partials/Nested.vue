@@ -1,6 +1,8 @@
 <script setup>
 import { computed } from 'vue';
 import draggable from 'vuedraggable';
+import Pen from '@/Icons/Pen.vue';
+import Trash from '@/Icons/Trash.vue';
 
 const props = defineProps({
     list: {
@@ -26,8 +28,13 @@ const dragOptions = computed(() => {
     <draggable :list="list" group="container" item-key="id" v-bind="dragOptions" @update:modelValue="updateList">
         <template #item="{element}">
             <div>
-                <div class="rounded shadow-sm m-2 p-2 w-52 bg-gray-700 text-white cursor-move">{{ element.name }}</div>
-                <Nested v-if="element.nested" :class="{ 'ms-6': element.nested }" :list="element.props.list" @update:list="newList => updateList(newList)" />
+                <div class="rounded shadow-sm my-1 p-2 w-full bg-gray-700 text-white cursor-pointer focus:cursor-move hover:bg-slate-600 flex flex-row items-center gap-2 group" @click="element.edit()">
+                    {{ element.name }}
+                    <span class="flex-grow"></span>
+                    <Pen class="w-5 h-5 cursor-pointer fill-white opacity-0 group-hover:opacity-100 transition-opacity" @click="element.edit()"/>
+                    <Trash class="w-5 h-5 cursor-pointer fill-white opacity-0 group-hover:opacity-100 transition-opacity" @click="element.delete()" />
+                </div>
+                <Nested v-if="element.nested" :class="{ 'ms-4': element.nested }" :list="element.props.list" @update:list="newList => updateList(newList)" />
             </div>
         </template>
     </draggable>

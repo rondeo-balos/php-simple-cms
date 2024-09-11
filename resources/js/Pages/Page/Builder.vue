@@ -1,7 +1,13 @@
 <script setup>
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Nested from './Partials/Nested.vue';
 import { ref, watch } from 'vue';
+import Cog from '@/Icons/Cog.vue';
+import Desktop from '@/Icons/Desktop.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import Apps from '@/Icons/Apps.vue';
+import TextInput from '@/Components/TextInput.vue';
+import ThemeToggler from '@/Components/CustomComponents/ThemeToggler.vue';
+import Mobile from '@/Icons/Mobile.vue';
 
 const props = defineProps({
     components: {
@@ -14,13 +20,20 @@ const props = defineProps({
     }
 });
 
+
+let icons = {
+    'Container': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M336 448h56a56 56 0 0056-56v-56M448 176v-56a56 56 0 00-56-56h-56M176 448h-56a56 56 0 01-56-56v-56M64 176v-56a56 56 0 0156-56h56" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+    'Heading': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M32 415.5l120-320 120 320M230 303.5H74M326 239.5c12.19-28.69 41-48 74-48h0c46 0 80 32 80 80v144"/><path d="M320 358.5c0 36 26.86 58 60 58 54 0 100-27 100-106v-15c-20 0-58 1-92 5-32.77 3.86-68 19-68 58z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+    'Image': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect x="48" y="80" width="416" height="352" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="336" cy="176" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M304 335.79l-90.66-90.49a32 32 0 00-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0143.11-2L464 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+    'Text': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M96 304h320M96 208h320M96 112h320M96 400h320"/></svg>'
+};
 /** Fetch available public components */
 let availableComponents = ref([]);
 const componentProps = async () => {
     for( const index in props.components ) {
         try {
             const componentName = props.components[index];
-            const componentModule = await import(`../../Components/Public/${componentName}.vue`);
+            const componentModule = await import(`../../Public/Components/${componentName}.vue`);
             const componentProps = componentModule.default.props;
             availableComponents.value.push({
                 name: componentName,
@@ -48,11 +61,41 @@ const addComponent = (name, props) => {
     items.value.push({
         name, 
         nested: props.nested ?? false,
+        edit: function() {
+            currentLabel.value = 'Component Settings';
+            currentProps.value = this.props;
+        },
+        delete: function() {
+            let confirmed = confirm( 'Are you sure you want to delete this component?' );
+            if( confirmed ) {
+                //const index = items.value.indexOf(this);
+                //if( index > -1 ) items.value.splice( index, 1 );
+                deleteComponent( this, items.value );
+            }
+        },
         props: JSON.parse(JSON.stringify(properProps)) // Deep copy
     });
 
     save();
 };
+
+// Delete component
+const deleteComponent = (item, list) => {
+    const index = list.indexOf(item);
+    if( index > -1 ) {
+        list.splice( index, 1 );
+    } else {
+        // Recursively search nested lists if item is not found in the top-level list
+        list.forEach( (nestedItem) => {
+            console.log( nestedItem );
+            if( nestedItem.props.list && nestedItem.props.list.length ) {
+                deleteComponent( item, nestedItem.props.list );
+            }
+        });
+    }
+};
+
+// Edit component
 
 const preview = () => {
     console.log(JSON.stringify(items.value) );
@@ -75,23 +118,57 @@ watch(items, (newVal) => {
 const save = () => {
     console.log( JSON.stringify(items.value, null, 2) );
 };
+
+// Responsive View
+const isMobile = ref(false);
+const currentLabel = ref('Components');
+const currentProps = ref({});
 </script>
 
 <template>
     <div class="flex flex-row">
-        <div class="shadow p-1 bg-gray-900 h-screen overflow-auto max-w-52">
-            <div class="flex flex-row flex-wrap">
-                <div class="w-1/2 flex-0 p-1" v-for="component in availableComponents">
-                    <PrimaryButton @click="addComponent(component.name, component.props)" class="w-full">Add {{ component.name }}</PrimaryButton>
+        <div class="shadow bg-gray-900 h-screen overflow-auto max-w-80 flex flex-col">
+            <div class="text-center text-white font-bold bg-gray-800 p-2 uppercase">{{ currentLabel }}</div>
+            <div class="flex-grow">
+                <div v-if="currentLabel === 'Components'" class="flex flex-row flex-wrap p-1">
+                    <div class="w-1/2 flex-0 p-1" v-for="component in availableComponents">
+                        <SecondaryButton @click="addComponent(component.name, component.props)" class="w-full flex flex-col gap-4"><div class="w-5 h-5" v-html="icons[component.name]"></div> {{ component.name }}</SecondaryButton>
+                    </div>
                 </div>
+                <div v-if="currentLabel === 'Component Settings'" class="flex flex-col p-1">
+                    <div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
+                        <div v-if="!Array.isArray(value)">
+                            <label class="text-white font-bold block capitalize mb-1">{{ label }}</label>
+                            <TextInput v-model="currentProps[label]" class="w-full"></TextInput>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-800 p-1 flex flex-row gap-2">
+                <ThemeToggler />
+                <SecondaryButton title="Components" @click="currentLabel = 'Components'">
+                    <Apps :class="[currentLabel == 'Components' ? 'border-b-2':'', 'fill-white min-w-5 pb-1']"/>
+                </SecondaryButton>
+                <SecondaryButton title="Settings" @click="currentLabel = 'Page Settings'">
+                    <Cog :class="[currentLabel == 'Page Settings' ? 'border-b-2':'', 'fill-white min-w-5 pb-1']"/>
+                </SecondaryButton>
+                <SecondaryButton title="Responsive Mode" @click="isMobile = !isMobile">
+                    <Mobile v-if="!isMobile" class="fill-white min-w-5 pb-1" />
+                    <Desktop v-else class="fill-white min-w-5 pb-1" />
+                </SecondaryButton>
+                <SecondaryButton title="Save" @click="save" class="w-full justify-center">Save</SecondaryButton>
             </div>
         </div>
 
-        <div class=" flex-grow">
-            <iframe src="http://127.0.0.1:8000/preview" class="w-full h-full"></iframe>
+        <div class="flex-grow bg-black">
+            <iframe src="http://127.0.0.1:8000/preview" :class="[isMobile ? 'w-[360px]' : 'w-full', 'h-full mx-auto transition-all']"></iframe>
         </div>
 
-        <div class="shadow p-1 bg-gray-900 h-screen overflow-y-auto">
+        <div class="shadow p-1 bg-gray-900 h-screen overflow-y-auto min-w-64 px-2">
+            <div v-if="items.length <= 0" class="text-white h-full flex items-center justify-center text-center border-2 border-dashed">
+                Add Components <br>
+                to get started
+            </div>
             <Nested :list="items" />
         </div>
     </div>

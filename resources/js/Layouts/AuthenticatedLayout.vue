@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/CustomComponents/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import ThemeToggler from '@/Components/ThemeToggler.vue';
+import ThemeToggler from '@/Components/CustomComponents/ThemeToggler.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import Speedometer from '@/Icons/Speedometer.vue';
 import Document from '@/Icons/Document.vue';

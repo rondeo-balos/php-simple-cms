@@ -45,7 +45,6 @@ const toggleTheme = () => {
         }
     }
 };
-
 </script>
 
 <template>

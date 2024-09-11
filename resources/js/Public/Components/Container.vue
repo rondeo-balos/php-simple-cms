@@ -7,8 +7,12 @@ const props = defineProps({
         default: []
     },
     nested: {
-        type: Boolean,
-        default: true
+        type: Function,
+        default: () => true
+    },
+    type: {
+        type: String,
+        default: 'flex-row'
     }
 });
 
@@ -30,7 +34,7 @@ loadComponents( props.list );
 </script>
 
 <template>
-    <div class="flex flex-row">
+    <div :class="['flex', type]">
         <div v-for="(item, index) in components" :key="item.id">
             <!-- Directly render the dynamically imported component -->
             <component :is="item.dynamicComponent" v-bind="item.props" />
