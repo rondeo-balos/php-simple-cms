@@ -127,8 +127,8 @@ const currentProps = ref({});
 
 <template>
     <div class="flex flex-row">
-        <div class="shadow bg-gray-900 h-screen overflow-auto max-w-80 flex flex-col">
-            <div class="text-center text-white font-bold bg-gray-800 p-2 uppercase">{{ currentLabel }}</div>
+        <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen overflow-auto max-w-80 flex flex-col">
+            <div class="text-center dark:text-white font-bold bg-gray-200 dark:bg-gray-800 p-2 uppercase">{{ currentLabel }}</div>
             <div class="flex-grow">
                 <div v-if="currentLabel === 'Components'" class="flex flex-row flex-wrap p-1">
                     <div class="w-1/2 flex-0 p-1" v-for="component in availableComponents">
@@ -138,19 +138,19 @@ const currentProps = ref({});
                 <div v-if="currentLabel === 'Component Settings'" class="flex flex-col p-1">
                     <div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
                         <div v-if="!Array.isArray(value)">
-                            <label class="text-white font-bold block capitalize mb-1">{{ label }}</label>
+                            <label class="dark:text-white font-bold block capitalize mb-1">{{ label }}</label>
                             <TextInput v-model="currentProps[label]" class="w-full"></TextInput>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="bg-gray-800 p-1 flex flex-row gap-2">
+            <div class="bg-gray-200 dark:bg-gray-800 p-1 flex flex-row gap-2">
                 <ThemeToggler />
                 <SecondaryButton title="Components" @click="currentLabel = 'Components'">
-                    <Apps :class="[currentLabel == 'Components' ? 'border-b-2':'', 'fill-white min-w-5 pb-1']"/>
+                    <Apps :class="[currentLabel == 'Components' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-5 pb-1']"/>
                 </SecondaryButton>
                 <SecondaryButton title="Settings" @click="currentLabel = 'Page Settings'">
-                    <Cog :class="[currentLabel == 'Page Settings' ? 'border-b-2':'', 'fill-white min-w-5 pb-1']"/>
+                    <Cog :class="[currentLabel == 'Page Settings' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-5 pb-1']"/>
                 </SecondaryButton>
                 <SecondaryButton title="Responsive Mode" @click="isMobile = !isMobile">
                     <Mobile v-if="!isMobile" class="fill-white min-w-5 pb-1" />
@@ -160,12 +160,12 @@ const currentProps = ref({});
             </div>
         </div>
 
-        <div class="flex-grow bg-black">
+        <div class="flex-grow dark:bg-black">
             <iframe src="http://127.0.0.1:8000/preview" :class="[isMobile ? 'w-[360px]' : 'w-full', 'h-full mx-auto transition-all']"></iframe>
         </div>
 
-        <div class="shadow p-1 bg-gray-900 h-screen overflow-y-auto min-w-64 px-2">
-            <div v-if="items.length <= 0" class="text-white h-full flex items-center justify-center text-center border-2 border-dashed">
+        <div class="shadow p-1 bg-gray-50 dark:bg-gray-900 h-screen overflow-y-auto min-w-64 px-2">
+            <div v-if="items.length <= 0" class="dark:text-white h-full flex items-center justify-center text-center border-2 border-dashed">
                 Add Components <br>
                 to get started
             </div>
