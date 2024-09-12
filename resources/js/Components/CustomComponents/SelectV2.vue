@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 const definedProps = defineProps({
-    onChange: {
+    modelValue: {
         type: Function
     },
     options: {

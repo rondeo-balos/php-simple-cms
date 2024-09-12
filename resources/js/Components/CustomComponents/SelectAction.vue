@@ -3,10 +3,10 @@ import { ref } from 'vue';
 import Ellipsis from '@/Icons/Ellipsis.vue';
 
 const definedProps = defineProps({
-    'onChange': {
+    onChange: {
         type: Function
     },
-    'options': {
+    options: {
         type: Object
     }
 });
