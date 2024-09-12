@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent, markRaw, ref } from 'vue';
+import { computed, defineAsyncComponent, defineComponent, markRaw, ref } from 'vue';
 
 const props = defineProps({
     list: {
@@ -10,9 +10,29 @@ const props = defineProps({
         type: Function,
         default: () => true
     },
-    type: {
+    direction: {
         type: String,
-        default: 'flex-row'
+        default: ''
+    },
+    justify: {
+        type: String,
+        default:  ''
+    },
+    align: {
+        type: String,
+        default: ''
+    },
+    gap_x: {
+        type: Number,
+        default: 20
+    },
+    gap_y: {
+        type: Number,
+        default: 20
+    },
+    css_classes: {
+        type: String,
+        default: ''
     }
 });
 
@@ -31,10 +51,58 @@ const loadComponents = ( data ) => {
 };
 
 loadComponents( props.list );
+
+defineOptions({
+    meta: {
+        direction: {
+            control: 'select',
+            values: {
+                'Row': 'flex-row',
+                'Column': 'flex-col',
+                'Row Reverse': 'flex-row-reverse',
+                'Column Reverse': 'flex-col-reverse'
+            }
+        },
+        justify: {
+            control: 'select',
+            values: {
+                'Start': 'justify-start',
+                'Center': 'justify-center',
+                'End': 'justify-end',
+                'Space Between': 'justify-between',
+                'Space Around': 'justify-around',
+                'Space Evenly': 'justify-evenly'
+            }
+        },
+        align: {
+            control: 'select',
+            values: {
+                'Start': 'items-start',
+                'Center': 'items-center',
+                'End': 'items-end',
+                'Stretch': 'items-stretch'
+            }
+        },
+        gap_x: {
+            control: 'number'
+        },
+        gap_y: {
+            control: 'number'
+        },
+        css_classes: {
+            control: 'text'
+        }
+    }
+});
+
+const computedStyle = computed(() => ({
+    'row-gap': `${props.gap_x}px`,
+    'column-gap': `${props.gap_y}px`
+}));
 </script>
 
 <template>
-    <div :class="['flex', type]">
+    <div :class="['flex', direction, justify, align, css_classes]" :style="computedStyle">
         <div v-for="(item, index) in components" :key="item.id">
             <!-- Directly render the dynamically imported component -->
             <component :is="item.dynamicComponent" v-bind="item.props" />

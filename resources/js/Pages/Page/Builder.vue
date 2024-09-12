@@ -35,24 +35,26 @@ const componentProps = async () => {
             const componentName = props.components[index];
             const componentModule = await import(`../../Public/Components/${componentName}.vue`);
             const componentProps = componentModule.default.props;
+            const componentMeta = componentModule.default.meta;
             availableComponents.value.push({
                 name: componentName,
-                props: componentProps
+                props: componentProps,
+                meta: componentMeta
             });
 
-            console.log(`Fetched ${componentName}:`, componentProps);
+            //console.log(`Fetched ${componentName}:`, componentProps);
         } catch (error) {
             console.error(`Error fetching:`, error);
         }
     } 
-}
+};
 
 componentProps();
 
 /** Draggable code */
 let items = ref(props.content);
 
-const addComponent = (name, props) => {
+const addComponent = (name, props, meta) => {
     let properProps = {};
     Object.keys( props ).forEach( (key, index) => {
         let def = props[key].default;
@@ -64,6 +66,7 @@ const addComponent = (name, props) => {
         edit: function() {
             currentLabel.value = 'Component Settings';
             currentProps.value = this.props;
+            currentMeta.value = this.meta ?? {};
         },
         delete: function() {
             let confirmed = confirm( 'Are you sure you want to delete this component?' );
@@ -73,7 +76,8 @@ const addComponent = (name, props) => {
                 deleteComponent( this, items.value );
             }
         },
-        props: JSON.parse(JSON.stringify(properProps)) // Deep copy
+        props: JSON.parse(JSON.stringify(properProps)), // Deep copy
+        meta
     });
 
     save();
@@ -87,7 +91,7 @@ const deleteComponent = (item, list) => {
     } else {
         // Recursively search nested lists if item is not found in the top-level list
         list.forEach( (nestedItem) => {
-            console.log( nestedItem );
+            //console.log( nestedItem );
             if( nestedItem.props.list && nestedItem.props.list.length ) {
                 deleteComponent( item, nestedItem.props.list );
             }
@@ -123,6 +127,7 @@ const save = () => {
 const isMobile = ref(false);
 const currentLabel = ref('Components');
 const currentProps = ref({});
+const currentMeta = ref({});
 </script>
 
 <template>
@@ -132,14 +137,28 @@ const currentProps = ref({});
             <div class="flex-grow">
                 <div v-if="currentLabel === 'Components'" class="flex flex-row flex-wrap p-1">
                     <div class="w-1/2 flex-0 p-1" v-for="component in availableComponents">
-                        <SecondaryButton @click="addComponent(component.name, component.props)" class="w-full flex flex-col gap-4"><div class="w-5 h-5" v-html="icons[component.name]"></div> {{ component.name }}</SecondaryButton>
+                        <SecondaryButton @click="addComponent(component.name, component.props, component.meta)" class="w-full flex flex-col gap-4"><div class="w-5 h-5" v-html="icons[component.name]"></div> {{ component.name }}</SecondaryButton>
                     </div>
                 </div>
                 <div v-if="currentLabel === 'Component Settings'" class="flex flex-col p-1">
                     <div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
-                        <div v-if="!Array.isArray(value)">
-                            <label class="dark:text-white font-bold block capitalize mb-1">{{ label }}</label>
-                            <TextInput v-model="currentProps[label]" class="w-full"></TextInput>
+                        <div v-if="!Array.isArray(value)" class="flex flex-row items-center">
+                            <label class="dark:text-white font-bold block capitalize mb-1 w-32">{{ label.replace( /_/g, ' ' ) }}</label>
+                            <!--<TextInput v-model="currentProps[label]" class="w-full"></TextInput>-->
+                            
+                            <div v-if="Object.keys(currentMeta).length > 0">
+                                <!-- Check control type -->
+                                <TextInput v-if="!currentMeta[label].control || currentMeta[label].control === 'text'" v-model="currentProps[label]" class="w-full" />
+                                <!-- Select input for 'select' control type -->
+                                <select v-else-if="currentMeta[label].control === 'select'" v-model="currentProps[label]" class="w-full">
+                                    <option v-for="(optionValue, text) in currentMeta[label].values" :key="text" :value="optionValue">
+                                        {{ text }}
+                                    </option>
+                                </select>
+                                <!-- Number input for 'number' control type -->
+                                <input v-else-if="currentMeta[label].control === 'number'" type="number" v-model="currentProps[label]" class="w-full" />
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
