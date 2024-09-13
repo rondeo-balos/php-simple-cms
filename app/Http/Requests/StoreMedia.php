@@ -21,7 +21,7 @@ class StoreMedia extends FormRequest {
         return [
             'title' => 'required|max:100',
             'alt' => 'required|max:100',
-            'file' => 'required|image|mimes:jpeg,jpg,png,gif,svg|max:2048' // Images with 2MB max upload
+            'file' => 'required|image|mimes:jpeg,jpg,png,gif,svg,webp|max:2048' // Images with 2MB max upload
         ];
     }
 }

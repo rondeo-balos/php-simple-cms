@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMedia;
 use App\Models\Media;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Redirect;
 
@@ -46,5 +48,11 @@ class MediaController extends Controller {
         Media::where( 'id', $ID )->delete();
 
         return Redirect::route( 'media' );
+    }
+
+    public function api( Request $request ): JsonResponse {
+        $media = Media::latest()->get(['title', 'alt', 'file']);
+
+        return response()->json($media);
     }
 }

@@ -9,6 +9,17 @@ defineProps({
         default: 'Placeholder Image'
     }
 });
+
+defineOptions({
+    meta: {
+        src: {
+            control: 'image'
+        },
+        alt: {
+            control: 'text'
+        }
+    }
+});
 </script>
 
 <template>

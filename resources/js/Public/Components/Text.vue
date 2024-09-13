@@ -5,8 +5,16 @@ defineProps({
         default: 'This is a paragraph text'
     }
 });
+
+defineOptions({
+    meta: {
+        content: {
+            control: 'richtext'
+        }
+    }
+});
 </script>
 
 <template>
-    <p class=" text-black dark:text-gray-400">{{ content }}</p>
+    <div class=" text-black dark:text-gray-400" v-html="content"></div>
 </template>
