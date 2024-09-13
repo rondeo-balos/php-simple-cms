@@ -172,7 +172,7 @@ const currentMeta = ref({});
                             <div v-else-if="currentMeta[label].control === 'richtext'" class="basis-full bg-white">
                                 <QuillEditor contentType="html" v-model:content="currentProps[label]" theme="snow"/>
                             </div>
-                            <ImageSelector v-else-if="currentMeta[label].control === 'image'" v-model="currentProps[label]" class="basis-full" />
+                            <ImageSelector v-else-if="currentMeta[label].control === 'image'" v-model="currentProps[label]" />
 
                         </div>
                     </div>

@@ -81,7 +81,7 @@ const deleteMedia = (id) => {
         <div class="py-2">
             <div class="sm:px-6 lg:px-8 space-y-6">
                 <ul class="flex flex-row flex-wrap gap-2">
-                    <li v-for="item in media" class="rounded-md overflow-hidden relative">
+                    <li v-for="item in media" class="rounded-md overflow-hidden relative bg-white">
                         <img :src="'/storage/' + item.file" class="w-full h-auto object-cover sm:h-52 sm:w-52">
                         <div class="absolute w-full h-full flex flex-column bg-gray-900 bg-opacity-80 top-0 left-0 z-10 items-center justify-center gap-2 opacity-0 hover:opacity-100 transition-all">
                             <PrimaryButton @click="startEdit(item.id, item.title, item.alt, item.file)"><Pen class="w-5"/></PrimaryButton>

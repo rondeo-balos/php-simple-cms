@@ -34,7 +34,7 @@ const fetchMedia = () => {
 </script>
 
 <template>
-    <div class="flex flex-row">
+    <div class="flex flex-row basis-full">
         <TextInput v-model="model" class="flex-grow me-2" />
         <SecondaryButton @click="showModal">
             <Image class="fill-white min-w-5"/>
@@ -47,13 +47,13 @@ const fetchMedia = () => {
                 Select Media
             </h2>
             
-            <div v-if="results.length > 0">
-                <div v-for="item in results" class="flex flex-row flex-wrap">
-                    <SecondaryButton class="rounded-none p-2 w-1/2 sm:w-1/4" @click="model = `/storage/${item.file}`">
+            <ul v-if="results.length > 0" class="flex flex-row flex-wrap gap-3">
+                <li v-for="item in results" class="w-1/2 sm:w-1/4">
+                    <SecondaryButton class="rounded-none p-2 w-full" @click="model = `/storage/${item.file}`; showMedia = false;">
                         <img :src="'/storage/' + item.file" class="w-full h-auto object-cover sm:h-32 ">
                     </SecondaryButton>
-                </div>
-            </div>
+                </li>
+            </ul>
             <span v-else>No Media</span>
         </div>
     </Modal>
