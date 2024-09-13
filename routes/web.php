@@ -10,6 +10,7 @@ use Inertia\Inertia;
 
 Route::get('/', function() {
     return Inertia::render('Welcome', [
+        'title' => 'Rondeo Balos'
         //'canLogin' => Route::has('login'),
         //'canRegister' => Route::has('register'),
     ]);

@@ -14,6 +14,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageSelector from '@/Components/CustomComponents/ImageSelector.vue';
 import hljs from 'highlight.js';
 import CodeEditor from 'simple-code-editor';
+import AppHead from '@/Components/CustomComponents/AppHead.vue';
 
 const props = defineProps({
     components: {
@@ -133,6 +134,7 @@ const currentMeta = ref({});
 </script>
 
 <template>
+    <AppHead title="Welcome" />
     <div class="flex flex-row">
         <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen overflow-auto max-w-80 flex flex-col">
             <div class="text-center dark:text-white font-bold bg-gray-200 dark:bg-gray-800 p-2 uppercase">{{ currentLabel }}</div>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, defineAsyncComponent } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head } from '@inertiajs/vue3';
+import AppHead from '@/Components/CustomComponents/AppHead.vue';
 
 const props = defineProps({
     title: {
@@ -46,7 +46,7 @@ loadComponents();
 </script>
 
 <template>
-    <Head :title="title" />
+    <AppHead :title="title" />
 
     <div class="dark">
         <div class="bg-gray-200 dark:bg-gray-950">

@@ -1,10 +1,10 @@
 <script setup>
+import AppHead from '@/Components/CustomComponents/AppHead.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <AppHead title="Dashboard" />
 
     <AuthenticatedLayout>
         <template #header>

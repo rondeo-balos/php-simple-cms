@@ -5,6 +5,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import SelectAction from '@/Components/CustomComponents/SelectAction.vue';
+import AppHead from '@/Components/CustomComponents/AppHead.vue';
 
 const definedProps = defineProps({
     'title': {
@@ -64,7 +65,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head :title="title + 's'" />
+    <AppHead :title="title + 's'" />
 
     <AuthenticatedLayout>
         <template #header>

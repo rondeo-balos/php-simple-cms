@@ -14,6 +14,7 @@ import DangerButton from '@/Components/DangerButton.vue';
 // Icons
 import Pen from '@/Icons/Pen.vue';
 import Trash from '@/Icons/Trash.vue';
+import AppHead from '@/Components/CustomComponents/AppHead.vue';
 
 defineProps({
     'status': {
@@ -66,7 +67,7 @@ const deleteMedia = (id) => {
 </script>
 
 <template>
-    <Head title="Media" />
+    <AppHead title="Media" />
 
     <AuthenticatedLayout>
         <template #header>
