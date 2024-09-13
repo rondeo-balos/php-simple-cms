@@ -30,7 +30,7 @@ const props = defineProps({
         type: Number,
         default: 20
     },
-    css_classes: {
+    classes: {
         type: String,
         default: ''
     }
@@ -89,7 +89,7 @@ defineOptions({
         gap_y: {
             control: 'number'
         },
-        css_classes: {
+        classes: {
             control: 'text'
         }
     }
@@ -102,7 +102,7 @@ const computedStyle = computed(() => ({
 </script>
 
 <template>
-    <div :class="['flex', direction, justify, align, css_classes]" :style="computedStyle">
+    <div :class="['flex', direction, justify, align, classes]" :style="computedStyle">
         <div v-for="(item, index) in components" :key="item.id">
             <!-- Directly render the dynamically imported component -->
             <component :is="item.dynamicComponent" v-bind="item.props" />

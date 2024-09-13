@@ -61,8 +61,8 @@ onUnmounted(() => {
         <div class="bg-gray-200 dark:bg-gray-950">
             <component :is="layout">
                 <!--<Container :list="components" />-->
-                <div v-for="(item, index) in components" :key="index" class="border border-transparent hover:border-blue-700 cursor-pointer">
-                    <component :is="item.dynamicComponent" v-bind="item.props" />
+                <div v-for="(item, index) in components" :key="index">
+                    <component :is="item.dynamicComponent" v-bind="item.props" class="border border-transparent hover:border-blue-700 cursor-pointer" />
                 </div>
             </component>
         </div>
