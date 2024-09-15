@@ -170,11 +170,23 @@ const routes = [
                     </div>-->
                 </div>
 
-                <div class="mx-auto max-w-2xl mb-20 text-center">
-                    <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 text-center mb-3">Featured Project</h2>
-                    <p class="text-center text-slate-400 mb-10">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
-                    // TODO: Show Featured Project<br><br>
-                    <a href="#" class="max-sm:hidden bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg">View all my projects</a>
+                <div class="mx-auto max-w-2xl mb-10 text-center">
+                    <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">Featured Project</h2>
+                    <p class="text-slate-400 mb-10">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
+                </div>
+
+                
+                <div class="mx-auto max-w-5xl mb-20">
+                    <div class="bg-[#232c3d] rounded-xl shadow-xl mb-10 flex flex-row overflow-hidden">
+                        <div class="p-10 md:p-20 z-10 flex flex-col justify-center items-start">
+                            <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">Simpl.CMS</h3>
+                            <p class="text-slate-400 mb-10">A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.</p>
+                            
+                            <a href="https://cms.rondeobalos.com" class="bg-[#333f5b] hover:bg-[#22c4f5] transition-colors px-4 py-3 font-bold text-white rounded-lg">Visit Site</a>
+                        </div>
+                        <img src="/storage/media/AcPmVrkwjIbPjUHRTxqvyewIJPHtKO9ImYqcSWgS.webp" alt="Simpl.CMS" class="max-h-[400px] max-md:-ml-96 opacity-20 md:opacity-80 z-0">
+                    </div>
+                    <a href="#" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-3 font-bold text-white rounded-lg table mx-auto shadow">View all my projects</a>
                 </div>
                 
                 <div class="mx-auto max-w-2xl">
