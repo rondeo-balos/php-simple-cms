@@ -65,6 +65,18 @@ Route::get( '/linkstorage', function() {
  */
 Route::get('/', function() {
     return Inertia::render('Welcome', [
-        'title' => 'Rondeo Balos'
+        'active' => 'home'
     ]);
 })->name( 'home' );
+
+Route::get( '/projects', function() {
+    return Inertia::render( 'Soon', [
+        'active' => 'projects'
+    ]);
+})->name( 'projects' );
+
+Route::get( '/blog', function() {
+    return Inertia::render( 'Soon', [
+        'active' => 'blog'
+    ]);
+})->name( 'blog' );
