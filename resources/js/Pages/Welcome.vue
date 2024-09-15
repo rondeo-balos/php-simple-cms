@@ -26,7 +26,7 @@ const projects = ref([
         title: 'Simpl.CMS',
         desc: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
         link: 'https://cms.rondeobalos.com/',
-        image: 'https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/simpl.cms.mockup.webp'
+        image: 'https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/simpl.cms.mockup-new.webp'
     },
     {
         title: 'Cool Rate',
