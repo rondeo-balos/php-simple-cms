@@ -117,6 +117,42 @@ const routes = [
         active: setActive( '' )
     }
 ];
+
+// Form submission
+const status = ref('');
+const contactForm = ref(null);
+const email = ref('');
+const message = ref('');
+async function handleSubmit(e) {
+  try {
+    const data = new FormData(e.target);
+    const res = await fetch('https://formspree.io/f/mleqykgp', {
+      method: 'POST',
+      body: data,
+      headers: { Accept: 'application/json' },
+    });
+    if (res.ok) {
+      status.value = "Thanks! I'll get back to you soon.";
+      //contactForm.value.reset();
+      email.value = '';
+      message.value = '';
+      setTimeout(() => {
+        status.value = '';
+      }, 5000);
+    } else {
+      const json = await res.json();
+      if (Object.hasOwn(json, 'errors')) {
+        const errors = json.errors.map((error) => error.message).join(', ');
+        throw new Error(errors);
+      } else {
+        throw new Error('Uh-oh! There was a problem submitting your form.');
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    status.value = err.message;
+  }
+};
 </script>
 
 <template>
@@ -224,13 +260,16 @@ const routes = [
                 <div class="bg-[#232c3d] rounded-3xl px-8 pb-0 sm:px-12 py-20 sm:mb-5">
                     <div class="mb-32" id="contact">
                         <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-8">Want to work with me?</h2>
-                        <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md mb-3">
-                            <textarea placeholder="Enter your message" class="grow rounded-lg border-0 bg-transparent text-white ring-0 focus:ring-0 h-32"></textarea>
-                        </div>
-                        <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md">
-                            <input type="text" placeholder="Enter email address" class="bg-transparent ring-0 focus:ring-0 text-white border-0 min-w-0 rounded-lg me-2 grow">
-                            <button type="submit" role="submit" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg">Send Inquiry</button>
-                        </div>
+                        <form :ref="contactForm" name="contactme" @submit.prevent="handleSubmit">
+                            <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md mb-3">
+                                <textarea placeholder="Enter your message" id="message" name="message" v-model="message" class="grow rounded-lg border-0 bg-transparent text-white ring-0 focus:ring-0 h-32"></textarea>
+                            </div>
+                            <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md">
+                                <input type="text" placeholder="Enter email address" id="email" name="email" v-model="email" class="bg-transparent ring-0 focus:ring-0 text-white border-0 min-w-0 rounded-lg me-2 grow">
+                                <button type="submit" role="submit" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg">Send Inquiry</button>
+                            </div>
+                        </form>
+                        <p v-if="status" class="text-center">{{ status }}</p>
                     </div>
                     
                     <div class="flex sm:flex-row flex-col mb-4">
