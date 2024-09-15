@@ -120,7 +120,24 @@ const routes = [
 </script>
 
 <template>
-    <Head title="Web Developer Portfolio - Rondeo Balos"></Head>
+    <Head title="Web Developer Portfolio - Rondeo Balos">
+        <meta name="description" content="Hello, I'm Rondeo Balos, a Web Developer. Each website project is unique with its own set of challenges. I treat each one with respect and dedication.">
+        <meta name="robots" content="index">
+        <meta property="og:image" content="//rondeobalos.com/src/media/f80e13a2660d5c11.webp">
+        <meta property="twitter:image" content="//rondeobalos.com/src/media/f80e13a2660d5c11.webp">
+        <meta property="og:site_name" content="Rondeo Balos">
+        <meta property="og:locale" content="en">
+        <meta property="og:title" content="Web Developer Portfolio - Rondeo Balos">
+        <meta property="og:description" content="Hello, I'm Rondeo Balos, a Web Developer. Each website project is unique with its own set of challenges. I treat each one with respect and dedication.">
+        <meta property="og:url" content="/">
+        <meta property="twitter:title" content="Web Developer Portfolio - Rondeo Balos">
+        <meta property="twitter:description" content="Hello, I'm Rondeo Balos, a Web Developer. Each website project is unique with its own set of challenges. I treat each one with respect and dedication.">
+        <meta property="og:type" content="website">
+        <meta property="twitter:card" content="summary_large_image">
+        <link rel="icon" href="//rondeobalos.com/src/media/f80e13a2660d5c11.webp">
+
+        <link rel="canonical" href="https://rondeobalos.com/">
+    </Head>
     <div class="bg-[#151924] text-gray-200">
         <!-- Header -->
         <div class="border-b border-gray-600 border-opacity-25">
@@ -145,9 +162,9 @@ const routes = [
             <div class="max-w-screen-xl px-2 py-20 mx-auto">
 
                 <div class="w-full mb-20 relative shadow-2xl rounded-3xl overflow-hidden">
-                    <!--<video class="w-full h-auto" autoplay muted loop>
+                    <video class="w-full h-auto" autoplay muted loop>
                         <source src="https://dl.dropboxusercontent.com/scl/fi/sug74uaxpbkznc34s3hjh/showreelv4.mp4?rlkey=e897a5evp3ec2ih9reu6m0q92&st=pshuxy90&dl=0" type="video/mp4">
-                    </video>-->
+                    </video>
                     <!--<div class="absolute w-full h-full top-0 backdrop-grayscale backdrop-blur-sm z-10 flex flex-col justify-center items-center">
                         <h1 class="text-white drop-shadow text-9xl text-center font-black uppercase">Rondeo Balos' Web Dev Portfolio</h1>
                     </div>-->
