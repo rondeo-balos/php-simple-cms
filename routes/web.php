@@ -4,17 +4,8 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-Route::get('/', function() {
-    return Inertia::render('Welcome', [
-        'title' => 'Rondeo Balos'
-        //'canLogin' => Route::has('login'),
-        //'canRegister' => Route::has('register'),
-    ]);
-})->name( 'home' );
 
 Route::get( '/admin', function() {
     return Redirect::route( 'dashboard' );
@@ -68,3 +59,12 @@ require __DIR__.'/auth.php';
 Route::get( '/linkstorage', function() {
     Artisan::call( 'storage:link' );
 });
+
+/**
+ * Temporary routes
+ */
+Route::get('/', function() {
+    return Inertia::render('Welcome', [
+        'title' => 'Rondeo Balos'
+    ]);
+})->name( 'home' );

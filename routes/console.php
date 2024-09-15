@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 
 // php artisan storage:link
 
-Artisan::command( 'create-admin {name} {email} {password}', function( string $name, string $email, string $password ) {
+Artisan::command( 'register:admin {name} {email} {password}', function( string $name, string $email, string $password ) {
     $this->info( 'Creating admin: ' . $name . '(' . $email . ')' );
     User::factory()->create([
         'name' => $name,
