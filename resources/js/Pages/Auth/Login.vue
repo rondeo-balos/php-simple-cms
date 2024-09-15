@@ -6,6 +6,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
+import { useForm } from '@inertiajs/vue3';
 
 defineProps({
     canResetPassword: {
