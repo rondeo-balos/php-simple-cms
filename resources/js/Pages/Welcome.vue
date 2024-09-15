@@ -121,6 +121,11 @@ async function handleSubmit(e) {
 .kanit {
     font-family: 'Kanit', sans-serif;
 }
+.main-content {
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 30%;
+}
 </style>
 
 <template>
@@ -143,7 +148,7 @@ async function handleSubmit(e) {
         
         <link href="https://fonts.bunny.net/css" rel="stylesheet" />
     </Head>
-    <div class="bg-[#151924] text-gray-200">
+    <div class="bg-[#151924] text-gray-200 main-content">
         <!-- Header -->
         <div class="border-b border-gray-600 border-opacity-25">
             <div class="max-w-screen-xl px-2 py-4 mx-auto flex flex-row justify-between items-center gap-10">
