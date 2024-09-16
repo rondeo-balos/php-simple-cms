@@ -61,7 +61,7 @@ const routes = [
                 </ul>
             </nav>
             
-            <Button href="#contact">Contact</Button>
+            <Button href="#contact" class="max-sm:hidden">Contact</Button>
             <button type="button" role="button" title="Show Nav Menu" @click="show = true" class="sm:hidden rounded-2xl bg-[#232d3d] text-white p-2 mx-2"><Hamburger class="min-w-6 min-h-6"/></button>
         </div>
     </div>

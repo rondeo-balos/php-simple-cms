@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { BookOpenIcon, ClockIcon } from '@heroicons/vue/16/solid';
+import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/16/solid';
 import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
 import Button from '@/Pages/Partials/Button.vue';
@@ -65,7 +65,7 @@ const projects = ref([
         <div>
             <div class="max-w-screen-xl px-2 py-20 mx-auto">
 
-                <h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-7xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
+                <h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-8xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
                     <span class="text-lg text-[#2f8af3] normal-case">// Hi! <i class="not-italic text-white">my name is</i></span>
                     Rondeo Balos
                 </h1>
@@ -91,7 +91,7 @@ const projects = ref([
                             <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.title }}</h3>
                             <p class="text-slate-400 mb-10">{{ project.desc }}</p>
                             
-                            <a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site</a>
+                            <a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>
 
                             <div>
                                 <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> Laravel, Vue</span>

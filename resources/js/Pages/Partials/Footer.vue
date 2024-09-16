@@ -1,7 +1,7 @@
 <script setup>
 import { usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import Button from '@/Pages/Partials/Button.vue';
+import { ArrowPathIcon } from '@heroicons/vue/16/solid';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -22,38 +22,41 @@ const socials = ref({
 
 // Form submission
 const status = ref('');
-const contactForm = ref(null);
 const email = ref('');
 const message = ref('');
+const submitted = ref(false);
 async function handleSubmit(e) {
-  try {
-    const data = new FormData(e.target);
-    const res = await fetch('https://formspree.io/f/mleqykgp', {
-      method: 'POST',
-      body: data,
-      headers: { Accept: 'application/json' },
-    });
-    if (res.ok) {
-      status.value = "Thanks! I'll get back to you soon.";
-      //contactForm.value.reset();
-      email.value = '';
-      message.value = '';
-      setTimeout(() => {
-        status.value = '';
-      }, 5000);
-    } else {
-      const json = await res.json();
-      if (Object.hasOwn(json, 'errors')) {
-        const errors = json.errors.map((error) => error.message).join(', ');
-        throw new Error(errors);
-      } else {
-        throw new Error('Uh-oh! There was a problem submitting your form.');
-      }
+    submitted.value = true;
+    try {
+        const data = new FormData(e.target);
+        const res = await fetch('https://formspree.io/f/mleqykgp', {
+            method: 'POST',
+            body: data,
+            headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+            status.value = "Thanks! I'll get back to you soon.";
+            //contactForm.value.reset();
+            email.value = '';
+            message.value = '';
+            setTimeout(() => {
+                status.value = '';
+            }, 5000);
+            submitted.value = false;
+        } else {
+            const json = await res.json();
+            if (Object.hasOwn(json, 'errors')) {
+                const errors = json.errors.map((error) => error.message).join(', ');
+                throw new Error(errors);
+            } else {
+                throw new Error('Uh-oh! There was a problem submitting your form.');
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        status.value = err.message;
+        submitted.value = false;
     }
-  } catch (err) {
-    console.error(err);
-    status.value = err.message;
-  }
 };
 </script>
 
@@ -66,23 +69,26 @@ async function handleSubmit(e) {
                 
                 <div class="relative">
                     <div class="mb-32" id="contact">
-                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-8">Want to work with me?</h2>
-                        <form :ref="contactForm" name="contactme" @submit.prevent="handleSubmit">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-1">Need help with a project?</h2>
+                        <center class="mb-8"><a href="tel:+639615936086" class="text-blue-300">+63 (961) 593-6086</a></center>
+                        <form name="contactme" @submit.prevent="handleSubmit">
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md mb-3">
                                 <textarea placeholder="Enter your message" id="message" name="message" v-model="message" class="grow rounded-lg border-0 bg-transparent text-white ring-0 focus:ring-0 h-32"></textarea>
                             </div>
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md">
                                 <input type="text" placeholder="Enter email address" id="email" name="email" v-model="email" class="bg-transparent ring-0 focus:ring-0 text-white border-0 min-w-0 rounded-lg me-2 grow">
-                                <button type="submit" role="submit" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg">Send Inquiry</button>
+                                <button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg">
+                                    Send Inquiry <ArrowPathIcon class="h-5 inline animate-spin" v-if="submitted" />
+                                </button>
                             </div>
                         </form>
                         <p v-if="status" class="text-center">{{ status }}</p>
                     </div>
                     
-                    <div class="flex sm:flex-row flex-col mb-4">
+                    <div class="flex sm:flex-row flex-col mb-4 max-sm:text-center">
                         <div class="grow sm:w-2/5">
                             
-                            <img :src="`${cdn}logo-transparent.webp`" class="max-h-16" width="auto" height="auto" alt="Logo">
+                            <img :src="`${cdn}logo-transparent.webp`" class="max-h-16 max-sm:mx-auto" width="auto" height="auto" alt="Logo">
                             <h3 class="kanit text-2xl font-extrabold uppercase text-white mb-3">Rondeo Balos</h3>
                             <p class="text-slate-500 font-semibold mb-10">My passion for web development extends beyond technical skills; it is driven by the desire to understand each client’s unique requirements and exceed their expectations.</p>
 
@@ -91,7 +97,28 @@ async function handleSubmit(e) {
                             </template>
                         </div>
                         <div class="grow sm:w-3/5 sm:text-right">
-                            // TODO: other links
+                            <div class="inline-block text-left">
+                                <h4 class="kanit font-bold uppercase mb-4 mt-4 max-sm:text-center">What I excel at</h4>
+                                <ul class="text-blue-300 flex sm:flex-col flex-wrap gap-1 justify-center">
+                                    <li>Design Systems</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>Mobile App & Web Design</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>App Development</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>Website Development</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>System Development</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>Backend Development</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>E-commerce & Shopify</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>CRM, CMS, Web Apps</li>
+                                    <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
+                                    <li>Accessibility</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
