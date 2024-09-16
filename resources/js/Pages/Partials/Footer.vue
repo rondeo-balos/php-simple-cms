@@ -77,7 +77,7 @@ async function handleSubmit(e) {
                             </div>
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md">
                                 <input type="text" placeholder="Enter email address" id="email" name="email" v-model="email" class="bg-transparent ring-0 focus:ring-0 text-white border-0 min-w-0 rounded-lg me-2 grow">
-                                <button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg">
+                                <button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg text-nowrap">
                                     Send Inquiry <ArrowPathIcon class="h-5 inline animate-spin" v-if="submitted" />
                                 </button>
                             </div>
@@ -93,13 +93,13 @@ async function handleSubmit(e) {
                             <p class="text-slate-500 font-semibold mb-10">My passion for web development extends beyond technical skills; it is driven by the desire to understand each client’s unique requirements and exceed their expectations.</p>
 
                             <template v-for="(social, index) in socials">
-                                <a :href="social.link" :title="index" v-html="social.icon" target="_blank" rel="noopener" class="inline-block bg-[#32405b] hover:bg-[#475c87] transition-colors p-2 rounded-lg fill-blue-200 w-10 me-2"></a>
+                                <a :href="social.link" :title="index" v-html="social.icon" target="_blank" rel="noopener" class="inline-block bg-[#32405b] hover:bg-[#475c87] transition-colors p-2 rounded-lg fill-blue-200 w-10 me-2 h-10"></a>
                             </template>
                         </div>
                         <div class="grow sm:w-3/5 sm:text-right">
                             <div class="inline-block text-left">
                                 <h4 class="kanit font-bold uppercase mb-4 mt-4 max-sm:text-center">What I excel at</h4>
-                                <ul class="text-blue-300 flex sm:flex-col flex-wrap gap-1 justify-center">
+                                <ul class="text-blue-300 flex sm:flex-col flex-wrap gap-1 justify-center max-sm:text-sm">
                                     <li>Design Systems</li>
                                     <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
                                     <li>Mobile App & Web Design</li>

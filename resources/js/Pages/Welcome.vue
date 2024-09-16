@@ -125,7 +125,7 @@ const projects = ref([
                         <div v-if="currentType == tech.type || currentType == false" class="w-1/2
                          md:w-1/5 p-2">
                             <div class="bg-[#232c3d] p-4 font-bold rounded-xl flex flex-row items-center gap-3">
-                                <img :src="tech.image" class="w-12 h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
+                                <img :src="tech.image" class="w-8 h-8 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
                                 {{ tech.name }}
                             </div>
                         </div>
