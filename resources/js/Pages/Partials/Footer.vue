@@ -1,5 +1,9 @@
 <script setup>
+import { usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import Button from '@/Pages/Partials/Button.vue';
+
+const cdn = ref(usePage().props.cdn);
 
 const socials = ref({
     github: {
@@ -58,7 +62,7 @@ async function handleSubmit(e) {
     <footer>
         <div class="max-w-screen-xl px-2 py-4 mx-auto">
             <div class="bg-[#232c3d] rounded-3xl px-8 pb-0 sm:px-12 py-20 sm:mb-5 relative overflow-hidden">
-                <img src="/storage/media/Fafxk1Pa7mREe06HYmfyD2aqmfeBkYaxBDpgc0k8.png" class="absolute left-0 top-0 w-full h-full object-cover object-bottom opacity-50 z-0" alt="Rondeo Balos" width="auto" height="auto">
+                <img :src="`${cdn}rondeo-footer-lg.webp`" class="absolute left-0 top-0 w-full h-full object-cover object-bottom opacity-50 z-0" alt="Rondeo Balos" width="auto" height="auto">
                 
                 <div class="relative">
                     <div class="mb-32" id="contact">
@@ -78,9 +82,9 @@ async function handleSubmit(e) {
                     <div class="flex sm:flex-row flex-col mb-4">
                         <div class="grow sm:w-2/5">
                             
-                            <img src="https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/logo-transparent.webp" class="max-h-16" width="auto" height="auto" alt="Logo">
+                            <img :src="`${cdn}logo-transparent.webp`" class="max-h-16" width="auto" height="auto" alt="Logo">
                             <h3 class="kanit text-2xl font-extrabold uppercase text-white mb-3">Rondeo Balos</h3>
-                            <p class="text-slate-500 font-semibold mb-20">My passion for web development extends beyond technical skills; it is driven by the desire to understand each client’s unique requirements and exceed their expectations.</p>
+                            <p class="text-slate-500 font-semibold mb-10">My passion for web development extends beyond technical skills; it is driven by the desire to understand each client’s unique requirements and exceed their expectations.</p>
 
                             <template v-for="(social, index) in socials">
                                 <a :href="social.link" :title="index" v-html="social.icon" target="_blank" rel="noopener" class="inline-block bg-[#32405b] hover:bg-[#475c87] transition-colors p-2 rounded-lg fill-blue-200 w-10 me-2"></a>

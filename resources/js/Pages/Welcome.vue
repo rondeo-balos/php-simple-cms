@@ -1,9 +1,12 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { BookOpenIcon, ClockIcon } from '@heroicons/vue/16/solid';
 import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
+import Button from '@/Pages/Partials/Button.vue';
+
+const cdn = ref(usePage().props.cdn);
 
 // Frameworks: Laravel, Vue, Tailwind CSS, React JS, Slim, Twig, LibGDX
 // Languages: CSS, Javascript, PHP, Java, HTML
@@ -17,7 +20,7 @@ const types = ref({
     others: 'others'
 });
 const techs = ref({});
-fetch('https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/tech-tools.json')
+fetch(`${cdn.value}tech-tools.json`)
     .then(response => response.json())
     .then(data => techs.value = data);
 
@@ -26,13 +29,13 @@ const projects = ref([
         title: 'Simpl.CMS',
         desc: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
         link: 'https://cms.rondeobalos.com/',
-        image: 'https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/simpl.cms.mockup-new.webp'
+        image: `${cdn.value}simpl.cms.mockup-new.webp`
     },
     {
         title: 'Cool Rate',
         desc: 'Financial and operational management system tailored for a service or installation-based company. The system likely focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
         link: false,
-        image: 'https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/cool-rate.mockup-new.webp'
+        image: `${cdn.value}cool-rate.mockup-new.webp`
     }
 ]);
 </script>
@@ -53,7 +56,7 @@ const projects = ref([
         <meta property="twitter:description" content="Hello, I'm Rondeo Balos, a Web Developer. Each website project is unique with its own set of challenges. I treat each one with respect and dedication.">
         <meta property="og:type" content="website">
         <meta property="twitter:card" content="summary_large_image">
-        <link rel="icon" href="https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/logo-transparent.webp">
+        <link rel="icon" :href="`${cdn}logo-transparent.webp`">
     </Head>
     <div class="bg-[#151924] text-gray-200 main-content">
         <Header />
@@ -67,7 +70,7 @@ const projects = ref([
                     Rondeo Balos
                 </h1>
                 <div class="w-full mb-20 relative shadow-2xl rounded-3xl overflow-hidden">
-                    <video class="w-full h-auto" poster="https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/poster.gif" autoplay muted loop>
+                    <video class="w-full h-auto" :poster="`${cdn}poster.gif`" autoplay muted loop>
                         <source src="https://dl.dropboxusercontent.com/scl/fi/sug74uaxpbkznc34s3hjh/showreelv4.mp4?rlkey=e897a5evp3ec2ih9reu6m0q92&st=pshuxy90&dl=0" type="video/mp4">
                     </video>
                     <!--<div class="absolute w-full h-full top-0 backdrop-grayscale backdrop-blur-sm z-10 flex flex-col justify-center items-center">
@@ -100,7 +103,7 @@ const projects = ref([
                         <img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] max-md:max-h-full top-0 max-md:absolute group-even:left-0 group-odd:right-0 opacity-20 md:opacity-80 z-0 group-hover:scale-105 transition-transform duration-1000">
                     </div>
 
-                    <Link href="#" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-3 font-bold text-white rounded-lg table mx-auto shadow mt-10">View all my projects</Link>
+                    <Button :href="route('projects')" class="mt-10">View all my projects</Button>
                 </div>
                 
                 <div class="mx-auto max-w-2xl">

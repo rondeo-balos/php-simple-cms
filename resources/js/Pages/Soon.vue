@@ -2,7 +2,6 @@
 import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
 import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
 </script>
 
 <template>

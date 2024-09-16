@@ -65,18 +65,21 @@ Route::get( '/linkstorage', function() {
  */
 Route::get('/', function() {
     return Inertia::render('Welcome', [
-        'active' => 'home'
+        'active' => 'home',
+        'cdn' => 'https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/'
     ]);
 })->name( 'home' );
 
 Route::get( '/projects', function() {
     return Inertia::render( 'Soon', [
-        'active' => 'projects'
+        'active' => 'projects',
+        'cdn' => 'https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/'
     ]);
 })->name( 'projects' );
 
 Route::get( '/blog', function() {
     return Inertia::render( 'Soon', [
-        'active' => 'blog'
+        'active' => 'blog',
+        'cdn' => 'https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/'
     ]);
 })->name( 'blog' );

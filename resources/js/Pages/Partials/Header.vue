@@ -4,6 +4,9 @@ import Hamburger from '@/Icons/Hamburger.vue';
 import { usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import Button from '@/Pages/Partials/Button.vue';
+
+const cdn = ref(usePage().props.cdn);
 
 const show = ref(false);
 
@@ -48,16 +51,17 @@ const routes = [
     <!-- Header -->
     <div class="border-b border-gray-600 border-opacity-25">
         <div class="max-w-screen-xl px-2 py-4 mx-auto flex flex-row justify-between items-center gap-10">
-            <img src="https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/logo-transparent.webp" class=" max-h-12" width="auto" height="auto" alt="Logo">
+            <img :src="`${cdn}logo-transparent.webp`" class=" max-h-12" width="auto" height="auto" alt="Logo">
             <nav class="flex-grow">
                 <ul class="max-sm:hidden flex flex-row gap-10 uppercase font-black lg:justify-center">
                     <li v-for="item in routes" class="relative group">
-                        <Link :href="item.route" :class="[(item.active ? 'text-white':''), 'h-full text-slate-400 group-hover:text-white transition-all']">{{ item.label }}</Link>
+                        <Link :href="item.route" :class="[(item.active ? 'text-white':''), 'block h-full text-slate-400 group-hover:text-white transition-all']">{{ item.label }}</Link>
                         <div :class="[(item.active ? 'bg-blue-500' : 'bg-gray-300 opacity-0 group-hover:opacity-100'), 'h-1 w-full rounded-lg absolute -bottom-[31px] transition-all']"></div>
                     </li>
                 </ul>
             </nav>
-            <Link href="#contact" class="max-sm:hidden bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg">Contact</Link>
+            
+            <Button href="#contact">Contact</Button>
             <button type="button" role="button" title="Show Nav Menu" @click="show = true" class="sm:hidden rounded-2xl bg-[#232d3d] text-white p-2 mx-2"><Hamburger class="min-w-6 min-h-6"/></button>
         </div>
     </div>
