@@ -33,7 +33,7 @@ const projects = ref([
     },
     {
         title: 'Cool Rate',
-        desc: 'Financial and operational management system tailored for a service or installation-based company. The system likely focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
+        desc: 'Financial and operational management system tailored for a service or installation-based company. The system focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
         link: false,
         image: `${cdn.value}cool-rate.mockup-new.webp`
     }
@@ -86,7 +86,7 @@ const projects = ref([
                 
                 <div class="mx-auto max-w-5xl mb-20">
 
-                    <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-2 flex even:flex-row-reverse odd:flex-row items-center overflow-hidden group">
+                    <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 flex even:flex-row-reverse odd:flex-row items-center overflow-hidden group">
                         <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
                             <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.title }}</h3>
                             <p class="text-slate-400 mb-10">{{ project.desc }}</p>
@@ -120,10 +120,10 @@ const projects = ref([
                     </div>
                 </div>
 
-                <div class="flex flex-wrap mx-auto max-w-5xl justify-center">
+                <div class="flex flex-wrap mx-auto max-w-7xl justify-center">
                     <template v-for="tech in techs">
-                        <div v-if="currentType == tech.type || currentType == false" class="w-1/2
-                         md:w-1/5 p-2">
+                        <!--md:w-1/5-->
+                        <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-2">
                             <div class="bg-[#232c3d] p-4 font-bold rounded-xl flex flex-row items-center gap-3">
                                 <img :src="tech.image" class="w-8 h-8 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
                                 {{ tech.name }}

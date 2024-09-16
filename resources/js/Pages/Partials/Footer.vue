@@ -70,7 +70,7 @@ async function handleSubmit(e) {
                 <div class="relative">
                     <div class="mb-32" id="contact">
                         <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-1">Need help with a project?</h2>
-                        <center class="mb-8"><a href="tel:+639615936086" class="text-blue-300">+63 (961) 593-6086</a></center>
+                        <p class="mb-8 text-center"><a href="tel:+639615936086" class="text-blue-300">+63 (961) 593-6086</a></p>
                         <form name="contactme" @submit.prevent="handleSubmit">
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md mb-3">
                                 <textarea placeholder="Enter your message" id="message" name="message" v-model="message" class="grow rounded-lg border-0 bg-transparent text-white ring-0 focus:ring-0 h-32"></textarea>
