@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collections;
-use App\Http\Requests\StoreCollectionsRequest;
-use App\Http\Requests\UpdateCollectionsRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Redirect;
 
 class CollectionsController extends Controller {
 
@@ -44,5 +44,14 @@ class CollectionsController extends Controller {
             'title' => 'Create ' . $collection,
             'collection' => $collection
         ]);
+    }
+
+    public function create( FormRequest $request, string $collection ) {
+        $data = Collections::create([
+            'key' => $collection,
+            'value' => $request->all()
+        ]);
+
+        return Redirect::route( 'collection', [$collection] );
     }
 }

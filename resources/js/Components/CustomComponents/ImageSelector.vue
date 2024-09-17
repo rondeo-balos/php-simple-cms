@@ -54,7 +54,7 @@ const fetchMedia = () => {
                     </SecondaryButton>
                 </li>
             </ul>
-            <span v-else>No Media</span>
+            <span v-else class="dark:text-white">No Media</span>
         </div>
     </Modal>
 </template>

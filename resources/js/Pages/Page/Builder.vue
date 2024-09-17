@@ -5,16 +5,10 @@ import Cog from '@/Icons/Cog.vue';
 import Desktop from '@/Icons/Desktop.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import Apps from '@/Icons/Apps.vue';
-import TextInput from '@/Components/TextInput.vue';
 import ThemeToggler from '@/Components/CustomComponents/ThemeToggler.vue';
 import Mobile from '@/Icons/Mobile.vue';
-import SelectV2 from '@/Components/CustomComponents/SelectV2.vue';
-import { QuillEditor } from '@vueup/vue-quill';
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
-import ImageSelector from '@/Components/CustomComponents/ImageSelector.vue';
-import hljs from 'highlight.js';
-import CodeEditor from 'simple-code-editor';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
+import Control from '@/Components/CustomComponents/Control.vue';
 
 const props = defineProps({
     components: {
@@ -152,26 +146,23 @@ const currentMeta = ref({});
                     <div class="dark:text-white text-center py-2 border-t border-b border-gray-600 dark:border-white bg-black dark:bg-white bg-opacity-10 dark:bg-opacity-10 mb-3">{{ currentName }}</div>
                     <div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
                         <div v-if="!Array.isArray(value) && Object.keys(currentMeta).length > 0" class="flex flex-row items-center flex-wrap">
+
+                            <Control :label="label.replace( /_/g, ' ' )" :control="currentMeta[label].control" :options="currentMeta[label].values ?? []" v-model="currentProps[label]" />
                             
+                            <!--
                             <label class="dark:text-white font-bold block capitalize mb-1 flex-grow">{{ label.replace( /_/g, ' ' ) }}</label>
-                            
-                            <!--<TextInput v-model="currentProps[label]" class="w-full"></TextInput>-->
-                            <!-- Check control type -->
                             <TextInput v-if="!currentMeta[label].control || currentMeta[label].control === 'text'" v-model="currentProps[label]" />
-                            <!-- Select input for 'select' control type -->
                             <div v-else-if="currentMeta[label].control === 'select'">
                                 <SelectV2 :options="currentMeta[label].values" :selected="currentProps[label]" v-model="currentProps[label]"/>
                             </div>
-                            <!-- Number input for 'number' control type -->
                             <input v-else-if="currentMeta[label].control === 'number'" type="number" v-model="currentProps[label]" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
-                            <!-- Textarea input for 'textarea' control type -->
                             <textarea v-else-if="currentMeta[label].control === 'textarea'" v-model="currentProps[label]" class="basis-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"></textarea>
                             <div v-else-if="currentMeta[label].control === 'richtext'" class="basis-full bg-white">
                                 <QuillEditor contentType="html" v-model:content="currentProps[label]" theme="snow"/>
                             </div>
                             <ImageSelector v-else-if="currentMeta[label].control === 'image'" v-model="currentProps[label]" />
                             <CodeEditor v-else-if="currentMeta[label].control === 'code'" v-model="currentProps[label]" class="basis-full" :line-nums="true" :languages="[['html']]" width="100%" ></CodeEditor>
-
+                            -->
                         </div>
                     </div>
                 </div>

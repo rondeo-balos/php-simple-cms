@@ -59,7 +59,7 @@ const uploadFile = () => {
                     <div class="mb-6">
                         <InputLabel for="file" value="File Upload" class="sr-only" />
                         <input id="file" type="file" :ref="file" @change="previewFile" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" />
-                        <img v-if="url" :src="url" class="w-full mt-4 h-80" />
+                        <img v-if="url" :src="url" class="w-full mt-4 max-h-80 object-contain object-center bg-gray-900" />
                         <InputError :message="form.errors.file" class="mt-2" />
                     </div>
                     <div class="mb-6">

@@ -47,6 +47,7 @@ Route::middleware( 'auth' )->group( function() {
     Route::get( '/admin/collections/{collection}', [CollectionsController::class, 'index'])->name( 'collection' );
     Route::get( '/admin/collections/{collection}/add', [CollectionsController::class, 'add'])->name( 'collection.add' );
     Route::get( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'edit'])->name( 'collection.edit' );
+    Route::post( '/admin/collections/{collection}', [CollectionsController::class, 'create'])->name( 'collection.create' );
 
     // Test
     Route::get( '/preview', function() {
