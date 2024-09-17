@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CollectionsController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -41,6 +42,11 @@ Route::middleware( 'auth' )->group( function() {
     Route::get( '/admin/pages', [PageController::class, 'index'])->name( 'page' );
     Route::get( '/admin/pages/add', [PageController::class, 'add'])->name( 'page.add' );
     Route::get( '/admin/pages/{ID}', [PageController::class, 'edit'])->name( 'page.edit' );
+
+    // Collections
+    Route::get( '/admin/collections/{collection}', [CollectionsController::class, 'index'])->name( 'collection' );
+    Route::get( '/admin/collections/{collection}/add', [CollectionsController::class, 'add'])->name( 'collection.add' );
+    Route::get( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'edit'])->name( 'collection.edit' );
 
     // Test
     Route::get( '/preview', function() {

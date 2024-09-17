@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineAsyncComponent, defineComponent, markRaw, ref } from 'vue';
+import { computed, defineAsyncComponent, markRaw, ref } from 'vue';
 
 const props = defineProps({
     list: {

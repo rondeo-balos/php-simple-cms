@@ -10,7 +10,7 @@ use Redirect;
 class UserController extends Controller {
     
     public function index( Request $request ) {
-        $per_page = $request->get( 'per_page', "10" );
+        $per_page = $request->get( 'per_page', '10' );
         $s = $request->get( 's', '' );
         $data = User::whereAny( ['name', 'email'], 'like', '%'.$s.'%' )->latest()->paginate( $per_page );
         $data->getCollection()->transform( function($row) {
@@ -26,7 +26,7 @@ class UserController extends Controller {
             'per_page' => $per_page,
             's' => $s,
             'title' => 'User',
-            'add' => 'user.add',
+            'add' => route('user.add'),
             'columns' => [ 'id', 'name', 'email' ],
             'data' => $data
         ]);

@@ -27,7 +27,7 @@ class PageController extends Controller {
             'per_page' => $per_page,
             's' => $s,
             'title' => 'Page',
-            'add' => 'page.add',
+            'add' => route('page.add'),
             'columns' => [ 'id', 'title', 'description', 'visibility', 'path', 'status', 'author' ],
             'data' => $data
         ]);
