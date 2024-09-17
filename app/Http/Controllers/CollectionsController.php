@@ -46,12 +46,39 @@ class CollectionsController extends Controller {
         ]);
     }
 
+    public function edit( Request $request, string $collection, string $ID ) {
+        $data = Collections::find( $ID );
+
+        return Inertia::render( 'Collections/Index', [
+            'status' => session( 'status' ),
+            'title' => 'Edit ' . $collection,
+            'collection' => $collection,
+            'id' => $ID,
+            'data' => json_decode($data['value'])
+        ]);
+    }
+
     public function create( FormRequest $request, string $collection ) {
         $data = Collections::create([
             'key' => $collection,
-            'value' => $request->all()
+            'value' => json_encode( $request->all() )
         ]);
 
         return Redirect::route( 'collection', [$collection] );
+    }
+
+    public function update( FormRequest $request, string $collection, string $ID ) {
+        Collections::where( 'id', $ID )->update([
+            'key' => $collection,
+            'value' => json_encode( $request->all() )
+        ]);
+
+        return Redirect::route( 'collection.edit', [$collection, $ID] );
+    }
+
+    public function delete( string $collection, string $ID ) {
+        Collections::where( 'id', $ID )->delete();
+
+        return Redirect::back();
     }
 }

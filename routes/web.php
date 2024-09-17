@@ -48,6 +48,8 @@ Route::middleware( 'auth' )->group( function() {
     Route::get( '/admin/collections/{collection}/add', [CollectionsController::class, 'add'])->name( 'collection.add' );
     Route::get( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'edit'])->name( 'collection.edit' );
     Route::post( '/admin/collections/{collection}', [CollectionsController::class, 'create'])->name( 'collection.create' );
+    Route::patch( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'update'])->name( 'collection.update' );
+    Route::delete( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'delete'])->name( 'collection.delete' );
 
     // Test
     Route::get( '/preview', function() {

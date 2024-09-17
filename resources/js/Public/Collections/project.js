@@ -9,19 +9,20 @@ export default {
         },
         description: {
             control: 'textarea',
-            default: ''
         },
         link: {
             control: 'text',
-            default: ''
         },
         framework: {
             control: 'text',
-            default: ''
         },
         status: {
-            control: 'text',
-            default: 'On-going'
+            control: 'select',
+            default: 'On-going',
+            values: {
+                'On-going': 'On-going',
+                'Done': 'Done'
+            }
         }
     }
 };

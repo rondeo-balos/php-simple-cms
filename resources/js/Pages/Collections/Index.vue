@@ -6,12 +6,13 @@ import Control from '@/Components/CustomComponents/Control.vue';
 import { useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
-const props = defineProps([ 'status', 'title', 'collection' ]);
+const props = defineProps([ 'status', 'title', 'collection', 'data', 'id' ]);
 
 const options = ref({});
-const formData = useForm({});
+let formData = useForm({});
 
 onMounted( async () => {
+    console.log( props.data );
     try {
         const collectionModules = import.meta.glob( '../../Public/Collections/*.js' );
         const collectionPath = `../../Public/Collections/${props.collection}.js`;
@@ -19,11 +20,13 @@ onMounted( async () => {
         if (collectionModules[collectionPath]) {
             const module = await collectionModules[collectionPath]();
             options.value = module.default.meta || {};
+            let fields = {};
             Object.keys(options.value).forEach( key => {
-                if( !(key in formData) ) {
-                    formData[key] = '';
+                if( !(key in fields) ) {
+                    fields[key] = props.data ? props.data[key] : (options.value[key].default ?? '');
                 }
             });
+            formData = useForm(fields);
         }
         
     } catch( error ) {
@@ -32,7 +35,13 @@ onMounted( async () => {
 });
 
 const save = () => {
-    console.log( formData );
+    if( props.id ) {
+        formData.patch( route( 'collection.update', [props.collection, props.id]), {
+            preserveScroll: true,
+            onError: (e) => console.log(e)
+        });
+        return;
+    }
     formData.post( route('collection.create', [props.collection]), {
         preserveScroll: true,
         onError: (e) => console.log(e)
