@@ -29,13 +29,13 @@ const projects = ref([
         title: 'Simpl.CMS',
         desc: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
         link: 'https://cms.rondeobalos.com/',
-        image: `${cdn.value}simpl.cms.mockup-new.webp`
+        image: `${cdn.value}simpl.cms.mockup-dark.webp`
     },
     {
         title: 'Cool Rate',
         desc: 'Financial and operational management system tailored for a service or installation-based company. The system focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
         link: false,
-        image: `${cdn.value}cool-rate.mockup-new.webp`
+        image: `${cdn.value}cool-rate.mockup-dark.webp`
     }
 ]);
 </script>
@@ -86,7 +86,7 @@ const projects = ref([
                 
                 <div class="mx-auto max-w-5xl mb-20">
 
-                    <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 flex even:flex-row-reverse odd:flex-row items-center overflow-hidden group">
+                    <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center _overflow-hidden _hover:overflow-visible group">
                         <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
                             <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.title }}</h3>
                             <p class="text-slate-400 mb-10">{{ project.desc }}</p>
@@ -100,7 +100,7 @@ const projects = ref([
                         </div>
 
                         <!--<img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] grayscale group-hover:grayscale-0 group-even:max-md:-mr-96 group-odd:max-md:-ml-96 opacity-20 md:opacity-80 z-0 group-hover:scale-105 transition-transform duration-1000">-->
-                        <img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] max-md:max-h-full top-0 max-md:absolute group-even:left-0 group-odd:right-0 opacity-20 md:opacity-80 z-0 group-hover:scale-105 transition-transform duration-1000">
+                        <img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
                     </div>
 
                     <Button :href="route('projects')" class="mt-10">View all my projects</Button>
