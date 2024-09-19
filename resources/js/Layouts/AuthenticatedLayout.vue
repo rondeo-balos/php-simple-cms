@@ -132,7 +132,7 @@ for(const path in collections) {
                     <!-- Sidebar -->
                     <ul class="dark:text-white sm:px-7 sm:py-5 p-1 h-full max-sm:dark:bg-slate-950 max-sm:bg-slate-200">
                         <li>
-                            <Link :href="route('dashboard')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('dashboard')" :class="[{ 'active' : $page.url.startsWith( '/admin/dashboard' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <Speedometer class="w-6" />
                                 <span class="hidden sm:inline">Dashboard</span>
                             </Link>
@@ -159,7 +159,7 @@ for(const path in collections) {
                                 </Link>
                             </li>
                             <li v-for="link in collectionLinks" :key="link.name" class="max-sm:hidden">
-                                <Link :href="link.path" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors  pl-16">
+                                <Link :href="link.path" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors  pl-14">
                                     <span class="hidden sm:inline capitalize">{{ link.name }}</span>
                                 </Link>
                             </li>
