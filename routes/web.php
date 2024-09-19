@@ -44,6 +44,7 @@ Route::middleware( 'auth' )->group( function() {
     Route::get( '/admin/pages/{ID}', [PageController::class, 'edit'])->name( 'page.edit' );
 
     // Collections
+    Route::get( '/admin/collections/', [CollectionsController::class, 'parent'] )->name( 'collections' );
     Route::get( '/admin/collections/{collection}', [CollectionsController::class, 'index'])->name( 'collection' );
     Route::get( '/admin/collections/{collection}/add', [CollectionsController::class, 'add'])->name( 'collection.add' );
     Route::get( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'edit'])->name( 'collection.edit' );

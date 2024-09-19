@@ -10,6 +10,12 @@ use Redirect;
 
 class CollectionsController extends Controller {
 
+    public function parent( Request $request ) {
+        return Inertia::render( 'Collections/DataTable', [
+
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */

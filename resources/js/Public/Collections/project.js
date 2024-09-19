@@ -4,24 +4,32 @@ export default {
             control: 'text',
             default: 'Awesome Project'
         },
-        image: {
-            control: 'image'
+        general: {
+            fields: {
+                image: {
+                    control: 'image'
+                },
+                description: {
+                    control: 'textarea',
+                },
+            }
         },
-        description: {
-            control: 'textarea',
-        },
-        link: {
-            control: 'text',
-        },
-        framework: {
-            control: 'text',
-        },
-        status: {
-            control: 'select',
-            default: 'On-going',
-            values: {
-                'On-going': 'On-going',
-                'Done': 'Done'
+        technical: {
+            fields: {
+                link: {
+                    control: 'text',
+                },
+                framework: {
+                    control: 'text',
+                },
+                status: {
+                    control: 'select',
+                    default: 'On-going',
+                    values: {
+                        'On-going': 'On-going',
+                        'Done': 'Done'
+                    }
+                }
             }
         }
     }

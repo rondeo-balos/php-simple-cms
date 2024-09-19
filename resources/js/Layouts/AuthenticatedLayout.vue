@@ -12,6 +12,7 @@ import Image from '@/Icons/Image.vue';
 import People from '@/Icons/People.vue';
 import Search from '@/Icons/Search.vue';
 import Cog from '@/Icons/Cog.vue';
+import Apps from '@/Icons/Apps.vue';
 
 const showingNavigationDropdown = ref(false);
 
@@ -150,11 +151,19 @@ for(const path in collections) {
                         </li>
 
                         <!-- Collections -->
-                         <li v-for="link in collectionLinks" :key="link.name">
-                            <Link :href="link.path" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
-                                <span class="hidden sm:inline capitalize">{{ link.name }}</span>
-                            </Link>
-                         </li>
+                        <div>
+                            <li>
+                                <Link :href="route( 'collections' )" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                                    <Apps class="w-6" />
+                                    <span class="hidden sm:inline">Collections</span>
+                                </Link>
+                            </li>
+                            <li v-for="link in collectionLinks" :key="link.name" class="max-sm:hidden">
+                                <Link :href="link.path" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors  pl-16">
+                                    <span class="hidden sm:inline capitalize">{{ link.name }}</span>
+                                </Link>
+                            </li>
+                        </div>
 
                         <!-- Preferences -->
                         <li>

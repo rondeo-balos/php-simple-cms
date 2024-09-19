@@ -65,7 +65,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <AppHead :title="title + 's'" />
+    <AppHead :title="title[0].toUpperCase() + title.slice(1) + 's'" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -74,7 +74,7 @@ onMounted(() => {
                 <div class="flex-grow">
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         <span v-if="definedProps.s">Search result for: '{{ definedProps.s }}'</span>
-                        <span v-else>{{ title + 's' }}</span>
+                        <span v-else>{{ title[0].toUpperCase() + title.slice(1) + 's' }}</span>
                     </h2>
                 </div>
 
