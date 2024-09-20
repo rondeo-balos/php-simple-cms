@@ -17,10 +17,10 @@ import Trash from '@/Icons/Trash.vue';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
 
 defineProps({
-    'status': {
+    status: {
         type: String
     },
-    'media': {
+    media: {
         type: Object
     }
 });

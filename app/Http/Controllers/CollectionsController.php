@@ -32,14 +32,15 @@ class CollectionsController extends Controller {
             return $row;
         });
 
-        return Inertia::render( 'DataTable/Index', [
+        return Inertia::render( 'Collections/Formatter', [
             'status' => session( 'status' ),
             'per_page' => $per_page,
             's' => $s,
             'title' => $collection,
             'add' => route( 'collection.add', [$collection] ),
             'columns' => [ 'id', 'value' ],
-            'data' => $data
+            'data' => $data,
+            'collection' => $collection
         ]);
     }
 
@@ -86,5 +87,15 @@ class CollectionsController extends Controller {
         Collections::where( 'id', $ID )->delete();
 
         return Redirect::back();
+    }
+
+    public function api( Request $request, string $collection ) {
+        
+        $per_page = $request->get( 'per_page', '10' );
+        $s = $request->get( 's', '' );
+
+        $data = Collections::where( 'key', $collection )->whereLike( 'value', '%'.$s.'%' )->latest()->paginate( $per_page );
+
+        return response()->json( $data );
     }
 }

@@ -8,22 +8,22 @@ import SelectAction from '@/Components/CustomComponents/SelectAction.vue';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
 
 const definedProps = defineProps({
-    'title': {
+    title: {
         type: String
     },
-    'add': {
+    add: {
         type: String
     },
-    'per_page': {
+    per_page: {
         type: String
     },
-    's': {
+    s: {
         type: String
     },
-    'columns': {
+    columns: {
         type: Array
     },
-    'data': {
+    data: {
         type: Object
     },
 });
@@ -62,6 +62,14 @@ const confirmDeletion = (url) => {
 onMounted(() => {
     current_url.value = window.location.href;
 });
+
+const isImage = (value) => {
+  return typeof value === 'string' && /\.(jpg|jpeg|png|gif|svg|webp)$/.test(value);
+};
+
+const isLink = (value) => {
+  return typeof value === 'string' && value.startsWith('http');
+};
 </script>
 
 <template>
@@ -126,7 +134,17 @@ onMounted(() => {
                         </thead>
                         <tbody>
                             <tr v-if="data.data.length > 0" v-for="item in data.data" class="bg-white border-t dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50- dark:hover:bg-gray-600-">
-                                <td class="px-6 py-4" v-for="column in columns">{{ item[column] }}</td>
+                                <td class="px-6 py-4" v-for="column in columns">
+                                    <template v-if="isImage(item[column])">
+                                        <img :src="item[column]" alt="Image" class="w-16 h-16 object-cover" />
+                                    </template>
+                                    <template v-else-if="isLink(item[column])">
+                                        <a :href="item[column]" class="text-blue-500 hover:underline" target="_blank">{{ item[column] }}</a>
+                                    </template>
+                                    <template v-else>
+                                        {{ item[column] }}
+                                    </template>
+                                </td>
                                 <td class="px-6 py-4 text-right">
                                     <!-- Temporary -->
                                     <SelectAction :options="item.actions" :onChange="(val, i) => {

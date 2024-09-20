@@ -5,6 +5,7 @@ import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon } from '@heroicons/v
 import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
 import Button from '@/Pages/Partials/Button.vue';
+import axios from 'axios';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -24,7 +25,8 @@ fetch(`${cdn.value}tech-tools.json`)
     .then(response => response.json())
     .then(data => techs.value = data);
 
-const projects = ref([
+
+const projects = ref([/*
     {
         title: 'Simpl.CMS',
         desc: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
@@ -37,7 +39,21 @@ const projects = ref([
         link: false,
         image: `${cdn.value}cool-rate.mockup-dark.webp`
     }
-]);
+*/]);
+
+// Fetch all projects
+axios.get( route('api.collection', ['project']) )
+    .then( response => {
+        const data = response.data.data;
+        data.map( item => {
+            const project = JSON.parse( item.value );
+            console.log( project );
+            projects.value.push(project);
+        });
+    })
+    .catch( error => {
+        console.log(error);
+    });
 </script>
 
 <template>
@@ -88,8 +104,8 @@ const projects = ref([
 
                     <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center _overflow-hidden _hover:overflow-visible group">
                         <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
-                            <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.title }}</h3>
-                            <p class="text-slate-400 mb-10">{{ project.desc }}</p>
+                            <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
+                            <p class="text-slate-400 mb-10">{{ project.description }}</p>
                             
                             <a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>
 

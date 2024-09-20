@@ -1,4 +1,5 @@
 export default {
+    columns: [ 'image', 'project', 'link', 'status' ],
     meta: {
         project: {
             control: 'text',
