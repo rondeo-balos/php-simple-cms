@@ -137,19 +137,19 @@ onMounted( async () => {
                     <!-- Sidebar -->
                     <ul class="dark:text-white sm:px-7 sm:py-5 p-1 h-full max-sm:dark:bg-slate-950 max-sm:bg-slate-200">
                         <li>
-                            <Link :href="route('dashboard')" :class="[{ 'active' : $page.url.startsWith( '/admin/dashboard' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
+                            <Link :href="route('dashboard')" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/dashboard' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <Speedometer class="w-6" />
                                 <span class="hidden sm:inline">Dashboard</span>
                             </Link>
                         </li>
                         <li>
-                            <Link :href="route('page')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('page')" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/pages' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <Document class="w-6" />
                                 <span class="hidden sm:inline">Pages</span>
                             </Link>
                         </li>
                         <li>
-                            <Link :href="route('media')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('media')" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/media' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <Image class="w-6" />
                                 <span class="hidden sm:inline">Media</span>
                             </Link>
@@ -157,27 +157,27 @@ onMounted( async () => {
 
                         <!-- Collections -->
                         <li v-for="link in collectionLinks" :key="link.name" class="max-sm:hidden">
-                            <Link :href="link.path" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
-                                <span v-if="link.icon" v-html="link.icon" class="w-6"></span>
+                            <Link :href="link.path" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/collections/' + link.name ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
+                                <img v-if="link.icon" :src="link.icon" class="w-6" />
                                 <span class="hidden sm:inline capitalize">{{ link.name }}</span>
                             </Link>
                         </li>
 
                         <!-- Preferences -->
                         <li>
-                            <Link :href="route('user')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('user')" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/users' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <People class="w-6" />
                                 <span class="hidden sm:inline">Users</span>
                             </Link>
                         </li>
                         <li>
-                            <Link :href="route('dashboard')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('dashboard')" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/seo' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <Search class="w-6" />
                                 <span class="hidden sm:inline">SEO</span>
                             </Link>
                         </li>
                         <li>
-                            <Link :href="route('dashboard')" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                            <Link :href="route('dashboard')" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/settings' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <Cog class="w-6" />
                                 <span class="hidden sm:inline">Settings</span>
                             </Link>
@@ -204,3 +204,15 @@ onMounted( async () => {
         </div>
     </div>
 </template>
+
+<style scoped>
+    .active,
+    .active svg {
+        --active-color: rgb(59 130 246);
+        fill: var(--active-color);
+        color: var(--active-color);
+    }
+    .active svg * {
+        stroke: var(--active-color);
+    }
+</style>

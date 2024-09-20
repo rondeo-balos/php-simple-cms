@@ -1,5 +1,5 @@
 <script setup>
-import { Head, router, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Upload from './Partials/Upload.vue';
 import Modal from '@/Components/Modal.vue';
@@ -10,11 +10,12 @@ import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import DangerButton from '@/Components/DangerButton.vue';
+import AppHead from '@/Components/CustomComponents/AppHead.vue';
 
 // Icons
 import Pen from '@/Icons/Pen.vue';
 import Trash from '@/Icons/Trash.vue';
-import AppHead from '@/Components/CustomComponents/AppHead.vue';
+import Open from '@/Icons/Open.vue';
 
 defineProps({
     status: {
@@ -82,10 +83,11 @@ const deleteMedia = (id) => {
         <div class="py-2">
             <div class="sm:px-6 lg:px-8 space-y-6">
                 <ul class="flex flex-row flex-wrap gap-2">
-                    <li v-for="item in media" class="rounded-md overflow-hidden relative bg-white">
+                    <li v-for="item in media" class="rounded-md overflow-hidden relative bg-gray-300">
                         <img :src="'/storage/' + item.file" class="w-full h-auto object-cover sm:h-52 sm:w-52">
                         <div class="absolute w-full h-full flex flex-column bg-gray-900 bg-opacity-80 top-0 left-0 z-10 items-center justify-center gap-2 opacity-0 hover:opacity-100 transition-all">
                             <PrimaryButton @click="startEdit(item.id, item.title, item.alt, item.file)"><Pen class="w-5"/></PrimaryButton>
+                            <a :href="'/storage/' + item.file" target="_blank"><SecondaryButton><Open class="w-5" /></SecondaryButton></a>
                             <DangerButton @click="deleteMedia(item.id)"><Trash class="w-5" /></DangerButton>
                         </div>
                     </li>

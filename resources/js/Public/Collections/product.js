@@ -1,5 +1,6 @@
 export default {
     columns: [ 'product', 'image', 'description', 'price', 'sale_price', 'status' ],
+    icon: 'http://127.0.0.1:8000/storage/media/6iUG5XeP2tk1keCYunOzUfpdxxFNXripdqY9IrOd.svg',
     meta: {
         product: {
             control: 'text'
