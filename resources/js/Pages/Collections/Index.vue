@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
 import Control from '@/Components/CustomComponents/Control.vue';
+import TitleBar from '@/Components/CustomComponents/TitleBar.vue';
 import { useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 
@@ -33,7 +34,6 @@ onMounted( async () => {
                     fields[key] = props.data ? props.data[key] : (options.value[key].default ?? '');
                 }*/
             });
-            console.log( fields );
             formData = useForm(fields);
         }
         
@@ -61,19 +61,13 @@ const save = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex flex-row items-center">
-                <!-- Title -->
-                <div class="flex-grow">
-                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        <span>{{ title }}</span>
-                    </h2>
-                </div>
-            </div>
+            <TitleBar :title="title" :back="true" />
         </template>
 
         <div class="py-2">
             <div class="sm:px-6 lg:px-8 space-y-6">
                 <form @submit.prevent="save">
+                    <div v-if="formData.isDirty" class="text-right dark:text-white mb-2">There are unsaved changes.</div>
                     <div class="flex flex-col divide-y divide-slate-300 dark:divide-slate-700 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-gray-800 shadow">
                         <div v-for="(option, key) in options" :key="key">
                             <!-- Render grouped fields -->

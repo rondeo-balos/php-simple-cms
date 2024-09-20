@@ -86,7 +86,7 @@ class CollectionsController extends Controller {
     public function delete( string $collection, string $ID ) {
         Collections::where( 'id', $ID )->delete();
 
-        return Redirect::back();
+        return Redirect::route( 'collection', [$collection] );
     }
 
     public function api( Request $request, string $collection ) {

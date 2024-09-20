@@ -20,11 +20,11 @@ defineProps([ 'control', 'options', 'label' ]);
         <SelectV2 :options="options" :selected="model" v-model="model"/>
     </div>
     <!-- Number input for 'number' control type -->
-    <input v-else-if="control === 'number'" type="number" v-model="model" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
+    <input v-else-if="control === 'number'" type="number" step=".1" v-model="model" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
     <!-- Textarea input for 'textarea' control type -->
     <textarea v-else-if="control === 'textarea'" v-model="model" class="basis-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"></textarea>
     <div v-else-if="control === 'richtext'" class="basis-full bg-white">
-        <QuillEditor contentType="html" v-model:content="model" theme="snow"/>
+        <QuillEditor contentType="html" v-model:content="model" theme="snow" style="height: 250px"/>
     </div>
     <ImageSelector v-else-if="control === 'image'" v-model="model" />
     <CodeEditor v-else-if="control === 'code'" v-model="model" class="basis-full" :line-nums="true" :languages="[['html']]" width="100%" ></CodeEditor>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -12,19 +12,24 @@ import Image from '@/Icons/Image.vue';
 import People from '@/Icons/People.vue';
 import Search from '@/Icons/Search.vue';
 import Cog from '@/Icons/Cog.vue';
-import Apps from '@/Icons/Apps.vue';
 
 const showingNavigationDropdown = ref(false);
 
 const collections = import.meta.glob( '../Public/Collections/*.js' );
 const collectionLinks = ref([]);
-for(const path in collections) {
-    const collectionKey = path.split( '/' ).pop().replace( '.js', '' );
-    collectionLinks.value.push({
-        name: collectionKey,
-        path: route( 'collection', [ collectionKey ] )
+onMounted( async () => {
+    const promises = Object.entries(collections).map( async ([path]) => {
+        const collectionKey = path.split( '/' ).pop().replace( '.js', '' );
+        const module = await collections[path]();
+
+        return {
+            name: collectionKey,
+            path: route( 'collection', [ collectionKey ] ),
+            icon: module.default.icon ?? ''
+        };
     });
-}
+    collectionLinks.value = await Promise.all( promises );
+});
 </script>
 
 <template>
@@ -151,19 +156,12 @@ for(const path in collections) {
                         </li>
 
                         <!-- Collections -->
-                        <div>
-                            <li>
-                                <Link :href="route( 'collections' )" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
-                                    <Apps class="w-6" />
-                                    <span class="hidden sm:inline">Collections</span>
-                                </Link>
-                            </li>
-                            <li v-for="link in collectionLinks" :key="link.name" class="max-sm:hidden">
-                                <Link :href="link.path" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors  pl-14">
-                                    <span class="hidden sm:inline capitalize">{{ link.name }}</span>
-                                </Link>
-                            </li>
-                        </div>
+                        <li v-for="link in collectionLinks" :key="link.name" class="max-sm:hidden">
+                            <Link :href="link.path" class="flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors">
+                                <span v-if="link.icon" v-html="link.icon" class="w-6"></span>
+                                <span class="hidden sm:inline capitalize">{{ link.name }}</span>
+                            </Link>
+                        </li>
 
                         <!-- Preferences -->
                         <li>

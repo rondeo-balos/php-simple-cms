@@ -1,6 +1,6 @@
 <script setup>
 import DataTable from '@/Pages/DataTable/Index.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
     title: {
@@ -25,8 +25,6 @@ const props = defineProps({
         type: String
     }
 });
-
-console.log( props.data );
 
 const localColumns = ref([...props.columns]);
 const localData = ref(JSON.parse(JSON.stringify(props.data)));
@@ -54,6 +52,10 @@ onMounted( async () => {
     }
 });
 
+// Watch data because localData is not reactive due to deep copy
+watch( () => props.data, (newData) => {
+    localData.value = JSON.parse(JSON.stringify(newData));
+});
 </script>
 
 <template>
