@@ -34,11 +34,12 @@ const fetchMedia = () => {
 </script>
 
 <template>
+    
+    <img v-if="model" :src="model" class="pointer-events-none max-h-36 object-contain bg-slate-900 rounded-md mb-3" />
     <div class="flex flex-row basis-full">
         <TextInput v-model="model" class="flex-grow me-2" />
         <SecondaryButton @click="showModal">
-            <img v-if="model" :src="model" class="pointer-events-none max-h-5" />
-            <Image v-else class="fill-white min-w-5"/>
+            <Image class="fill-white min-w-5"/>
         </SecondaryButton>
     </div>
 

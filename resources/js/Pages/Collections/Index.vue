@@ -67,7 +67,6 @@ const save = () => {
         <div class="py-2">
             <div class="sm:px-6 lg:px-8 space-y-6">
                 <form @submit.prevent="save">
-                    <div v-if="formData.isDirty" class="text-right dark:text-white mb-2">There are unsaved changes.</div>
                     <div class="flex flex-col divide-y divide-slate-300 dark:divide-slate-700 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-gray-800 shadow">
                         <div v-for="(option, key) in options" :key="key">
                             <!-- Render grouped fields -->
@@ -88,7 +87,10 @@ const save = () => {
                         </div>-->
                     </div>
                     
-                    <PrimaryButton class="mt-3" :class="{ 'opacity-25': formData.processing }" :disabled="formData.processing" >Save</PrimaryButton>
+                    <div class="flex flex-row justify-between items-center">
+                        <PrimaryButton class="mt-3" :class="{ 'opacity-25': formData.processing }" :disabled="formData.processing" >Save</PrimaryButton>
+                        <div v-if="formData.isDirty" class="text-right dark:text-white mb-2">There are unsaved changes.</div>
+                    </div>
                 </form>
             </div>
         </div>
