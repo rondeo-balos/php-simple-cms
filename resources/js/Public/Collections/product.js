@@ -5,7 +5,7 @@ export default {
         product: {
             control: 'text'
         },
-        group: {
+        group_1: {
             fields: {
                 image: {
                     control: 'image'
@@ -18,7 +18,7 @@ export default {
         long_description: {
             control: 'richtext'
         },
-        techical: {
+        group_2: {
             fields: {
                 price: {
                     control: 'number',

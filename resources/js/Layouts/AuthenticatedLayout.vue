@@ -8,10 +8,12 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import Speedometer from '@/Icons/Speedometer.vue';
 import Document from '@/Icons/Document.vue';
 import { Link } from '@inertiajs/vue3';
+import Open from '@/Icons/Open.vue';
 import Image from '@/Icons/Image.vue';
 import People from '@/Icons/People.vue';
 import Search from '@/Icons/Search.vue';
 import Cog from '@/Icons/Cog.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
 
 const showingNavigationDropdown = ref(false);
 
@@ -51,11 +53,16 @@ onMounted( async () => {
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <div class="ms-3 relative">
+                            <div class="ms-3">
+                                <a :href="route('home')" target="_blank" title="Visit your site" class="group text-gray-500 dark:text-gray-400">
+                                    <Open class="w-5 group-hover:text-blue-500"/>
+                                </a>
+                            </div>
+                            <div class="ms-3">
                                 <ThemeToggler />
                             </div>
                             <!-- Settings Dropdown -->
-                            <div class="ms-3 relative">
+                            <div>
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -82,7 +89,12 @@ onMounted( async () => {
                         </div>
 
                         <!-- Hamburger -->
-                        <div class="-me-2 ms-auto flex items-center sm:hidden">
+                        <div class="me-3 ms-auto flex items-center sm:hidden">
+                            <a :href="route('home')" target="_blank" title="Visit your site" class="group text-gray-500 dark:text-gray-400">
+                                <Open class="w-5 group-hover:text-blue-500"/>
+                            </a>
+                        </div>
+                        <div class="me-1 flex items-center sm:hidden">
                             <ThemeToggler class=""/>
                         </div>
                         <div class="-me-2 flex items-center sm:hidden">
@@ -156,7 +168,7 @@ onMounted( async () => {
                         </li>
 
                         <!-- Collections -->
-                        <li v-for="link in collectionLinks" :key="link.name" class="max-sm:hidden">
+                        <li v-for="link in collectionLinks" :key="link.name">
                             <Link :href="link.path" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/collections/' + link.name ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <img v-if="link.icon" :src="link.icon" class="w-6" />
                                 <span class="hidden sm:inline capitalize">{{ link.name }}</span>

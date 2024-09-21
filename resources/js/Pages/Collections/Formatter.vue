@@ -28,8 +28,9 @@ const props = defineProps({
 
 const localColumns = ref([...props.columns]);
 const localData = ref(JSON.parse(JSON.stringify(props.data)));
+const showData = ref(false);
 
-onMounted( async () => {
+const load = async () => {
     try {
         const collectionModules = import.meta.glob( '../../Public/Collections/*.js' );
         const collectionPath = `../../Public/Collections/${props.collection}.js`;
@@ -46,18 +47,23 @@ onMounted( async () => {
                     ...JSON.parse( item.value )
                 };
             });
+
+            setTimeout(() => showData.value = true, 300);
         }
     } catch( error ) {
         console.error( 'Error loading collection options: ', error );
     }
-});
+};
+
+onMounted( load );
 
 // Watch data because localData is not reactive due to deep copy
 watch( () => props.data, (newData) => {
     localData.value = JSON.parse(JSON.stringify(newData));
+    load();
 });
 </script>
 
 <template>
-    <DataTable :title="title" :add="add" :per_page="per_page" :s="s" :columns="localColumns" :data="localData" />
+    <DataTable :show="showData" :title="title" :add="add" :per_page="per_page" :s="s" :columns="localColumns" :data="localData" />
 </template>

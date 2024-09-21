@@ -26,6 +26,10 @@ const definedProps = defineProps({
     data: {
         type: Object
     },
+    show: {
+        type: Boolean,
+        default: true
+    }
 });
 
 const per_page = ref(definedProps.per_page);
@@ -125,7 +129,7 @@ const isLink = (value) => {
 
                 <!-- Table -->
                 <div class="relative overflow-x-auto overflow-y-visible shadow-md sm:rounded-lg">
-                    <table class="w-full text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <table class="w-full text-left rtl:text-right text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700">
                         <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3" v-for="column in columns">{{ column }}</th>
@@ -134,28 +138,35 @@ const isLink = (value) => {
                         </thead>
                         <tbody>
                             <tr v-if="data.data.length > 0" v-for="item in data.data" class="bg-white border-t dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50- dark:hover:bg-gray-600-">
-                                <td class="px-6 py-4" v-for="column in columns">
-                                    <template v-if="isImage(item[column])">
-                                        <img :src="item[column]" alt="Image" class="w-16 h-16 object-cover" />
-                                    </template>
-                                    <template v-else-if="isLink(item[column])">
-                                        <a :href="item[column]" class="text-blue-500 hover:underline" target="_blank">{{ item[column] }}</a>
-                                    </template>
-                                    <template v-else>
-                                        {{ item[column] }}
-                                    </template>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <!-- Temporary -->
-                                    <SelectAction :options="item.actions" :onChange="(val, i) => {
-                                        if( i === 'delete' ) {
-                                            confirmDeletion( val );
-                                        } else {
-                                            router.get( val );
-                                        }
-                                        //router.delete( val )
-                                    }" class="text-left"/>
-                                </td>
+                                <template v-if="show">
+                                    <td class="px-6 py-4" v-for="column in columns">
+                                        <template v-if="isImage(item[column])">
+                                            <img :src="item[column]" alt="Image" class="w-16 h-16 object-cover" />
+                                        </template>
+                                        <template v-else-if="isLink(item[column])">
+                                            <a :href="item[column]" class="text-blue-500 hover:underline" target="_blank">{{ item[column] }}</a>
+                                        </template>
+                                        <template v-else>
+                                            {{ item[column] }}
+                                        </template>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <!-- Temporary -->
+                                        <SelectAction :options="item.actions" :onChange="(val, i) => {
+                                            if( i === 'delete' ) {
+                                                confirmDeletion( val );
+                                            } else {
+                                                router.get( val );
+                                            }
+                                            //router.delete( val )
+                                        }" class="text-left"/>
+                                    </td>
+                                </template>
+                                <template v-else>
+                                    <td v-for="n in columns.length + 1" class="p-2 animate-pulse">
+                                        <div class="h-5 w-full rounded-lg bg-gray-500 bg-opacity-10"></div>
+                                    </td>
+                                </template>
                             </tr>
                             <tr v-else class="bg-white border-t dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50- dark:hover:bg-gray-600-">
                                 <td class="px-6 py-4 text-center" :colspan="columns.length + 1"> No data </td>
