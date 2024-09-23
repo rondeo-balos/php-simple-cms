@@ -1,6 +1,7 @@
 <script setup>
 import TextInput from '@/Components/TextInput.vue';
 import SelectV2 from '@/Components/CustomComponents/SelectV2.vue';
+import Checkbox from '@/Components/CustomComponents/Checkbox.vue';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageSelector from '@/Components/CustomComponents/ImageSelector.vue';
@@ -18,6 +19,10 @@ defineProps([ 'control', 'options', 'label' ]);
     <!-- Select input for 'select' control type -->
     <div v-else-if="control === 'select'">
         <SelectV2 :options="options" :selected="model" v-model="model"/>
+    </div>
+    <!-- Checkbox -->
+    <div v-else-if="control === 'checkbox'">
+        <Checkbox v-model="model" :options="options" />
     </div>
     <!-- Number input for 'number' control type -->
     <input v-else-if="control === 'number'" type="number" step=".1" v-model="model" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />

@@ -1,11 +1,13 @@
 <script setup>
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import Return from '@/Icons/Return.vue';
+import { router } from '@inertiajs/vue3';
 
 defineProps( ['title', 'back'] );
 
 const back = () => {
     window.history.back();
+    setTimeout(()=> router.visit( document.location.href, { preserveState: true, preserveScroll: true } ), 400);
 }
 </script>
 

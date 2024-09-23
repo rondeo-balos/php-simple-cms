@@ -171,7 +171,7 @@ onMounted( async () => {
                         <li v-for="link in collectionLinks" :key="link.name">
                             <Link :href="link.path" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/collections/' + link.name ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <img v-if="link.icon" :src="link.icon" class="w-6" />
-                                <span class="hidden sm:inline capitalize">{{ link.name }}</span>
+                                <span class="hidden sm:inline capitalize">{{ link.name }}s</span>
                             </Link>
                         </li>
 

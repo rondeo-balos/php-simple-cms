@@ -31,6 +31,13 @@ export default {
                         'On-going': 'On-going',
                         'Done': 'Done'
                     }
+                },
+                sticky: {
+                    control: 'checkbox',
+                    default: ['Sticky'],
+                    values: {
+                        'Sticky': 'Sticky'
+                    }
                 }
             }
         }
