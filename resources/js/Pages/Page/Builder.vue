@@ -2,11 +2,12 @@
 import Nested from './Partials/Nested.vue';
 import { ref, watch } from 'vue';
 import Cog from '@/Icons/Cog.vue';
-import Desktop from '@/Icons/Desktop.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
 import Apps from '@/Icons/Apps.vue';
-import ThemeToggler from '@/Components/CustomComponents/ThemeToggler.vue';
+import Desktop from '@/Icons/Desktop.vue';
+import Tablet from '@/Icons/Tablet.vue';
 import Mobile from '@/Icons/Mobile.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import ThemeToggler from '@/Components/CustomComponents/ThemeToggler.vue';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
 import Control from '@/Components/CustomComponents/Control.vue';
 
@@ -120,7 +121,7 @@ const save = () => {
 };
 
 // Responsive View
-const isMobile = ref(false);
+const breakpoints = ref('Desktop');
 const currentLabel = ref('Components');
 const currentName = ref( '' );
 const currentProps = ref({});
@@ -130,8 +131,8 @@ const currentMeta = ref({});
 <template>
     <AppHead title="Welcome" />
     <div class="flex flex-row">
-        <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen overflow-auto max-w-80 flex flex-col">
-            <div class="text-center dark:text-white font-bold bg-gray-200 dark:bg-gray-800 p-2 uppercase">{{ currentLabel }}</div>
+        <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen overflow-auto max-w-80 min-w-80 flex flex-col">
+            <div class="text-center dark:text-white font-bold bg-gray-200 dark:bg-gray-800 p-3 uppercase">{{ currentLabel }}</div>
             <div class="flex-grow">
 
                 <div v-if="currentLabel === 'Components'" class="flex flex-row flex-wrap p-1">
@@ -148,52 +149,48 @@ const currentMeta = ref({});
                         <div v-if="!Array.isArray(value) && Object.keys(currentMeta).length > 0" class="flex flex-row items-center flex-wrap">
 
                             <Control :label="label.replace( /_/g, ' ' )" :control="currentMeta[label].control" :options="currentMeta[label].values ?? []" v-model="currentProps[label]" />
-                            
-                            <!--
-                            <label class="dark:text-white font-bold block capitalize mb-1 flex-grow">{{ label.replace( /_/g, ' ' ) }}</label>
-                            <TextInput v-if="!currentMeta[label].control || currentMeta[label].control === 'text'" v-model="currentProps[label]" />
-                            <div v-else-if="currentMeta[label].control === 'select'">
-                                <SelectV2 :options="currentMeta[label].values" :selected="currentProps[label]" v-model="currentProps[label]"/>
-                            </div>
-                            <input v-else-if="currentMeta[label].control === 'number'" type="number" v-model="currentProps[label]" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
-                            <textarea v-else-if="currentMeta[label].control === 'textarea'" v-model="currentProps[label]" class="basis-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"></textarea>
-                            <div v-else-if="currentMeta[label].control === 'richtext'" class="basis-full bg-white">
-                                <QuillEditor contentType="html" v-model:content="currentProps[label]" theme="snow"/>
-                            </div>
-                            <ImageSelector v-else-if="currentMeta[label].control === 'image'" v-model="currentProps[label]" />
-                            <CodeEditor v-else-if="currentMeta[label].control === 'code'" v-model="currentProps[label]" class="basis-full" :line-nums="true" :languages="[['html']]" width="100%" ></CodeEditor>
-                            -->
+
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class="bg-gray-200 dark:bg-gray-800 p-1 flex flex-row gap-2">
-                <ThemeToggler class="hidden" />
                 <SecondaryButton title="Components" @click="currentLabel = 'Components'">
                     <Apps :class="[currentLabel == 'Components' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-5 pb-1']"/>
                 </SecondaryButton>
                 <SecondaryButton title="Settings" @click="currentLabel = 'Page Settings'">
                     <Cog :class="[currentLabel == 'Page Settings' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-5 pb-1']"/>
                 </SecondaryButton>
-                <SecondaryButton title="Responsive Mode" @click="isMobile = !isMobile">
-                    <Mobile v-if="!isMobile" class="fill-white min-w-5 pb-1" />
-                    <Desktop v-else class="fill-white min-w-5 pb-1" />
-                </SecondaryButton>
                 <SecondaryButton title="Save" @click="save" class="w-full justify-center">Save</SecondaryButton>
             </div>
         </div>
 
-        <div class="flex-grow dark:bg-black">
-            <iframe src="http://127.0.0.1:8000/preview" :class="[isMobile ? 'w-[360px]' : 'w-full', 'h-full mx-auto transition-all']"></iframe>
+        <div class="flex-grow dark:bg-black flex flex-col">
+            <div class="text-center dark:text-white font-bold bg-gray-300 dark:bg-gray-700 p-1 uppercase flex flex-row gap-1">
+                <SecondaryButton title="Desktop" @click="breakpoints = 'Desktop'">
+                    <Desktop :class="[breakpoints === 'Desktop' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-4 pb-1']" />
+                </SecondaryButton>
+                <SecondaryButton title="Tablet" @click="breakpoints = 'Tablet'">
+                    <Tablet :class="[breakpoints === 'Tablet' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-4 pb-1']" />
+                </SecondaryButton>
+                <SecondaryButton title="Mobile" @click="breakpoints = 'Mobile'">
+                    <Mobile :class="[breakpoints === 'Mobile' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-4 pb-1']" />
+                </SecondaryButton>
+                <ThemeToggler class="ms-auto" />
+            </div>
+            <iframe src="http://127.0.0.1:8000/preview" :class="[breakpoints === 'Desktop' ? 'w-full' : breakpoints === 'Tablet' ? 'w-[820px]' : 'w-[360px]', 'h-full mx-auto transition-all scroll']"></iframe>
         </div>
 
-        <div class="shadow p-1 bg-gray-50 dark:bg-gray-900 h-screen overflow-y-auto min-w-64 px-2">
-            <div v-if="items.length <= 0" class="dark:text-white h-full flex items-center justify-center text-center border-2 border-dashed">
-                Add Components <br>
-                to get started
+        <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen min-w-64 flex flex-col">
+            <div class="text-center dark:text-white font-bold bg-gray-200 dark:bg-gray-800 p-3 uppercase">Navigation</div>
+            <div class="flex-grow h-100 p-1 px-2 overflow-y-auto">
+                <div v-if="items.length <= 0" class="dark:text-white h-full flex items-center justify-center text-center border-2 border-dashed">
+                    Add Components <br>
+                    to get started
+                </div>
+                <Nested :list="items" />
             </div>
-            <Nested :list="items" />
         </div>
     </div>
 

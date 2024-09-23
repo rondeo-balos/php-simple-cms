@@ -218,13 +218,13 @@ onMounted( async () => {
 </template>
 
 <style scoped>
-    .active,
-    .active svg {
-        --active-color: rgb(59 130 246);
-        fill: var(--active-color);
-        color: var(--active-color);
-    }
-    .active svg * {
-        stroke: var(--active-color);
-    }
+.active,
+.active svg {
+    --active-color: rgb(59 130 246);
+    fill: var(--active-color);
+    color: var(--active-color);
+}
+.active svg * {
+    stroke: var(--active-color);
+}
 </style>

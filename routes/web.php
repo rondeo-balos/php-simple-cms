@@ -51,7 +51,6 @@ Route::middleware( 'auth' )->group( function() {
     Route::post( '/admin/collections/{collection}', [CollectionsController::class, 'create'])->name( 'collection.create' );
     Route::patch( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'update'])->name( 'collection.update' );
     Route::delete( '/admin/collections/{collection}/{ID}', [CollectionsController::class, 'delete'])->name( 'collection.delete' );
-    Route::get( '/api/collections/{collection}', [CollectionsController::class, 'api'])->name( 'api.collection' );
 
     // Test
     Route::get( '/preview', function() {
@@ -63,6 +62,8 @@ Route::middleware( 'auth' )->group( function() {
         return Inertia::render('Test', ['title' => 'Home']);
     } );
 });
+
+Route::get( '/api/collections/{collection}', [CollectionsController::class, 'api'])->name( 'api.collection' );
 
 require __DIR__.'/auth.php';
 
