@@ -35,7 +35,9 @@ Route::middleware( 'auth' )->group( function() {
     Route::get( '/admin/users', [UserController::class, 'index'])->name( 'user' );
     Route::get( '/admin/users/add', [UserController::class, 'add'])->name( 'user.add' );
     Route::get( '/admin/users/{ID}', [UserController::class, 'edit'])->name( 'user.edit' );
-
+    Route::post( '/admin/users', [UserController::class, 'create'])->name( 'user.create' );
+    Route::patch( '/admin/users/{ID}', [UserController::class, 'update'])->name( 'user.update' );
+    Route::patch( '/admin/users/{ID}/pass', [UserController::class, 'updatePassword'])->name( 'user.update.password' );
     Route::delete( '/admin/users/{ID}', [UserController::class, 'delete'])->name( 'user.delete' );
 
     // Page

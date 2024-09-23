@@ -4,6 +4,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
+import TitleBar from '@/Components/CustomComponents/TitleBar.vue';
 
 defineProps({
     mustVerifyEmail: {
@@ -20,7 +21,7 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Profile</h2>
+            <TitleBar title="Profile" :back="true" />
         </template>
 
         <div class="py-2">
