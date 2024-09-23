@@ -42,14 +42,10 @@ const projects = ref([/*
 */]);
 
 // Fetch all projects
-axios.get( route('api.collection', ['project']) )
+axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
     .then( response => {
-        const data = response.data.data;
-        data.map( item => {
-            const project = JSON.parse( item.value );
-            console.log( project );
-            projects.value.push(project);
-        });
+        projects.value = response.data.data;
+        console.log(projects.value);
     })
     .catch( error => {
         console.log(error);
@@ -110,8 +106,8 @@ axios.get( route('api.collection', ['project']) )
                             <a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>
 
                             <div>
-                                <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> Laravel, Vue</span>
-                                <span class="text-sm font-bold text-blue-300 inline"><ClockIcon class="size-5 -mt-1 inline" /> On-going</span>
+                                <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> {{ project.framework }}</span>
+                                <span class="text-sm font-bold text-blue-300 inline"><ClockIcon class="size-5 -mt-1 inline" /> {{ project.status }}</span>
                             </div>
                         </div>
 

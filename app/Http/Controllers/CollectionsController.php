@@ -10,12 +10,6 @@ use Redirect;
 
 class CollectionsController extends Controller {
 
-    public function parent( Request $request ) {
-        return Inertia::render( 'Collections/DataTable', [
-
-        ]);
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -23,16 +17,20 @@ class CollectionsController extends Controller {
         $per_page = $request->get( 'per_page', '10' );
         $s = $request->get( 's', '' );
 
-        $data = Collections::where( 'key', $collection )->whereLike( 'value', '%'.$s.'%' )->latest()->paginate( $per_page );
+        $data = Collections::where( 'key', $collection )->whereRelation( 'metaData', 'value', 'like', '%'.$s.'%' )->latest()->paginate( $per_page );
         $data->getCollection()->transform( function($row) use ($collection){
             $row->actions = [
                 'edit' => route( 'collection.edit', [$collection, $row->id] ),
                 'delete' => route( 'collection.delete', [$collection, $row->id] )
             ];
+            // Merge the pivoted meta data into the main row attributes
+            $row->setRawAttributes(array_merge($row->getAttributes(), $row->pivoted_meta));
+            // Optionally remove the meta_data array if you don't want it in the output
+            unset($row->meta_data);
             return $row;
         });
 
-        return Inertia::render( 'Collections/Formatter', [
+        return Inertia::render( 'Collections/FormatterV2', [
             'status' => session( 'status' ),
             'per_page' => $per_page,
             's' => $s,
@@ -54,37 +52,44 @@ class CollectionsController extends Controller {
     }
 
     public function edit( Request $request, string $collection, string $ID ) {
-        $data = Collections::find( $ID );
+        $data = Collections::with( 'metaData' )->where( 'id', $ID )->first();
+        $data->setRawAttributes(array_merge($data->getAttributes(), $data->pivoted_meta));
+        unset($data->meta_data);
 
         return Inertia::render( 'Collections/Index', [
             'status' => session( 'status' ),
             'title' => 'Edit ' . $collection,
             'collection' => $collection,
             'id' => $ID,
-            'data' => json_decode($data['value'])
+            'data' => $data
         ]);
     }
 
     public function create( FormRequest $request, string $collection ) {
         $data = Collections::create([
-            'key' => $collection,
-            'value' => json_encode( $request->all() )
+            'key' => $collection
         ]);
+        foreach( $request->all() as $key => $value ) {
+            $data->metaData()->create([
+                'key' => $key,
+                'value' => $value
+            ]);
+        }
 
         return Redirect::route( 'collection', [$collection] );
     }
 
     public function update( FormRequest $request, string $collection, string $ID ) {
-        Collections::where( 'id', $ID )->update([
-            'key' => $collection,
-            'value' => json_encode( $request->all() )
-        ]);
+        $data = Collections::find( $ID );
+        foreach( $request->all() as $key => $value ) {
+            $data->metaData()->where( 'key', $key )->update([ 'value' => $value ]);
+        }
 
         return Redirect::route( 'collection.edit', [$collection, $ID] );
     }
 
     public function delete( string $collection, string $ID ) {
-        Collections::where( 'id', $ID )->delete();
+        Collections::find( $ID )->delete();
 
         return Redirect::route( 'collection', [$collection] );
     }
@@ -94,7 +99,14 @@ class CollectionsController extends Controller {
         $per_page = $request->get( 'per_page', '10' );
         $s = $request->get( 's', '' );
 
-        $data = Collections::where( 'key', $collection )->whereLike( 'value', '%'.$s.'%' )->latest()->paginate( $per_page );
+        $data = Collections::where( 'key', $collection )->whereRelation( 'metaData', 'value', 'like', '%'.$s.'%' )->latest()->paginate( $per_page );
+        $data->getCollection()->transform( function($row) {
+            // Merge the pivoted meta data into the main row attributes
+            $row->setRawAttributes(array_merge($row->getAttributes(), $row->pivoted_meta));
+            // Optionally remove the meta_data array if you don't want it in the output
+            unset($row->meta_data);
+            return $row;
+        });
 
         return response()->json( $data );
     }
