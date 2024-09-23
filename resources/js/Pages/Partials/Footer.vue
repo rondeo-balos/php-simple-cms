@@ -68,7 +68,7 @@ async function handleSubmit(e) {
                 <img :src="`${cdn}rondeo-footer-lg.webp`" class="absolute left-0 top-0 w-full h-full object-cover object-bottom opacity-50 z-0" alt="Rondeo Balos" width="auto" height="auto">
                 
                 <div class="relative">
-                    <div class="mb-32" id="contact">
+                    <div class="mb-32" id="contactEl">
                         <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-1">Need help with a project?</h2>
                         <p class="mb-8 text-center"><a href="tel:+639615936086" class="text-blue-300">+63 (961) 593-6086</a></p>
                         <form name="contactme" @submit.prevent="handleSubmit">
@@ -77,7 +77,7 @@ async function handleSubmit(e) {
                             </div>
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md">
                                 <input type="text" placeholder="Enter email address" id="email" name="email" v-model="email" class="bg-transparent ring-0 focus:ring-0 text-white border-0 min-w-0 rounded-lg me-2 grow">
-                                <button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#22c4f5] transition-colors px-4 py-2 font-bold text-white rounded-lg text-nowrap">
+                                <button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#1770db] transition-colors px-4 py-2 font-bold text-white rounded-lg text-nowrap">
                                     Send Inquiry <ArrowPathIcon class="h-5 inline animate-spin" v-if="submitted" />
                                 </button>
                             </div>
@@ -93,7 +93,7 @@ async function handleSubmit(e) {
                             <p class="text-slate-500 font-semibold mb-10">My passion for web development extends beyond technical skills; it is driven by the desire to understand each client’s unique requirements and exceed their expectations.</p>
 
                             <template v-for="(social, index) in socials">
-                                <a :href="social.link" :title="index" v-html="social.icon" target="_blank" rel="noopener" class="inline-block bg-[#32405b] hover:bg-[#475c87] transition-colors p-2 rounded-lg fill-blue-200 w-10 me-2 h-10"></a>
+                                <a :href="social.link" :title="index" v-html="social.icon" target="_blank" rel="noopener" class="inline-block bg-[#32405b] hover:bg-[#475c87] hover:scale-110 transition-all p-2 rounded-lg fill-blue-200 w-10 me-2 h-10"></a>
                             </template>
                         </div>
                         <div class="grow sm:w-3/5 sm:text-right">

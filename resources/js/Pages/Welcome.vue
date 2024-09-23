@@ -45,7 +45,6 @@ const projects = ref([/*
 axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
     .then( response => {
         projects.value = response.data.data;
-        console.log(projects.value);
     })
     .catch( error => {
         console.log(error);
@@ -103,7 +102,8 @@ axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
                             <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
                             <p class="text-slate-400 mb-10">{{ project.description }}</p>
                             
-                            <a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>
+                            <!--<a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>-->
+                            <Button v-if="project.link" :href="project.link" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
 
                             <div>
                                 <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> {{ project.framework }}</span>

@@ -34,22 +34,15 @@ const routes = [
         active: setActive( 'blog' )
     }
 ];
-</script>
 
-<style>
-.kanit {
-    font-family: 'Kanit', sans-serif;
-}
-.main-content {
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: 30%;
-}
-</style>
+const scrollTo = ( id ) => {
+    document.getElementById( id ).scrollIntoView({ behavior: 'smooth' });
+};
+</script>
 
 <template>
     <!-- Header -->
-    <div class="border-b border-gray-600 border-opacity-25">
+    <div class="border-b border-gray-600 border-opacity-25 nav relative">
         <div class="max-w-screen-xl px-2 py-4 mx-auto flex flex-row justify-between items-center gap-10">
             <img :src="`${cdn}logo-transparent.webp`" class=" max-h-12" width="auto" height="auto" alt="Logo">
             <nav class="flex-grow">
@@ -61,7 +54,7 @@ const routes = [
                 </ul>
             </nav>
             
-            <Button href="#contact" class="max-sm:hidden">Contact</Button>
+            <Button href="#contact" @click.prevent="scrollTo('contactEl')" :notLink="true" class="max-sm:hidden">Contact</Button>
             <button type="button" role="button" title="Show Nav Menu" @click="show = true" class="fixed right-0 z-10 shadow-xl sm:hidden rounded-2xl bg-[#232d3d] text-white p-2 mx-2"><Hamburger class="min-w-6 min-h-6"/></button>
         </div>
     </div>
@@ -86,7 +79,7 @@ const routes = [
                                         <span class="text-sm text-slate-600 block">{{ item.kicker }}</span>
                                     </li>
                                     <li class="relative group">
-                                        <a href="#contact" @click="show = false" class="text-white font-black text-3xl transition-all">Contact</a>
+                                        <a href="#contact" @click.prevent="show = false; scrollTo('contactEl');" class="text-white font-black text-3xl transition-all">Contact</a>
                                         <span class="text-sm text-slate-600 block">// Call me maybe?</span>
                                     </li>
                                 </ul>
@@ -100,3 +93,27 @@ const routes = [
         </Teleport>
     </template>
 </template>
+
+<style>
+.kanit {
+    font-family: 'Kanit', sans-serif;
+}
+.main-content {
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 30%;
+}
+.nav:before {
+    content: "";
+    background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1) 10px, transparent 10px, transparent 20px);
+    width: 100%;
+    height: 19px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    position: absolute;
+    top: 38%;
+    left: 0;
+    opacity: 25%;
+}
+</style>
