@@ -51,7 +51,7 @@ const toggleImageSelection = (image) => {
     <div class="flex flex-row flex-nowrap overflow-x-auto gap-3">
         <img v-for="image in model" :src="image" class="pointer-events-none max-h-36 object-contain bg-slate-900 rounded-md mb-3" />
     </div>
-    <div class="flex flex-row basis-full justify-end">
+    <div class="flex flex-row basis-full justify-start">
         <SecondaryButton @click="showModal">
             Select Images
         </SecondaryButton>
