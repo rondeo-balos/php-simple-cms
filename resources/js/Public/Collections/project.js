@@ -11,10 +11,13 @@ export default {
                 image: {
                     control: 'image'
                 },
-                description: {
-                    control: 'textarea',
-                },
+                gallery: {
+                    control: 'images'
+                }
             }
+        },
+        description: {
+            control: 'textarea',
         },
         technical: {
             fields: {

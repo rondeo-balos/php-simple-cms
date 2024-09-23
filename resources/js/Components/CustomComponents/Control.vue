@@ -6,6 +6,7 @@ import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import ImageSelector from '@/Components/CustomComponents/ImageSelector.vue';
 import CodeEditor from 'simple-code-editor';
+import ImageSelectorMany from './ImageSelectorMany.vue';
 
 const model = defineModel();
 defineProps([ 'control', 'options', 'label' ]);
@@ -32,5 +33,6 @@ defineProps([ 'control', 'options', 'label' ]);
         <QuillEditor contentType="html" v-model:content="model" theme="snow" style="height: 250px"/>
     </div>
     <ImageSelector v-else-if="control === 'image'" v-model="model" />
+    <ImageSelectorMany v-else-if="control === 'images'" v-model="model" />
     <CodeEditor v-else-if="control === 'code'" v-model="model" class="basis-full" :line-nums="true" :languages="[['html']]" width="100%" ></CodeEditor>
 </template>
