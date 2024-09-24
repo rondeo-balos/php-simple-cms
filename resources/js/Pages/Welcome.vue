@@ -26,29 +26,33 @@ fetch(`${cdn.value}tech-tools.json`)
     .then(data => techs.value = data);
 
 
-const projects = ref([/*
+const projects = ref([
     {
-        title: 'Simpl.CMS',
-        desc: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
+        project: 'Simpl.CMS',
+        description: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
         link: 'https://cms.rondeobalos.com/',
-        image: `${cdn.value}simpl.cms.mockup-dark.webp`
+        image: `${cdn.value}simpl.cms.mockup-dark.webp`,
+        framework: 'Laravel, Vue',
+        status: 'On-going'
     },
     {
-        title: 'Cool Rate',
-        desc: 'Financial and operational management system tailored for a service or installation-based company. The system focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
-        link: false,
-        image: `${cdn.value}cool-rate.mockup-dark.webp`
+        project: 'Cool Rate',
+        description: 'Financial and operational management system tailored for a service or installation-based company. The system focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
+        link: 'https://cool-rate.com',
+        image: `${cdn.value}cool-rate.mockup-dark.webp`,
+        framework: 'Laravel, Vue',
+        status: 'On-going'
     }
-*/]);
+]);
 
 // Fetch all projects
-axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
+/*axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
     .then( response => {
         projects.value = response.data.data;
     })
     .catch( error => {
         console.log(error);
-    });
+    });*/
 </script>
 
 <template>
@@ -69,11 +73,13 @@ axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
         <meta property="twitter:card" content="summary_large_image">
         <link rel="icon" :href="`${cdn}logo-transparent.webp`">
     </Head>
-    <div class="bg-[#151924] text-gray-200 main-content">
+    <div class="text-gray-200 main-content relative bg-[#151924]">
+        <div class="fixed top-0 left-0 w-full h-screen body-bg"></div>
+
         <Header />
 
         <!-- Main content -->
-        <div>
+        <div class="relative backdrop-blur-lg">
             <div class="max-w-screen-xl px-2 py-20 mx-auto">
 
                 <h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-8xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
@@ -103,7 +109,7 @@ axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
                             <p class="text-slate-400 mb-10">{{ project.description }}</p>
                             
                             <!--<a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>-->
-                            <Button v-if="project.link" :href="project.link" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
+                            <Button v-if="project.link" :href="project.link" :notLink="true" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
 
                             <div>
                                 <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> {{ project.framework }}</span>
@@ -132,22 +138,54 @@ axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
                     </div>
                 </div>
 
-                <div class="flex flex-wrap mx-auto max-w-7xl justify-center">
-                    <template v-for="tech in techs">
-                        <!--md:w-1/5-->
-                        <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-2">
-                            <div class="bg-[#232c3d] p-4 font-bold rounded-xl flex flex-row items-center gap-3">
-                                <img :src="tech.image" class="w-8 h-8 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
-                                {{ tech.name }}
+                <div class="flex flex-wrap mx-auto max-w-7xl justify-center transition-all relative">
+                    <TransitionGroup name="list">
+                        <template v-for="tech in techs" :key="tech.name">
+                            <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-2">
+                                <div class="bg-[#232c3d] p-4 font-bold rounded-xl flex flex-row items-center gap-3">
+                                    <img :src="tech.image" class="w-8 h-8 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
+                                    {{ tech.name }}
+                                </div>
                             </div>
-                        </div>
-                    </template>
+                        </template>
+                    </TransitionGroup>
+
                 </div>
 
             </div>
-        </div>
 
-        <Footer />
+            <Footer />
+
+        </div>
     </div>
 
 </template>
+
+<style scoped>
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+}
+
+.list-leave-active {
+    position: absolute;
+}
+
+.body-bg {
+    z-index: 0;
+    background: url(https://cdn.jsdelivr.net/gh/rondeo-balos/cdn/optimized/neon-bg.webp);
+    background-position: center;
+    background-size: contain;
+    animation: spinner 500s linear infinite;
+    opacity: 0.3;
+}
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+</style>

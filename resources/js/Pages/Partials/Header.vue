@@ -42,7 +42,7 @@ const scrollTo = ( id ) => {
 
 <template>
     <!-- Header -->
-    <div class="border-b border-gray-600 border-opacity-25 nav relative">
+    <div class="border-b border-gray-600 border-opacity-25 nav backdrop-blur-lg sticky top-0 z-50">
         <div class="max-w-screen-xl px-2 py-4 mx-auto flex flex-row justify-between items-center gap-10">
             <img :src="`${cdn}logo-transparent.webp`" class=" max-h-12" width="auto" height="auto" alt="Logo">
             <nav class="flex-grow">

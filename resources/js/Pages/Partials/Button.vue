@@ -43,7 +43,7 @@ const createRipple = (event) => {
 
 <style scoped>
     .ripple {
-        background-color: rgba(71, 92, 135, 0.35);
+        background-color: rgba(0, 0, 0, 0.164);
         transform: scale(0);
         animation: ripple-animation 0.4s linear forwards;
     }
