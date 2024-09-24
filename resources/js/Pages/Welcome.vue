@@ -95,14 +95,13 @@ axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
                 </div>
 
                 
-                <div class="mx-auto max-w-5xl mb-20">
+                <div class="mx-auto max-w-5xl mb-20" style="aspect-ratio: 396/1453;">
 
                     <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center _overflow-hidden _hover:overflow-visible group">
                         <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
                             <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
                             <p class="text-slate-400 mb-10">{{ project.description }}</p>
                             
-                            <!--<a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>-->
                             <Button v-if="project.link" :href="project.link" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
 
                             <div>
@@ -111,7 +110,6 @@ axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
                             </div>
                         </div>
 
-                        <!--<img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] grayscale group-hover:grayscale-0 group-even:max-md:-mr-96 group-odd:max-md:-ml-96 opacity-20 md:opacity-80 z-0 group-hover:scale-105 transition-transform duration-1000">-->
                         <img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
                     </div>
 
