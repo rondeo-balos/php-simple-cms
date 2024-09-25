@@ -5,7 +5,6 @@ export function dragScroll(scrollContainer, scrollSpeed = 1) {
 
     const startDrag = (event) => {
         if (!scrollContainer.value) return;
-
         isDragging = true;
         // Check for touch events
         const pageX = event.type === 'touchstart' ? event.touches[0].pageX : event.pageX;
@@ -17,6 +16,7 @@ export function dragScroll(scrollContainer, scrollSpeed = 1) {
     const onDrag = (event) => {
         if (!scrollContainer.value || !isDragging) return;
         event.preventDefault();
+
         // Check for touch events
         const pageX = event.type === 'touchmove' ? event.touches[0].pageX : event.pageX;
         const x = pageX - scrollContainer.value.offsetLeft;

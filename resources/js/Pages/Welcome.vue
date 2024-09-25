@@ -138,9 +138,8 @@ const _dragScroll = dragScroll(scrollContainer);
                     </h2>
                 </div>
 
-                <div class="grid grid-flow-col auto-cols-max items-center gap-5 overflow-hidden cursor-grab p-2 px-2 md:px-32" 
+                <div class="grid grid-flow-col auto-cols-max items-center gap-5 overflow-x-scroll sm:overflow-x-hidden cursor-grab p-2 px-2 md:px-32" 
                     @mousedown="_dragScroll.startDrag" @mousemove="_dragScroll.onDrag" @mouseup="_dragScroll.endDrag" @mouseleave="_dragScroll.endDrag"
-                    @touchstart="_dragScroll.startDrag" @touchmove="_dragScroll.onDrag" @touchend="_dragScroll.endDrag"
                     ref="scrollContainer">
                     <Service :srcBase="`${cdn}web-design-bg.png`" :srcText="`${cdn}web-design-txt.png`" :srcObj="`${cdn}web-design-obj2.png`" class="row-span-2" />
                     <Service :srcBase="`${cdn}backend-dev-bg.png`" :srcText="`${cdn}backend-dev-txt.png`" :srcObj="`${cdn}backend-dev-obj.png`" />
