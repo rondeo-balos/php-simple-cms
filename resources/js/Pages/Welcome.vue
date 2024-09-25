@@ -1,11 +1,14 @@
 <script setup>
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/16/solid';
 import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
 import Button from '@/Pages/Partials/Button.vue';
+import PrimaryText from '@/Pages/Partials/PrimaryText.vue';
 import axios from 'axios';
+import Service from './Partials/Service.vue';
+import { dragScroll } from './Partials/DragScroll';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -53,6 +56,9 @@ const projects = ref([
     .catch( error => {
         console.log(error);
     });*/
+
+const scrollContainer = ref(null);
+const _dragScroll = dragScroll(scrollContainer);
 </script>
 
 <template>
@@ -80,6 +86,7 @@ const projects = ref([
 
         <!-- Main content -->
         <div class="relative backdrop-blur-lg">
+            <!-- Max Screen -->
             <div class="max-w-screen-xl px-2 py-20 mx-auto">
 
                 <h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-8xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
@@ -94,35 +101,55 @@ const projects = ref([
                         <h1 class="text-white drop-shadow text-9xl text-center font-black uppercase">Rondeo Balos' Web Dev Portfolio</h1>
                     </div>-->
                 </div>
-
+            </div>
+            
+            <div class="mx-auto max-w-5xl px-2 mb-20">
                 <div class="mx-auto max-w-2xl mb-10 text-center">
                     <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">Featured Project</h2>
                     <p class="text-slate-400 mb-10">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
                 </div>
 
-                
-                <div class="mx-auto max-w-5xl mb-20">
+                <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center _overflow-hidden _hover:overflow-visible group">
+                    <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
+                        <p class="text-slate-400 mb-10">{{ project.description }}</p>
+                        
+                        <!--<a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>-->
+                        <Button v-if="project.link" :href="project.link" :notLink="true" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
 
-                    <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center _overflow-hidden _hover:overflow-visible group">
-                        <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
-                            <h3 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
-                            <p class="text-slate-400 mb-10">{{ project.description }}</p>
-                            
-                            <!--<a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>-->
-                            <Button v-if="project.link" :href="project.link" :notLink="true" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
-
-                            <div>
-                                <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> {{ project.framework }}</span>
-                                <span class="text-sm font-bold text-blue-300 inline"><ClockIcon class="size-5 -mt-1 inline" /> {{ project.status }}</span>
-                            </div>
+                        <div>
+                            <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> {{ project.framework }}</span>
+                            <span class="text-sm font-bold text-blue-300 inline"><ClockIcon class="size-5 -mt-1 inline" /> {{ project.status }}</span>
                         </div>
-
-                        <!--<img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] grayscale group-hover:grayscale-0 group-even:max-md:-mr-96 group-odd:max-md:-ml-96 opacity-20 md:opacity-80 z-0 group-hover:scale-105 transition-transform duration-1000">-->
-                        <img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
                     </div>
 
-                    <Button :href="route('projects')" class="mt-10">View all my projects</Button>
+                    <!--<img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] grayscale group-hover:grayscale-0 group-even:max-md:-mr-96 group-odd:max-md:-ml-96 opacity-20 md:opacity-80 z-0 group-hover:scale-105 transition-transform duration-1000">-->
+                    <img :src="project.image" :alt="project.project" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
                 </div>
+
+                <Button :href="route('projects')" class="mt-10">View all my projects</Button>
+            </div>
+
+            <div class="mb-20">
+                <div class="max-w-screen-xl px-2 mx-auto">
+                    <h2 class="text-4xl sm:text-7xl font-bold text-gray-200  mb-6">
+                        <PrimaryText>What</PrimaryText><br>
+                        I excel at
+                    </h2>
+                </div>
+
+                <div class="grid grid-flow-col auto-cols-max items-center gap-5 overflow-hidden cursor-grab p-2 px-2 md:px-32" 
+                    @mousedown="_dragScroll.startDrag" @mousemove="_dragScroll.onDrag" @mouseup="_dragScroll.endDrag" @mouseleave="_dragScroll.endDrag"
+                    @touchstart="_dragScroll.startDrag" @touchmove="_dragScroll.onDrag" @touchend="_dragScroll.endDrag"
+                    ref="scrollContainer">
+                    <Service :srcBase="`${cdn}web-design-bg.png`" :srcText="`${cdn}web-design-txt.png`" :srcObj="`${cdn}web-design-obj2.png`" class="row-span-2" />
+                    <Service :srcBase="`${cdn}backend-dev-bg.png`" :srcText="`${cdn}backend-dev-txt.png`" :srcObj="`${cdn}backend-dev-obj.png`" />
+                    <Service :srcBase="`${cdn}branding-bg.png`" :srcText="`${cdn}branding-txt.png`" :srcObj="`${cdn}branding-obj.png`" />
+                    <Service :srcBase="`${cdn}landing-page-b.png`" :srcText="`${cdn}landing-page-txt.png`" :srcObj="`${cdn}landing-page-obj.png`" class="row-span-2" />
+                </div>
+            </div>
+            
+            <div class="max-w-screen-xl px-2 py-20 mx-auto">
                 
                 <div class="mx-auto max-w-2xl">
                     <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 text-center mb-3">Technologies and Tools I use</h2>
@@ -153,6 +180,7 @@ const projects = ref([
                 </div>
 
             </div>
+            <!--/ Max Screen /-->
 
             <Footer />
 
@@ -187,5 +215,10 @@ const projects = ref([
 }
 @keyframes spinner {
   to { transform: rotate(360deg); }
+}
+
+.dragging {
+    cursor: grabbing;
+    user-select: none; /* Prevent text selection while dragging */
 }
 </style>

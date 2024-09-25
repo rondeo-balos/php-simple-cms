@@ -2,6 +2,7 @@
 import { usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { ArrowPathIcon } from '@heroicons/vue/16/solid';
+import PrimaryText from '@/Pages/Partials/PrimaryText.vue';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -65,11 +66,15 @@ async function handleSubmit(e) {
     <footer>
         <div class="max-w-screen-xl px-2 py-4 mx-auto">
             <div class="bg-[#232c3d] rounded-3xl px-8 pb-0 sm:px-12 py-20 sm:mb-5 relative overflow-hidden">
-                <img :src="`${cdn}rondeo-footer-lg.webp`" class="absolute left-0 top-0 w-full h-full object-cover object-bottom opacity-50 z-0" alt="Rondeo Balos" width="auto" height="auto">
+                <img :src="`${cdn}rondeo-footer-lg.webp`" class="absolute left-0 top-0 w-full h-full object-cover object-bottom opacity-50 z-0 max-md:hidden" alt="Rondeo Balos" width="auto" height="auto">
                 
                 <div class="relative">
-                    <div class="mb-32" id="contactEl">
+                    <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-5 w-72 absolute left-1/2 -ml-36">
+                    
+                    <div class="mb-32 pt-10 relative" id="contactEl">
+
                         <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-1">Need help with a project?</h2>
+                        <h3 class="text-center"><PrimaryText>Let's Talk!</PrimaryText></h3>
                         <p class="mb-8 text-center"><a href="tel:+639615936086" class="text-blue-300">+63 (961) 593-6086</a></p>
                         <form name="contactme" @submit.prevent="handleSubmit">
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md mb-3">
@@ -98,7 +103,7 @@ async function handleSubmit(e) {
                         </div>
                         <div class="grow sm:w-3/5 sm:text-right">
                             <div class="inline-block text-left">
-                                <h4 class="kanit font-bold uppercase mb-4 mt-4 max-sm:text-center">What I excel at</h4>
+                                <!--<h4 class="kanit font-bold uppercase mb-4 mt-4 max-sm:text-center">What I excel at</h4>-->
                                 <ul class="text-blue-300 flex sm:flex-col flex-wrap gap-1 justify-center max-sm:text-sm">
                                     <li>Design Systems</li>
                                     <li class="sm:hidden" aria-hidden="true" role="presentation">&bull;</li>
