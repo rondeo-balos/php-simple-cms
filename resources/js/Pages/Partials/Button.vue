@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
-defineProps([ 'notLink' ]);
+const props = defineProps([ 'notLink' ]);
 
 const rippleVisible = ref(false);
 const rippleStyle = ref({});

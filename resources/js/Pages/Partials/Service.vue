@@ -12,7 +12,7 @@ const { handleMouseMove, resetTransform } = useLayeredEffect(containerRef, txtIm
 </script>
 
 <template>
-  <div>
+  <div class=" w-[300px] md:w-auto">
     <div class="relative rounded-lg overflow-hidden bg-black" @mousemove="handleMouseMove" @mouseleave="resetTransform" ref="containerRef">
         <img :src="srcBase" class="w-auto h-auto base-image pointer-events-none" />
         <img :src="srcText" class="w-auto h-auto absolute top-0 layer-image pointer-events-none" ref="txtImageRef" />

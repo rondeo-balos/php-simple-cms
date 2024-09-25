@@ -59,6 +59,10 @@ const projects = ref([
 
 const scrollContainer = ref(null);
 const _dragScroll = dragScroll(scrollContainer);
+
+const scrollTo = ( id ) => {
+    document.getElementById( id ).scrollIntoView({ behavior: 'smooth' });
+};
 </script>
 
 <template>
@@ -85,9 +89,9 @@ const _dragScroll = dragScroll(scrollContainer);
         <Header />
 
         <!-- Main content -->
-        <div class="relative backdrop-blur-lg">
+        <div class="relative backdrop-blur-lg overflow-x-hidden">
             <!-- Max Screen -->
-            <div class="max-w-screen-xl px-2 py-20 mx-auto">
+            <div class="max-w-screen-xl px-2 py-10 mx-auto">
 
                 <h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-8xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
                     <span class="text-lg text-[#2f8af3] normal-case">// Hi! <i class="not-italic text-white">my name is</i></span>
@@ -105,11 +109,11 @@ const _dragScroll = dragScroll(scrollContainer);
             
             <div class="mx-auto max-w-5xl px-2 mb-20">
                 <div class="mx-auto max-w-2xl mb-10 text-center">
-                    <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-3">Featured Project</h2>
+                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 mb-3"><PrimaryText>Featured</PrimaryText> Projects</h2>
                     <p class="text-slate-400 mb-10">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
                 </div>
 
-                <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center _overflow-hidden _hover:overflow-visible group">
+                <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center group">
                     <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
                         <p class="text-slate-400 mb-10">{{ project.description }}</p>
@@ -130,28 +134,39 @@ const _dragScroll = dragScroll(scrollContainer);
                 <Button :href="route('projects')" class="mt-10">View all my projects</Button>
             </div>
 
-            <div class="mb-20">
-                <div class="max-w-screen-xl px-2 mx-auto">
-                    <h2 class="text-4xl sm:text-7xl font-bold text-gray-200  mb-6">
-                        <PrimaryText>What</PrimaryText><br>
+            <div class="mb-10">
+                <div class="max-w-screen-xl px-2 mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-start">
+                    <h2 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6">
+                        <PrimaryText>What</PrimaryText> <span class="inline-block md:block"></span>
                         I excel at
                     </h2>
+                    <p class="text-slate-400 mb-5">I create custom websites that are visually appealing and easy to use, <span class="inline-block md:block"></span> helping businesses connect with their audience and grow online.</p>
                 </div>
 
-                <div class="grid grid-flow-col auto-cols-max items-center gap-5 overflow-x-scroll sm:overflow-x-hidden cursor-grab p-2 px-2 md:px-32" 
+                <div class="grid grid-flow-col auto-cols-max items-center gap-5 lg:gap-10 overflow-x-scroll lg:overflow-x-hidden cursor-grab p-2 px-2 xl:px-32" 
                     @mousedown="_dragScroll.startDrag" @mousemove="_dragScroll.onDrag" @mouseup="_dragScroll.endDrag" @mouseleave="_dragScroll.endDrag"
                     ref="scrollContainer">
                     <Service :srcBase="`${cdn}web-design-bg.png`" :srcText="`${cdn}web-design-txt.png`" :srcObj="`${cdn}web-design-obj2.png`" class="row-span-2" />
-                    <Service :srcBase="`${cdn}backend-dev-bg.png`" :srcText="`${cdn}backend-dev-txt.png`" :srcObj="`${cdn}backend-dev-obj.png`" />
-                    <Service :srcBase="`${cdn}branding-bg.png`" :srcText="`${cdn}branding-txt.png`" :srcObj="`${cdn}branding-obj.png`" />
+                    <Service :srcBase="`${cdn}backend-dev-bg.png`" :srcText="`${cdn}backend-dev-txt.png`" :srcObj="`${cdn}backend-dev-obj.png`" class="w-[380px]" />
+                    <Service :srcBase="`${cdn}branding-bg.png`" :srcText="`${cdn}branding-txt.png`" :srcObj="`${cdn}branding-obj.png`" class="w-[380px]" />
                     <Service :srcBase="`${cdn}landing-page-b.png`" :srcText="`${cdn}landing-page-txt.png`" :srcObj="`${cdn}landing-page-obj.png`" class="row-span-2" />
+                    <Service :srcBase="`${cdn}e-commerce-bg.png`" :srcText="`${cdn}e-commerce-txt.png`" :srcObj="`${cdn}e-commerce-obj.png`" class="w-[380px]" />
+                    <Service :srcBase="`${cdn}system-dev-bg.png`" :srcText="`${cdn}system-dev-txt.png`" :srcObj="`${cdn}system-dev-obj.png`" class="w-[380px]" />
+
+                    <div class="row-span-2 relative rounded-lg overflow-hidden bg-black p-20 text-center h-full flex flex-col justify-center">
+                        <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-35 w-72 absolute left-1/2 -ml-36">
+                        <h3 class="text-3xl sm:text-5xl text-gray-200 mb-1">And even more...</h3>
+                        <p class="text-slate-400 mb-5">Services tailored to your specific needs</p>
+                        <Button href="#contact" @click.prevent="scrollTo('contactEl')" :notLink="true" >Contact</Button>
+                    </div>
+
                 </div>
             </div>
             
-            <div class="max-w-screen-xl px-2 py-20 mx-auto">
+            <div class="max-w-screen-xl px-2 py-10 mx-auto">
                 
                 <div class="mx-auto max-w-2xl">
-                    <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 text-center mb-3">Technologies and Tools I use</h2>
+                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 text-center mb-3"><PrimaryText>Technologies</PrimaryText> and Tools I use</h2>
                     <p class="text-center text-slate-400 mb-10">I take pride in showcasing my comprehensive knowledge and expertise in web development, utilizing a wide range of modern tools and technologies to deliver high-quality solutions.</p>
                     <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-800 mb-5">
                         <ul class="flex flex-wrap -mb-px justify-center">
