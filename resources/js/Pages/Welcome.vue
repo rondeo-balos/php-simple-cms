@@ -9,6 +9,7 @@ import PrimaryText from '@/Pages/Partials/PrimaryText.vue';
 import axios from 'axios';
 import Service from './Partials/Service.vue';
 import { dragScroll } from './Partials/DragScroll';
+import { useLayeredEffect } from './Partials/Layered';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -57,8 +58,16 @@ const projects = ref([
         console.log(error);
     });*/
 
+// Scroll drag
 const scrollContainer = ref(null);
 const _dragScroll = dragScroll(scrollContainer);
+
+// Layered transform
+const containerRef = ref(null);
+const imgRef = ref(null);
+const txtRef = ref(null);
+const { handleMouseMove, resetTransform } = useLayeredEffect(containerRef, imgRef, txtRef);
+
 
 const scrollTo = ( id ) => {
     document.getElementById( id ).scrollIntoView({ behavior: 'smooth' });
@@ -153,11 +162,13 @@ const scrollTo = ( id ) => {
                     <Service :srcBase="`${cdn}e-commerce-bg.png`" :srcText="`${cdn}e-commerce-txt.png`" :srcObj="`${cdn}e-commerce-obj.png`" class="w-[380px]" />
                     <Service :srcBase="`${cdn}system-dev-bg.png`" :srcText="`${cdn}system-dev-txt.png`" :srcObj="`${cdn}system-dev-obj.png`" class="w-[380px]" />
 
-                    <div class="row-span-2 relative rounded-lg overflow-hidden bg-black p-20 text-center h-full flex flex-col justify-center">
-                        <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-35 w-72 absolute left-1/2 -ml-36">
-                        <h3 class="text-3xl sm:text-5xl text-gray-200 mb-1">And even more...</h3>
-                        <p class="text-slate-400 mb-5">Services tailored to your specific needs</p>
-                        <Button href="#contact" @click.prevent="scrollTo('contactEl')" :notLink="true" >Contact</Button>
+                    <div class="row-span-2 relative rounded-lg overflow-hidden bg-black p-5 md:p-20 text-center h-full flex flex-col justify-center" @mousemove="handleMouseMove" @mouseleave="resetTransform" ref="containerRef">
+                        <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-35 w-72 absolute left-1/2 -ml-36" ref="imgRef">
+                        <div ref="txtRef">
+                            <h3 class="text-3xl sm:text-5xl text-gray-200 mb-1">And even more...</h3>
+                            <p class="text-slate-400 mb-5">Services tailored to your specific needs</p>
+                            <Button href="#contact" @click.prevent="scrollTo('contactEl')" :notLink="true" >Contact</Button>
+                        </div>
                     </div>
 
                 </div>
