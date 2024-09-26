@@ -1,5 +1,5 @@
 <script setup>
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, usePage, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/16/solid';
 import Header from '@/Pages/Partials/Header.vue';
@@ -32,18 +32,18 @@ fetch(`${cdn.value}tech-tools.json`)
 
 const projects = ref([
     {
-        project: 'Simpl.CMS',
-        description: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
-        link: 'https://cms.rondeobalos.com/',
-        image: `${cdn.value}simpl.cms.mockup-dark.webp`,
-        framework: 'Laravel, Vue',
-        status: 'On-going'
-    },
-    {
         project: 'Cool Rate',
         description: 'Financial and operational management system tailored for a service or installation-based company. The system focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
         link: 'https://cool-rate.com',
         image: `${cdn.value}cool-rate.mockup-dark.webp`,
+        framework: 'Laravel, Vue',
+        status: 'On-going'
+    },
+    {
+        project: 'Simpl.CMS',
+        description: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
+        link: 'https://cms.rondeobalos.com/',
+        image: `${cdn.value}simpl.cms.mockup-dark.webp`,
         framework: 'Laravel, Vue',
         status: 'On-going'
     }
@@ -108,7 +108,7 @@ const scrollTo = ( id ) => {
                 </h1>
                 <div class="w-full mb-20 relative shadow-2xl rounded-3xl overflow-hidden">
                     <video class="w-full h-auto" :poster="`${cdn}poster.gif`" autoplay muted loop>
-                        <source src="https://dl.dropboxusercontent.com/scl/fi/sug74uaxpbkznc34s3hjh/showreelv4.mp4?rlkey=e897a5evp3ec2ih9reu6m0q92&st=pshuxy90&dl=0" type="video/mp4">
+                        <source src="https://dl.dropboxusercontent.com/scl/fi/7mzijw1v0ww0es2ehfkry/showreelv6-optimized.mp4?rlkey=otmajlfecy95169jbktdixc58&st=nd5ed75c&dl=0" type="video/mp4">
                     </video>
                     <!--<div class="absolute w-full h-full top-0 backdrop-grayscale backdrop-blur-sm z-10 flex flex-col justify-center items-center">
                         <h1 class="text-white drop-shadow text-9xl text-center font-black uppercase">Rondeo Balos' Web Dev Portfolio</h1>
@@ -119,7 +119,7 @@ const scrollTo = ( id ) => {
             <div class="mx-auto max-w-5xl px-2 mb-20">
                 <div class="mx-auto max-w-2xl mb-10 text-center">
                     <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 mb-3"><PrimaryText>Featured</PrimaryText> Projects</h2>
-                    <p class="text-slate-400 mb-10">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
+                    <p class="text-slate-400 mb-10 text-lg">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
                 </div>
 
                 <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center group">
@@ -128,7 +128,7 @@ const scrollTo = ( id ) => {
                         <p class="text-slate-400 mb-10">{{ project.description }}</p>
                         
                         <!--<a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>-->
-                        <Button v-if="project.link" :href="project.link" :notLink="true" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
+                        <Button v-if="project.link" :href="project.link" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
 
                         <div>
                             <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> {{ project.framework }}</span>
@@ -140,7 +140,7 @@ const scrollTo = ( id ) => {
                     <img :src="project.image" :alt="project.project" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
                 </div>
 
-                <Button :href="route('projects')" class="mt-10">View all my projects</Button>
+                <Link  :href="route('projects')" class="mt-10"><Button class="mt-10">View all my projects</Button></Link>
             </div>
 
             <div class="mb-10">
@@ -149,7 +149,7 @@ const scrollTo = ( id ) => {
                         <PrimaryText>What</PrimaryText> <span class="inline-block md:block"></span>
                         I excel at
                     </h2>
-                    <p class="text-slate-400 mb-5">I create custom websites that are visually appealing and easy to use, <span class="inline-block md:block"></span> helping businesses connect with their audience and grow online.</p>
+                    <p class="text-slate-400 mb-5 text-lg">I create custom websites that are visually appealing and easy to use, <span class="inline-block md:block"></span> helping businesses connect with their audience and grow online.</p>
                 </div>
 
                 <div class="grid grid-flow-col auto-cols-max items-center gap-5 lg:gap-10 overflow-x-scroll lg:overflow-x-hidden cursor-grab p-2 px-2 xl:px-32" 
@@ -167,7 +167,7 @@ const scrollTo = ( id ) => {
                         <div ref="txtRef">
                             <h3 class="text-3xl sm:text-5xl text-gray-200 mb-1">And even more...</h3>
                             <p class="text-slate-400 mb-5">Services tailored to your specific needs</p>
-                            <Button href="#contact" @click.prevent="scrollTo('contactEl')" :notLink="true" >Contact</Button>
+                            <Button href="#contact" @click.prevent="scrollTo('contactEl')" >Contact</Button>
                         </div>
                     </div>
 
@@ -178,7 +178,7 @@ const scrollTo = ( id ) => {
                 
                 <div class="mx-auto max-w-2xl">
                     <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 text-center mb-3"><PrimaryText>Technologies</PrimaryText> and Tools I use</h2>
-                    <p class="text-center text-slate-400 mb-10">I take pride in showcasing my comprehensive knowledge and expertise in web development, utilizing a wide range of modern tools and technologies to deliver high-quality solutions.</p>
+                    <p class="text-center text-slate-400 mb-10 text-lg">I take pride in showcasing my comprehensive knowledge and expertise in web development, utilizing a wide range of modern tools and technologies to deliver high-quality solutions.</p>
                     <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-800 mb-5">
                         <ul class="flex flex-wrap -mb-px justify-center">
                             <li v-for="(type, index) in types" class="sm:mx-2">

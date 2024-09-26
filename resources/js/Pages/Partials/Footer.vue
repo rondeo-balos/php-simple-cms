@@ -3,6 +3,7 @@ import { usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { ArrowPathIcon } from '@heroicons/vue/16/solid';
 import PrimaryText from '@/Pages/Partials/PrimaryText.vue';
+import Button from '@/Pages/Partials/Button.vue';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -82,9 +83,12 @@ async function handleSubmit(e) {
                             </div>
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md">
                                 <input type="text" placeholder="Enter email address" id="email" name="email" v-model="email" class="bg-transparent ring-0 focus:ring-0 text-white border-0 min-w-0 rounded-lg me-2 grow">
-                                <button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#1770db] transition-colors px-4 py-2 font-bold text-white rounded-lg text-nowrap">
+                                <Button button="true" tyle="submit" role="button" class="transition-all">
                                     Send Inquiry <ArrowPathIcon class="h-5 inline animate-spin" v-if="submitted" />
-                                </button>
+                                </Button>
+                                <!--<button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#1770db] transition-colors px-4 py-2 font-bold text-white rounded-lg text-nowrap">
+                                    Send Inquiry <ArrowPathIcon class="h-5 inline animate-spin" v-if="submitted" />
+                                </button>-->
                             </div>
                         </form>
                         <p v-if="status" class="text-center">{{ status }}</p>
@@ -98,6 +102,7 @@ async function handleSubmit(e) {
                             <p class="text-slate-500 font-semibold mb-10">My passion for web development extends beyond technical skills; it is driven by the desire to understand each client’s unique requirements and exceed their expectations.</p>
 
                             <template v-for="(social, index) in socials">
+                                <!--<Button :href="social.link" target="_blank" :title="index" rel="noopener" class="bg-[#333f5b] inline-block me-2 fill-blue-200"><div v-html="social.icon" class="w-5 h-5"></div></Button>-->
                                 <a :href="social.link" :title="index" v-html="social.icon" target="_blank" rel="noopener" class="inline-block bg-[#32405b] hover:bg-[#475c87] hover:scale-110 transition-all p-2 rounded-lg fill-blue-200 w-10 me-2 h-10"></a>
                             </template>
                         </div>
@@ -128,7 +133,7 @@ async function handleSubmit(e) {
                     </div>
 
                     <div class="border-t border-gray-600 border-opacity-50 py-4">
-                        <p class="text-xs text-center text-slate-500 font-semibold">&copy; 2024 All rights reserved. </p>
+                        <p class="text-sm text-center text-slate-500 font-semibold">&copy; 2024 All rights reserved. </p>
                     </div>
                 </div>
             </div>
