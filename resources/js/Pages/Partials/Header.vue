@@ -4,7 +4,7 @@ import Hamburger from '@/Icons/Hamburger.vue';
 import { usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import Button from '@/Pages/Partials/Button.vue';
+import CTA from '@/Pages/Partials/CTA.vue';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -54,7 +54,7 @@ const scrollTo = ( id ) => {
                 </ul>
             </nav>
             
-            <Button href="#contact" @click.prevent="scrollTo('contactEl')" class="max-sm:hidden">Contact</Button>
+            <CTA is="button" @click.prevent="scrollTo('contactEl')" class="max-sm:hidden min-h-12">Contact</CTA>
             <button type="button" role="button" title="Show Nav Menu" @click="show = true" class="fixed right-0 z-10 shadow-xl sm:hidden rounded-2xl bg-[#232d3d] text-white p-2 mx-2"><Hamburger class="min-w-6 min-h-6"/></button>
         </div>
     </div>

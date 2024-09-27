@@ -1,15 +1,17 @@
 <script setup>
 import { Head, usePage, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/16/solid';
+import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon, ArrowLongDownIcon } from '@heroicons/vue/16/solid';
 import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
 import Button from '@/Pages/Partials/Button.vue';
+import CTA from '@/Pages/Partials/CTA.vue';
+import Video from '@/Pages/Partials/Video.vue';
 import PrimaryText from '@/Pages/Partials/PrimaryText.vue';
 import axios from 'axios';
-import Service from './Partials/Service.vue';
+import Service from '@/Pages/Partials/Service.vue';
 import { dragScroll } from './Partials/DragScroll';
-import { useLayeredEffect } from './Partials/Layered';
+import { useLayeredEffect } from '@/Pages/Partials/Layered';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -79,8 +81,8 @@ const scrollTo = ( id ) => {
         <link rel="canonical" href="https://rondeobalos.com/">
         <meta name="description" content="Hello, I'm Rondeo Balos, a Web Developer. Each website project is unique with its own set of challenges. I treat each one with respect and dedication.">
         <meta name="robots" content="index">
-        <meta property="og:image" content="//rondeobalos.com/src/media/f80e13a2660d5c11.webp">
-        <meta property="twitter:image" content="//rondeobalos.com/src/media/f80e13a2660d5c11.webp">
+        <meta property="og:image" :content="`${cdn}backend-dev.png`">
+        <meta property="twitter:image" :content="`${cdn}backend-dev.png`">
         <meta property="og:site_name" content="Rondeo Balos">
         <meta property="og:locale" content="en">
         <meta property="og:title" content="Web Developer Portfolio - Rondeo Balos">
@@ -100,20 +102,26 @@ const scrollTo = ( id ) => {
         <!-- Main content -->
         <div class="relative backdrop-blur-lg overflow-x-hidden">
             <!-- Max Screen -->
-            <div class="max-w-screen-xl px-2 py-10 mx-auto">
+            <div class="max-w-screen-xl px-4 py-10 mx-auto">
 
-                <h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-8xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
+                <div class="flex flex-col md:flex-row justify-between my-5 md:my-20">
+                    <h2 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6">
+                        <PrimaryText>Welcome!</PrimaryText> <br>
+                        I'm Rondeo Balos
+                    </h2>
+                    <div class="md:w-5/12">
+                        <p class="text-slate-400 text-lg mb-3">I’m a web developer passionate about creating visually appealing, high-performance websites. I combine modern design with solid development to build digital experiences that help businesses grow. Let’s bring your project to life!</p>
+                        <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>
+                    </div>
+                </div>
+
+                <!--<h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-8xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
                     <span class="text-lg text-[#2f8af3] normal-case">// Hi! <i class="not-italic text-white">my name is</i></span>
                     Rondeo Balos
-                </h1>
-                <div class="w-full mb-20 relative shadow-2xl rounded-3xl overflow-hidden">
-                    <video class="w-full h-auto" :poster="`${cdn}poster.gif`" autoplay muted loop>
-                        <source src="https://dl.dropboxusercontent.com/scl/fi/7mzijw1v0ww0es2ehfkry/showreelv6-optimized.mp4?rlkey=otmajlfecy95169jbktdixc58&st=nd5ed75c&dl=0" type="video/mp4">
-                    </video>
-                    <!--<div class="absolute w-full h-full top-0 backdrop-grayscale backdrop-blur-sm z-10 flex flex-col justify-center items-center">
-                        <h1 class="text-white drop-shadow text-9xl text-center font-black uppercase">Rondeo Balos' Web Dev Portfolio</h1>
-                    </div>-->
-                </div>
+                </h1>-->
+                <Video :cdn="cdn" />
+
+                <ArrowLongDownIcon class="w-10 h-10 p-2 border rounded-full animate-bounce mx-auto mb-10 -mt-10" />
             </div>
             
             <div class="mx-auto max-w-5xl px-2 mb-20">
@@ -127,7 +135,6 @@ const scrollTo = ( id ) => {
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
                         <p class="text-slate-400 mb-10">{{ project.description }}</p>
                         
-                        <!--<a v-if="project.link" :href="project.link" class="bg-[#333f5b] hover:bg-[#475c87] transition-colors px-4 py-3 font-bold text-white rounded-lg mb-5">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></a>-->
                         <Button v-if="project.link" :href="project.link" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
 
                         <div>
@@ -136,11 +143,10 @@ const scrollTo = ( id ) => {
                         </div>
                     </div>
 
-                    <!--<img :src="project.image" :alt="project.title" width="auto" height="auto" class="max-h-[400px] grayscale group-hover:grayscale-0 group-even:max-md:-mr-96 group-odd:max-md:-ml-96 opacity-20 md:opacity-80 z-0 group-hover:scale-105 transition-transform duration-1000">-->
                     <img :src="project.image" :alt="project.project" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
                 </div>
 
-                <Link  :href="route('projects')" class="mt-10"><Button class="mt-10">View all my projects</Button></Link>
+                <Button class="mt-10" :href="route('projects')">View all my projects</Button>
             </div>
 
             <div class="mb-10">
@@ -152,18 +158,18 @@ const scrollTo = ( id ) => {
                     <p class="text-slate-400 mb-5 text-lg">I create custom websites that are visually appealing and easy to use, <span class="inline-block md:block"></span> helping businesses connect with their audience and grow online.</p>
                 </div>
 
-                <div class="grid grid-flow-col auto-cols-max items-center gap-5 lg:gap-10 overflow-x-scroll lg:overflow-x-hidden cursor-grab p-2 px-2 xl:px-32" 
+                <div class="grid grid-flow-col auto-cols-max items-center gap-5 lg:gap-10 pb-20 overflow-x-scroll lg:overflow-x-hidden cursor-grab p-2 px-2 xl:px-32" 
                     @mousedown="_dragScroll.startDrag" @mousemove="_dragScroll.onDrag" @mouseup="_dragScroll.endDrag" @mouseleave="_dragScroll.endDrag"
                     ref="scrollContainer">
-                    <Service :srcBase="`${cdn}web-design-bg.png`" :srcText="`${cdn}web-design-txt.png`" :srcObj="`${cdn}web-design-obj2.png`" class="row-span-2" />
-                    <Service :srcBase="`${cdn}backend-dev-bg.png`" :srcText="`${cdn}backend-dev-txt.png`" :srcObj="`${cdn}backend-dev-obj.png`" class="w-[380px]" />
-                    <Service :srcBase="`${cdn}branding-bg.png`" :srcText="`${cdn}branding-txt.png`" :srcObj="`${cdn}branding-obj.png`" class="w-[380px]" />
-                    <Service :srcBase="`${cdn}landing-page-b.png`" :srcText="`${cdn}landing-page-txt.png`" :srcObj="`${cdn}landing-page-obj.png`" class="row-span-2" />
-                    <Service :srcBase="`${cdn}e-commerce-bg.png`" :srcText="`${cdn}e-commerce-txt.png`" :srcObj="`${cdn}e-commerce-obj.png`" class="w-[380px]" />
-                    <Service :srcBase="`${cdn}system-dev-bg.png`" :srcText="`${cdn}system-dev-txt.png`" :srcObj="`${cdn}system-dev-obj.png`" class="w-[380px]" />
+                    <Service :srcBase="`${cdn}web-design-bg.png`" :srcText="`${cdn}web-design-txt.png`" :srcObj="`${cdn}web-design-obj2.png`" class="row-span-2" alt="Web Design" />
+                    <Service :srcBase="`${cdn}backend-dev-bg.png`" :srcText="`${cdn}backend-dev-txt.png`" :srcObj="`${cdn}backend-dev-obj.png`" class="w-[380px]" alt="Backend Development" />
+                    <Service :srcBase="`${cdn}branding-bg.png`" :srcText="`${cdn}branding-txt.png`" :srcObj="`${cdn}branding-obj.png`" class="w-[380px]" alt="Branding" />
+                    <Service :srcBase="`${cdn}landing-page-b.png`" :srcText="`${cdn}landing-page-txt.png`" :srcObj="`${cdn}landing-page-obj.png`" class="row-span-2" alt="Landing Page" />
+                    <Service :srcBase="`${cdn}e-commerce-bg.png`" :srcText="`${cdn}e-commerce-txt.png`" :srcObj="`${cdn}e-commerce-obj.png`" class="w-[380px] overflow-hidden" alt="E-commerce" />
+                    <Service :srcBase="`${cdn}system-dev-bg.png`" :srcText="`${cdn}system-dev-txt.png`" :srcObj="`${cdn}system-dev-obj.png`" class="w-[380px]" alt="System Development" />
 
                     <div class="row-span-2 relative rounded-lg overflow-hidden bg-black p-5 md:p-20 text-center h-full flex flex-col justify-center" @mousemove="handleMouseMove" @mouseleave="resetTransform" ref="containerRef">
-                        <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-35 w-72 absolute left-1/2 -ml-36" ref="imgRef">
+                        <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-35 w-72 absolute left-1/2 -ml-36" ref="imgRef" alt="Logo Bordered">
                         <div ref="txtRef">
                             <h3 class="text-3xl sm:text-5xl text-gray-200 mb-1">And even more...</h3>
                             <p class="text-slate-400 mb-5">Services tailored to your specific needs</p>

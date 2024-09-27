@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from 'vue';
+import { useLayeredEffect } from '@/Pages/Partials/Layered';
 
-const props = defineProps([ 'button' ]);
+defineProps([ 'is' ]);
 
 const rippleVisible = ref(false);
 const rippleStyle = ref({});
 const buttonRef = ref(null);
+const txtRef = ref(null);
 
 const createRipple = (event) => {
     if( rippleVisible.value ) return;
@@ -28,12 +30,14 @@ const createRipple = (event) => {
     // Show the ripple
     rippleVisible.value = true;
 };
+
+const { handleMouseMove, resetTransform } = useLayeredEffect(buttonRef, txtRef, null, 0);
 </script>
 
 <template>
-    <component :is="button ? 'button' : 'a'" @mouseover="createRipple" @mouseout="rippleVisible = false" class="bg-[#0b58ca] transition-all hover:scale-110 duration-500 px-5 py-3 font-bold text-white rounded-lg shadow table mx-auto overflow-hidden relative group/button" ref="buttonRef">
+    <component :is="is" @mouseover="createRipple" @mouseout="rippleVisible = false" @mousemove="handleMouseMove" @mouseleave="resetTransform" class="bg-[#0b58ca] hover:scale-110 transition-all overflow-hidden min-w-48 min-h-14 block font-medium text-xl group/button rounded-full shadow text-white" ref="buttonRef">
         <span v-if="rippleVisible" :style="rippleStyle" class="ripple z-0 absolute rounded-full pointer-events-none"></span>
-        <span class="relative z-10 pointer-events-none group-hover/button:text-black group-hover/button:fill-black" ><slot /></span>
+        <span class="block relative z-10 group-hover/button:text-black pointer-events-none layer" ref="txtRef"><slot/></span>
     </component>
 </template>
 
@@ -48,5 +52,9 @@ const createRipple = (event) => {
             transform: scale(4);
             opacity: 1;
         }
+    }
+    .layer {
+        transition: transform 0.1s ease-out;
+        will-change: transform;
     }
 </style>

@@ -70,7 +70,7 @@ async function handleSubmit(e) {
                 <img :src="`${cdn}rondeo-footer-lg.webp`" class="absolute left-0 top-0 w-full h-full object-cover object-bottom opacity-50 z-0 max-md:hidden" alt="Rondeo Balos" width="auto" height="auto">
                 
                 <div class="relative">
-                    <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-5 w-72 absolute left-1/2 -ml-36">
+                    <img :src="`${cdn}logo-bordered-transparent-fade.webp`" alt="Logo Bordered" class="opacity-5 w-72 absolute left-1/2 -ml-36">
                     
                     <div class="mb-32 pt-10 relative" id="contactEl">
 
