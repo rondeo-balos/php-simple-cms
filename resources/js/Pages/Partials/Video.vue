@@ -8,8 +8,8 @@ defineProps([ 'cdn' ]);
 const video = ref(null);
 const videoPlayed = ref(false);
 const playVideo = () => {
-    videoPlayed.value = true;
-    if( video.value ) {
+    if( video.value && !videoPlayed.value ) {
+        videoPlayed.value = true;
         video.value.currentTime = 0;
         video.value.muted = false;
         video.value.loop = false;

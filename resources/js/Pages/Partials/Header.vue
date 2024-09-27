@@ -42,7 +42,7 @@ const scrollTo = ( id ) => {
 
 <template>
     <!-- Header -->
-    <div class="border-b border-gray-600 border-opacity-25 nav backdrop-blur-lg sticky top-0 z-50">
+    <div class="border-b border-gray-600 border-opacity-25 nav backdrop-blur-lg sticky top-0 z-[55]">
         <div class="max-w-screen-xl px-2 py-4 mx-auto flex flex-row justify-between items-center gap-10">
             <img :src="`${cdn}logo-transparent.webp`" class=" max-h-12" width="auto" height="auto" alt="Logo">
             <nav class="flex-grow">
@@ -55,7 +55,10 @@ const scrollTo = ( id ) => {
             </nav>
             
             <CTA is="button" @click.prevent="scrollTo('contactEl')" class="max-sm:hidden min-h-12">Contact</CTA>
-            <button type="button" role="button" title="Show Nav Menu" @click="show = true" class="fixed right-0 z-10 shadow-xl sm:hidden rounded-2xl bg-[#232d3d] text-white p-2 mx-2"><Hamburger class="min-w-6 min-h-6"/></button>
+            <button type="button" role="button" title="Show Nav Menu" @click="show = !show" :class="[{'show' : show}, 'hamburger fixed right-0 shadow-xl sm:hidden rounded-full border bg-[#232d3d] text-white p-2 mx-2 w-10 h-10']">
+                <span class="w-[20px] h-[3px] bg-white block absolute top-[35%] left-[25%]"></span>
+                <span class="w-[20px] h-[3px] bg-white block absolute top-[55%]"></span>
+            </button>
         </div>
     </div>
 
@@ -70,10 +73,10 @@ const scrollTo = ( id ) => {
                         leave-from-class="translate-x-0"
                         leave-to-class="translate-x-[100vw]">
                         <div v-show="show" class="overflow-hidden transform transition-all w-full fixed top-0 h-full bg-black p-5 flex flex-col justify-between">
-                            <button type="button" role="button" title="close Nav Menu" @click="show = false" class="rounded-2xl bg-[#232d3d] text-white p-2 self-end"><Close class="min-w-6 min-h-6"/></button>
+                            <!--<button type="button" role="button" title="close Nav Menu" @click="show = false" class="rounded-2xl bg-[#232d3d] text-white p-2 self-end"><Close class="min-w-6 min-h-6"/></button>-->
 
                             <nav class="self-center">
-                                <ul class="flex flex-col gap-10 font-black text-center">
+                                <ul class="flex flex-col gap-10 font-black text-center pt-36">
                                     <li v-for="item in routes" class="relative group">
                                         <Link :href="item.route" :class="[(item.active ? 'text-blue-600':'text-white'), 'font-black text-3xl transition-all']">{{ item.label }}</Link>
                                         <span class="text-sm text-slate-600 block">{{ item.kicker }}</span>
@@ -115,5 +118,18 @@ const scrollTo = ( id ) => {
     top: 38%;
     left: 0;
     opacity: 25%;
+}
+.hamburger span {
+    transition: 0.2s linear;
+}
+.hamburger.show span {
+    left: 23%;
+    top: 45%
+}
+.hamburger.show span:nth-of-type(1) {
+    transform: rotate(-45deg);
+}
+.hamburger.show span:nth-of-type(2) {
+    transform: rotate(45deg);
 }
 </style>

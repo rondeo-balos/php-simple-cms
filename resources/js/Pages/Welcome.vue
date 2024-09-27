@@ -146,7 +146,9 @@ const scrollTo = ( id ) => {
                     <img :src="project.image" :alt="project.project" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
                 </div>
 
-                <Button class="mt-10" :href="route('projects')">View all my projects</Button>
+                <div class="flex">
+                    <CTA class="mt-10 px-8 mx-auto relative flex items-center" :href="route('projects')" is="a">View all my projects</CTA>
+                </div>
             </div>
 
             <div class="mb-10">
@@ -173,7 +175,7 @@ const scrollTo = ( id ) => {
                         <div ref="txtRef">
                             <h3 class="text-3xl sm:text-5xl text-gray-200 mb-1">And even more...</h3>
                             <p class="text-slate-400 mb-5">Services tailored to your specific needs</p>
-                            <Button href="#contact" @click.prevent="scrollTo('contactEl')" >Contact</Button>
+                            <CTA @click.prevent="scrollTo('contactEl')" is="button" class="mx-auto">Get Started</CTA>
                         </div>
                     </div>
 
