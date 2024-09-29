@@ -13,24 +13,19 @@ import Image from '@/Icons/Image.vue';
 import People from '@/Icons/People.vue';
 import Search from '@/Icons/Search.vue';
 import Cog from '@/Icons/Cog.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
 
 const showingNavigationDropdown = ref(false);
 
-const collections = import.meta.glob( '../Public/Collections/*.js' );
+const collections = window.collections;
 const collectionLinks = ref([]);
-onMounted( async () => {
-    const promises = Object.entries(collections).map( async ([path]) => {
-        const collectionKey = path.split( '/' ).pop().replace( '.js', '' );
-        const module = await collections[path]();
-
-        return {
-            name: collectionKey,
-            path: route( 'collection', [ collectionKey ] ),
-            icon: module.default.icon ?? ''
-        };
-    });
-    collectionLinks.value = await Promise.all( promises );
+onMounted( () => {
+    for( const [name, collection] of Object.entries(collections) ) {
+        collectionLinks.value.push({
+            name,
+            path: route( 'collection', [name] ),
+            icon: collection.icon
+        });
+    }
 });
 </script>
 

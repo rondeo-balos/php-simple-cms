@@ -14,6 +14,10 @@
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
+
+        <script>
+            window.collections = @json($collections ?? []);
+        </script>
     </head>
     <body class="font-sans antialiased">
         @inertia

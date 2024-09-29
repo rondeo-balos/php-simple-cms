@@ -5,6 +5,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CollectionsLoader;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,15 +15,15 @@ Route::get( '/admin', function() {
 
 Route::get('/admin/dashboard', function() {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', CollectionsLoader::class])->name('dashboard');
 
-Route::middleware('auth')->group( function() {
+Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
     Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/admin/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware( 'auth' )->group( function() {
+Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
     // Media
     Route::get( '/admin/media', [MediaController::class, 'index'])->name( 'media' );
     Route::get( '/admin/media/add', [MediaController::class, 'add'])->name( 'media.add' );

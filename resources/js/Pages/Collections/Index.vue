@@ -12,33 +12,22 @@ const props = defineProps([ 'status', 'title', 'collection', 'data', 'id' ]);
 const options = ref({});
 let formData = useForm({});
 
-onMounted( async () => {
-    try {
-        const collectionModules = import.meta.glob( '../../Public/Collections/*.js' );
-        const collectionPath = `../../Public/Collections/${props.collection}.js`;
+onMounted( () => {
+    const collection = window.collections[props.collection];
 
-        if (collectionModules[collectionPath]) {
-            const module = await collectionModules[collectionPath]();
-            options.value = module.default.meta || {};
-            let fields = {};
-            Object.keys(options.value).forEach( key => {
-                const metaField = options.value[key];
-                if( metaField.fields ) { // Grouped fields
-                    Object.keys( metaField.fields ).forEach( fieldKey => {
-                        fields[fieldKey] = props.data ? props.data[fieldKey] : (metaField.fields[fieldKey].default ?? '');
-                    });
-                } else { // Handle ungrouped fields
-                    fields[key] = props.data ? props.data[key] : (metaField.default ?? '');
+    if( collection ) {
+        options.value = collection.meta || {};
+        let fields = {};
+        for( const [key, metaField] of Object.entries(collection.meta) ) {
+            if( metaField.fields ) { // Grouped fields
+                for( const [key, metaSubField] of Object.entries(metaField.fields) ) {
+                    fields[key] = props.data ? props.data[key] : (metaSubField.default ?? '');
                 }
-                /*if( !(key in fields) ) {
-                    fields[key] = props.data ? props.data[key] : (options.value[key].default ?? '');
-                }*/
-            });
-            formData = useForm(fields);
+            } else { // Handle ungrouped fields
+                fields[key] = props.data ? props.data[key] : (metaField.default ?? '');
+            }
         }
-        
-    } catch( error ) {
-        console.error( 'Error loading collection options: ', error );
+        formData = useForm(fields);
     }
 });
 

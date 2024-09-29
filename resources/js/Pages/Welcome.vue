@@ -105,10 +105,10 @@ const scrollTo = ( id ) => {
             <div class="max-w-screen-xl px-4 py-10 mx-auto">
 
                 <div class="flex flex-col md:flex-row justify-between my-5 md:my-20">
-                    <h2 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6">
+                    <h1 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6">
                         <PrimaryText>Welcome!</PrimaryText> <br>
                         I'm Rondeo Balos
-                    </h2>
+                    </h1>
                     <div class="md:w-5/12">
                         <p class="text-slate-400 text-lg mb-3">I’m a web developer passionate about creating visually appealing, high-performance websites. I combine modern design with solid development to build digital experiences that help businesses grow. Let’s bring your project to life!</p>
                         <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>

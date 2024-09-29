@@ -17,6 +17,15 @@ class CollectionsController extends Controller {
         $per_page = $request->get( 'per_page', '10' );
         $s = $request->get( 's', '' );
 
+        $class_name = '\\App\\Collections\\' . ucfirst($collection);
+        if( !class_exists( $class_name ) ) {
+            return Redirect::route( 'dashboard' )->withInput( ['status' => 'Unable to locate collection: ' . $collection] );
+        }
+        $columns = [
+            'id',
+            ...call_user_func([$class_name, 'getCollection'])['columns']
+        ];
+
         $data = Collections::where( 'key', $collection )->whereRelation( 'metaData', 'value', 'like', '%'.$s.'%' )->latest()->paginate( $per_page );
         $data->getCollection()->transform( function($row) use ($collection){
             $row->actions = [
@@ -29,14 +38,14 @@ class CollectionsController extends Controller {
             unset($row->meta_data);
             return $row;
         });
-
-        return Inertia::render( 'Collections/FormatterV2', [
+        
+        return Inertia::render( 'DataTable/Index', [
             'status' => session( 'status' ),
             'per_page' => $per_page,
             's' => $s,
             'title' => $collection,
             'add' => route( 'collection.add', [$collection] ),
-            'columns' => [ 'id', 'value' ],
+            'columns' => $columns,
             'data' => $data,
             'collection' => $collection
         ]);
