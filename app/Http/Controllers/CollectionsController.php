@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collections;
+use File;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Log;
 use Redirect;
+use Symfony\Component\Yaml\Yaml;
 
 class CollectionsController extends Controller {
 
@@ -17,13 +20,14 @@ class CollectionsController extends Controller {
         $per_page = $request->get( 'per_page', '10' );
         $s = $request->get( 's', '' );
 
-        $class_name = '\\App\\Collections\\' . ucfirst($collection);
-        if( !class_exists( $class_name ) ) {
+        $yaml_file_path = app_path( 'Collections' ) . '/' . ucfirst($collection) . '.yaml';
+        if( !File::exists($yaml_file_path) ) {
+            Log::error( 'Unable to locate collection: ' . $collection . ', ' . $yaml_file_path );
             return Redirect::route( 'dashboard' )->withInput( ['status' => 'Unable to locate collection: ' . $collection] );
         }
         $columns = [
             'id',
-            ...call_user_func([$class_name, 'getCollection'])['columns']
+            ...Yaml::parseFile( $yaml_file_path )['columns']
         ];
 
         $data = Collections::where( 'key', $collection )->whereRelation( 'metaData', 'value', 'like', '%'.$s.'%' )->latest()->paginate( $per_page );

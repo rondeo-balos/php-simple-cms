@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Twig\Loader\FilesystemLoader;
 
-class AppServiceProvider extends ServiceProvider
-{
+class AppServiceProvider extends ServiceProvider {
     /**
      * Register any application services.
      */
@@ -17,8 +17,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        //
+    public function boot(): void {
+        $loader = new FilesystemLoader();
+        $loader->addPath( base_path() . '/resources/views/Layouts', 'Layouts' );
+        $loader->addPath( base_path() . '/resources/views/Components', 'Components' );
+        
+        \Twig::getLoader()->addLoader( $loader );
     }
 }

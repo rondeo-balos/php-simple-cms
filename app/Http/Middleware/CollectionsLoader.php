@@ -7,6 +7,7 @@ use File;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use View;
+use Symfony\Component\Yaml\Yaml;
 
 class CollectionsLoader {
     /**
@@ -21,10 +22,10 @@ class CollectionsLoader {
 
         foreach( $files as $file ) {
             $collection_name = pathinfo( $file->getFilename(), PATHINFO_FILENAME );
-            $class_name = '\\App\\Collections\\' . $collection_name;
+            $yaml_file_path = $path . '/' . $collection_name . '.yaml';
 
-            if( class_exists( $class_name ) ) {
-                $collection = call_user_func([$class_name, 'getCollection']);
+            if( File::exists($yaml_file_path) ) {
+                $collection = Yaml::parseFile( $yaml_file_path );
                 $collections[strtolower($collection_name)] = $collection;
             }
         }

@@ -61,9 +61,6 @@ Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
             'title' => 'Preview'
         ]);
     });
-    Route::get( '/test', function() {
-        return Inertia::render('Test', ['title' => 'Home']);
-    } );
 });
 
 Route::get( '/api/collections/{collection}', [CollectionsController::class, 'api'])->name( 'api.collection' );
