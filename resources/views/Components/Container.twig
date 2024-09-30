@@ -1,0 +1,5 @@
+<div class="flex {{ props.direction }}  {{ props.justify }}  {{ props.align }}">
+    {% for component in props.list %}
+        {% include '@Components/' ~ component.name ~ '.twig' with { props: component.props } %}
+    {% endfor %}
+</div>

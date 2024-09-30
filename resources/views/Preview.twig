@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
+</head>
+<body class="bg-white select-none">
+    {% macro toolbar(component) %}
+        <div class="handle bg-blue-600 rounded-bl-lg p-2 cursor-grab invisible absolute top-0 right-0 group-hover/{{ component.id }}:visible">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 text-white" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"/></svg>
+        </div>
+    {% endmacro %}
+    {% macro recursiveCheck(component) %}
+        {% if component.props.nested %}
+            <div class="sortable p-3 w-full relative flex {{ component.props.direction }}  {{ component.props.justify }}  {{ component.props.align }} border-2 border-transparent hover:border-blue-600 group/{{ component.id }}" data-id="{{ component.id }}">
+                {{ _self.toolbar(component) }}
+                {% for component in component.props.list %}
+                    {{ _self.recursiveCheck( component ) }}
+                {% else %}
+                    <div class="absolute top-0 left-0 border-4 border-dashed border-gray-400 w-full h-full text-center"></div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="relative border-2 border-transparent hover:border-blue-600 group/{{ component.id }}" data-id="{{ component.id }}">
+                {{ _self.toolbar(component) }}
+                {% include '@Components/' ~ component.name ~ '.twig' with { props: component.props } %}
+            </div>
+        {% endif %}
+    {% endmacro %}
+    <div class="sortable p-3 border border-transparent hover:border-blue-600">
+        {% for component in data %}
+            {{ _self.recursiveCheck( component ) }}
+        {% else %}
+            <div class="py-10 border-4 border-dashed border-gray-400 w-full text-center">Such Empty</div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Sample data for demonstration (this would usually come from a backend or server)
+        const data = {{ data|json_encode|raw }};
+
+        // Helper function to find and remove a component by ID
+        function findAndRemoveById(id, list) {
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].id === id) {
+                    return list.splice(i, 1)[0]; // Return the removed component
+                } else if (list[i].props.nested) {
+                    let result = findAndRemoveById(id, list[i].props.list);
+                    if (result) return result;
+                }
+            }
+        }
+
+        // Helper function to find a parent component by ID
+        function findComponentById(id, list) {
+            for (let i = 0; i < list.length; i++) {
+                if (list[i].id === id) {
+                    return list[i];
+                } else if (list[i].props.nested) {
+                    let result = findComponentById(id, list[i].props.list);
+                    if (result) return result;
+                }
+            }
+        }
+
+        // Sync updated data structure
+        function updateData(evt) {
+            const fromId = evt.from.getAttribute('data-id'); // Parent of the dragged component
+            const toId = evt.to.getAttribute('data-id'); // New parent of the dragged component
+            const draggedId = evt.item.getAttribute('data-id'); // Dragged component's ID
+
+            // Check if it's a simple reorder within the same container
+            if (fromId === toId && evt.oldIndex === evt.newIndex) return;
+
+            // Remove the dragged component from its original place in the data
+            let draggedComponent = findAndRemoveById(draggedId, data);
+
+            // If the target is the root, insert the component at the root level
+            if (toId === null || toId === "root") {
+                data.splice(evt.newIndex, 0, draggedComponent);
+            } else {
+                // Find the target component by ID (where the dragged item is dropped)
+                let targetComponent = findComponentById(toId, data);
+
+                // Ensure the target component can contain children (nested)
+                if (targetComponent && targetComponent.props.nested) {
+                    targetComponent.props.list.splice(evt.newIndex, 0, draggedComponent);
+                } else {
+                    // If the target is not nested, treat it as moving to root
+                    data.splice(evt.newIndex, 0, draggedComponent);
+                }
+            }
+
+            console.log("Updated data:", data);
+
+            // Sync the updated data to the parent or backend
+            window.parent.postMessage({
+                payload: data,
+            }, '*');
+        }
+
+        // Initialize Sortable options
+        const option = {
+            group: {
+                name: 'sortable-list',
+                pull: true,
+                put: true,
+            },
+            animation: 250,
+            forceFallback: true,
+            emptyInsertThreshold: 10,
+            handle: '.handle', // handle's class
+            onEnd: function (evt) {
+                updateData(evt); // Update data when the drag and drop finishes
+            },
+        };
+
+        // Initialize Sortable for each container
+        document.querySelectorAll(".sortable").forEach(function (container) {
+            new Sortable(container, option);
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 <script setup>
 import Nested from './Partials/Nested.vue';
-import { ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import Cog from '@/Icons/Cog.vue';
 import Apps from '@/Icons/Apps.vue';
 import Desktop from '@/Icons/Desktop.vue';
@@ -12,53 +12,44 @@ import AppHead from '@/Components/CustomComponents/AppHead.vue';
 import Control from '@/Components/CustomComponents/Control.vue';
 
 const props = defineProps({
-    components: {
-        type: Array,
-        required: true
-    },
     content: {
         type: Array,
         default: []
     }
 });
 
+console.log( componentDefinitions );
+
 /** Fetch available public components */
 let availableComponents = ref([]);
-const componentProps = async () => {
-    for( const index in props.components ) {
-        try {
-            const componentName = props.components[index][0];
-            const componentModule = await import(`../../Public/Components/${componentName}.vue`);
-            const componentProps = componentModule.default.props;
-            const componentMeta = componentModule.default.meta;
-            availableComponents.value.push({
-                name: componentName,
-                props: componentProps,
-                meta: componentMeta
-            });
-
-            //console.log(`Fetched ${componentName}:`, componentProps);
-        } catch (error) {
-            console.error(`Error fetching:`, error);
-        }
-    } 
-};
-
-componentProps();
+for( const index in componentDefinitions ) {
+    const component = componentDefinitions[index];
+    const name = component.options.name;
+    const meta = component.options.meta;
+    const icon = component.options.icon;
+    const props = component.props;
+    availableComponents.value.push({
+        name,
+        props,
+        meta,
+        icon
+    });
+}
 
 /** Draggable code */
 let items = ref(props.content);
 
 const addComponent = (name, props, meta) => {
-    let properProps = {};
+    /*let properProps = {};
     Object.keys( props ).forEach( (key, index) => {
         let def = props[key].default;
         properProps[key] = def;
-    });
+    });*/
     items.value.push({
+        id: (Math.random() + 1).toString(36).substring(5),
         name, 
         nested: props.nested ?? false,
-        edit: function() {
+        /*edit: function() {
             currentLabel.value = 'Component Settings';
             currentName.value = name;
             currentProps.value = this.props;
@@ -72,13 +63,40 @@ const addComponent = (name, props, meta) => {
                 deleteComponent( this, items.value );
                 currentLabel.value = 'Components';
             }
-        },
-        props: JSON.parse(JSON.stringify(properProps)), // Deep copy
+        },*/
+        props: JSON.parse(JSON.stringify(props)), // Deep copy
         meta
     });
 
+    recalculateFunctions(items.value);
     save();
 };
+
+const recalculateFunctions = (items) => {
+    items.map( (item) => {
+        console.log( item.meta );
+        item.edit = function() {
+            console.log( item.meta );
+            currentLabel.value = 'Component Settings';
+            currentName.value = item.name;
+            currentProps.value = item.props;
+            currentMeta.value = item.meta ?? {};
+        };
+        item.delete = function() {
+            let confirmed = confirm( 'Are you sure you want to delete this component?' );
+            if( confirmed ) {
+                //const index = items.value.indexOf(this);
+                //if( index > -1 ) items.value.splice( index, 1 );
+                deleteComponent( item, items );
+                currentLabel.value = 'Components';
+            }
+        };
+
+        if( item.nested ) {
+            recalculateFunctions(item.props.list);
+        }
+    });
+}
 
 // Delete component
 const deleteComponent = (item, list) => {
@@ -97,10 +115,24 @@ const deleteComponent = (item, list) => {
 };
 
 // Edit component
-
+const datainput = ref(null);
+const form = ref(null);
+const iframe = ref(null);
+onMounted(() => form.value.submit() );
+onMounted(() => window.addEventListener( 'message', handleMessage ));
+onUnmounted(() => window.removeEventListener('message', handleMessage));
+const handleMessage = (message) => {
+    console.log( message );
+    //if( message.origin != iframe.value ) return;
+    const updatedData = message.data.payload;
+    if( updatedData ) {
+        items.value = updatedData;
+        recalculateFunctions( items.value );
+    }
+}
 const preview = () => {
-    console.log(JSON.stringify(items.value) );
-    const iframe = document.querySelector( 'iframe' );
+    //console.log(JSON.stringify(items.value) );
+    /*const iframe = document.querySelector( 'iframe' );
     const message = {
         type: 'DATA',
         payload: JSON.stringify(items.value)
@@ -108,8 +140,11 @@ const preview = () => {
 
     if( iframe && iframe.contentWindow ) {
         iframe.contentWindow.postMessage( message );
-    }
+    }*/
+   datainput.value.value = JSON.stringify(items.value);
+   form.value.submit();
 };
+
 
 // Watch the items ref for changes
 watch(items, (newVal) => {
@@ -137,7 +172,7 @@ const currentMeta = ref({});
 
                 <div v-if="currentLabel === 'Components'" class="flex flex-row flex-wrap p-1">
                     <div class="w-1/2 flex-0 p-1" v-for="(component, index) in availableComponents">
-                        <SecondaryButton @click="addComponent(component.name, component.props, component.meta)" class="w-full flex flex-col gap-4"><div class="w-5 h-5" v-html="props.components[index][1]"></div> {{ component.name }}</SecondaryButton>
+                        <SecondaryButton @click="addComponent(component.name, component.props, component.meta)" class="w-full flex flex-col gap-4"><div class="w-5 h-5" v-html="component.icon"></div> {{ component.name }}</SecondaryButton>
                     </div>
                 </div>
 
@@ -145,13 +180,16 @@ const currentMeta = ref({});
 
                 <div v-else class="flex flex-col p-1">
                     <div class="dark:text-white text-center py-2 border-t border-b border-gray-600 dark:border-white bg-black dark:bg-white bg-opacity-10 dark:bg-opacity-10 mb-3">{{ currentName }}</div>
-                    <div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
+                    <div v-for="(meta, label) in currentMeta" :key="label" class="mb-4 px-3">
+                        <Control :label="label.replace( /_/g, ' ' )" :control="meta.control" :options="meta.values ?? []" v-model="currentProps[label]" />
+                    </div>
+                    <!--<div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
                         <div v-if="!Array.isArray(value) && Object.keys(currentMeta).length > 0" class="flex flex-row items-center flex-wrap">
 
                             <Control :label="label.replace( /_/g, ' ' )" :control="currentMeta[label].control" :options="currentMeta[label].values ?? []" v-model="currentProps[label]" />
 
                         </div>
-                    </div>
+                    </div>-->
                 </div>
 
             </div>
@@ -179,7 +217,10 @@ const currentMeta = ref({});
                 </SecondaryButton>
                 <ThemeToggler class="ms-auto" />
             </div>
-            <iframe src="http://127.0.0.1:8000/preview" :class="[breakpoints === 'Desktop' ? 'w-full' : breakpoints === 'Tablet' ? 'w-[820px]' : 'w-[360px]', 'h-full mx-auto transition-all scroll']"></iframe>
+            <form action="http://127.0.0.1:8000/twig-preview" target="preview" method="GET" ref="form">
+                <input type="hidden" name="data" ref="datainput">
+            </form>
+            <iframe name="preview" ref="iframe" src="" :class="[breakpoints === 'Desktop' ? 'w-full' : breakpoints === 'Tablet' ? 'w-[820px]' : 'w-[360px]', 'h-full mx-auto transition-all scroll']"></iframe>
         </div>
 
         <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen min-w-64 flex flex-col">

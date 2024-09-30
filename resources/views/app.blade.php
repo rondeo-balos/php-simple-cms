@@ -17,6 +17,7 @@
 
         <script>
             window.collections = @json($collections ?? []);
+            window.componentDefinitions = @json($componentDefinitions ?? []);
         </script>
     </head>
     <body class="font-sans antialiased">

@@ -36,8 +36,7 @@ class PageController extends Controller {
     public function add( Request $request ) {
 
         return Inertia::render( 'Page/Builder', [
-            'status' => session( 'status' ),
-            'components' => AvailableComponents::get()
+            'status' => session( 'status' )
         ]);
     }
 

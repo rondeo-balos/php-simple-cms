@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CollectionsLoader;
+use App\Http\Middleware\ComponentsLoader;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -43,8 +44,8 @@ Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
 
     // Page
     Route::get( '/admin/pages', [PageController::class, 'index'])->name( 'page' );
-    Route::get( '/admin/pages/add', [PageController::class, 'add'])->name( 'page.add' );
-    Route::get( '/admin/pages/{ID}', [PageController::class, 'edit'])->name( 'page.edit' );
+    Route::get( '/admin/pages/add', [PageController::class, 'add'])->name( 'page.add' )->middleware([ ComponentsLoader::class ]);
+    Route::get( '/admin/pages/{ID}', [PageController::class, 'edit'])->name( 'page.edit' )->middleware([ ComponentsLoader::class ]);
 
     // Collections
     Route::get( '/admin/collections/', [CollectionsController::class, 'parent'] )->name( 'collections' );
@@ -60,6 +61,13 @@ Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
         return Inertia::render( 'Preview', [
             'title' => 'Preview'
         ]);
+    });
+
+    // Twig Preview
+    Route::get( '/twig-preview', function(Illuminate\Http\Request $request) {
+        return view( 'Preview', [
+            'data' => json_decode($request->input('data'))
+        ] );
     });
 });
 
