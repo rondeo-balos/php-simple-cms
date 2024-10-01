@@ -8,33 +8,44 @@
     <script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
 </head>
 <body class="bg-white select-none">
+
     {% macro toolbar(component) %}
-        <div class="handle bg-blue-600 rounded-bl-lg p-2 cursor-grab invisible absolute top-0 right-0 group-hover/{{ component.id }}:visible">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 text-white" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"/></svg>
+        <div class="toolbar">
+            <button class="handle tool">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"/></svg>
+            </button>
+            <button class="tool" onclick="editComponent('{{ component.id }}')">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"/></svg>
+            </button>
+            <button class="tool" onclick="deleteComponent('{{ component.id }}')">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/><path d="M192 112V72h0a23.93 23.93 0 0124-24h80a23.93 23.93 0 0124 24h0v40M256 176v224M184 176l8 224M328 176l-8 224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+            </button>
         </div>
     {% endmacro %}
+
     {% macro recursiveCheck(component) %}
         {% if component.props.nested %}
-            <div class="sortable p-3 w-full relative flex {{ component.props.direction }}  {{ component.props.justify }}  {{ component.props.align }} border-2 border-transparent hover:border-blue-600 group/{{ component.id }}" data-id="{{ component.id }}">
+            <div class="sortable movable p-3 w-full relative flex {{ component.props.direction }}  {{ component.props.justify }}  {{ component.props.align }}" data-id="{{ component.id }}">
                 {{ _self.toolbar(component) }}
                 {% for component in component.props.list %}
                     {{ _self.recursiveCheck( component ) }}
                 {% else %}
-                    <div class="absolute top-0 left-0 border-4 border-dashed border-gray-400 w-full h-full text-center"></div>
+                    <div class="empty"></div>
                 {% endfor %}
             </div>
         {% else %}
-            <div class="relative border-2 border-transparent hover:border-blue-600 group/{{ component.id }}" data-id="{{ component.id }}">
+            <div class="relative movable" data-id="{{ component.id }}">
                 {{ _self.toolbar(component) }}
                 {% include '@Components/' ~ component.name ~ '.twig' with { props: component.props } %}
             </div>
         {% endif %}
     {% endmacro %}
-    <div class="sortable p-3 border border-transparent hover:border-blue-600">
+
+    <div class="sortable main-content">
         {% for component in data %}
             {{ _self.recursiveCheck( component ) }}
         {% else %}
-            <div class="py-10 border-4 border-dashed border-gray-400 w-full text-center">Such Empty</div>
+            <div class="empty"></div>
         {% endfor %}
     </div>
 
@@ -122,6 +133,71 @@
         document.querySelectorAll(".sortable").forEach(function (container) {
             new Sortable(container, option);
         });
+
+        function editComponent(id) {
+            window.parent.postMessage({
+                edit: id,
+            }, '*');
+        }
+
+        function deleteComponent(id) {
+            window.parent.postMessage({
+                delete: id,
+            }, '*');
+        }
     </script>
+
+    <style>
+        .main-content {
+            padding: 10px;
+        }
+        .movable {
+            border: solid 2px transparent;
+            position: relative;
+        }
+        .movable:hover {
+            border: solid 2px #2563eb;
+        }
+        .movable .toolbar {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-bottom-left-radius: 0.5rem;
+            background-color: #2563eb;
+            cursor: pointer;
+            overflow: hidden;
+            z-index: 9999;
+            display: flex;
+            flex-direction: row;
+        }
+        .movable .toolbar .tool {
+            padding: 0.5rem;
+        }
+        .movable .toolbar .tool:nth-of-type(2) {
+            border-left: solid 1px #fff3;
+            border-right: solid 1px #fff3;
+        }
+        .movable .toolbar .tool:hover {
+            background-color: #0049ea;
+        }
+        .movable .toolbar svg {
+            width: 1rem;
+            color: white;
+        }
+        .movable:hover .toolbar {
+            opacity: 1;
+        }
+        .empty {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: dashed #9ca3af 4px;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            z-index: 0;
+        }
+    </style>
 </body>
 </html>

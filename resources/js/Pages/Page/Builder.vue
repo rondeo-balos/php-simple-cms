@@ -40,30 +40,10 @@ for( const index in componentDefinitions ) {
 let items = ref(props.content);
 
 const addComponent = (name, props, meta) => {
-    /*let properProps = {};
-    Object.keys( props ).forEach( (key, index) => {
-        let def = props[key].default;
-        properProps[key] = def;
-    });*/
     items.value.push({
         id: (Math.random() + 1).toString(36).substring(5),
         name, 
         nested: props.nested ?? false,
-        /*edit: function() {
-            currentLabel.value = 'Component Settings';
-            currentName.value = name;
-            currentProps.value = this.props;
-            currentMeta.value = this.meta ?? {};
-        },
-        delete: function() {
-            let confirmed = confirm( 'Are you sure you want to delete this component?' );
-            if( confirmed ) {
-                //const index = items.value.indexOf(this);
-                //if( index > -1 ) items.value.splice( index, 1 );
-                deleteComponent( this, items.value );
-                currentLabel.value = 'Components';
-            }
-        },*/
         props: JSON.parse(JSON.stringify(props)), // Deep copy
         meta
     });
@@ -76,17 +56,11 @@ const recalculateFunctions = (items) => {
     items.map( (item) => {
         console.log( item.meta );
         item.edit = function() {
-            console.log( item.meta );
-            currentLabel.value = 'Component Settings';
-            currentName.value = item.name;
-            currentProps.value = item.props;
-            currentMeta.value = item.meta ?? {};
+            editComponent( item, items );
         };
         item.delete = function() {
             let confirmed = confirm( 'Are you sure you want to delete this component?' );
             if( confirmed ) {
-                //const index = items.value.indexOf(this);
-                //if( index > -1 ) items.value.splice( index, 1 );
                 deleteComponent( item, items );
                 currentLabel.value = 'Components';
             }
@@ -97,6 +71,14 @@ const recalculateFunctions = (items) => {
         }
     });
 }
+
+// edit component
+const editComponent = (item, list) => {
+    currentLabel.value = 'Component Settings';
+    currentName.value = item.name;
+    currentProps.value = item.props;
+    currentMeta.value = item.meta ?? {};
+};
 
 // Delete component
 const deleteComponent = (item, list) => {
@@ -123,24 +105,52 @@ onMounted(() => window.addEventListener( 'message', handleMessage ));
 onUnmounted(() => window.removeEventListener('message', handleMessage));
 const handleMessage = (message) => {
     console.log( message );
-    //if( message.origin != iframe.value ) return;
-    const updatedData = message.data.payload;
-    if( updatedData ) {
-        items.value = updatedData;
-        recalculateFunctions( items.value );
+    if( message.origin !== window.location.origin ) return;
+    // If message was updated data
+    if( message.data.payload ) {
+        const updatedData = message.data.payload;
+        if( updatedData ) {
+            items.value = updatedData;
+            recalculateFunctions( items.value );
+        }
+    } else if(message.data.edit) { // If message was edit
+        let item = findItemById( items.value, message.data.edit );
+        if( item ) {
+            editComponent( item, items.value );
+        }
+    } else if( message.data.delete ) { // If message was delete
+        let item = findItemById( items.value, message.data.delete );
+        if( item ) {
+            let confirmed = confirm( 'Are you sure you want to delete this component?' );
+            if( confirmed ) {
+                deleteComponent( item, items.value );
+                currentLabel.value = 'Components';
+            }   
+        }
     }
 }
-const preview = () => {
-    //console.log(JSON.stringify(items.value) );
-    /*const iframe = document.querySelector( 'iframe' );
-    const message = {
-        type: 'DATA',
-        payload: JSON.stringify(items.value)
-    };
 
-    if( iframe && iframe.contentWindow ) {
-        iframe.contentWindow.postMessage( message );
-    }*/
+const findItemById = (items, id) => {
+    for (let item of items) {
+        // Check if current item's ID matches
+        if (item.id === id) {
+            return item;
+        }
+        
+        // If the item has nested items, search in the nested array
+        if (item.props.nested && Array.isArray(item.props.list)) {
+            const foundInNested = findItemById(item.props.list, id);
+            if (foundInNested) {
+                return foundInNested;
+            }
+        }
+    }
+    
+    // If no item is found, return null
+    return null;
+};
+
+const preview = () => {
    datainput.value.value = JSON.stringify(items.value);
    form.value.submit();
 };
