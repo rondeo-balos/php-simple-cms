@@ -21,19 +21,19 @@ meta:
         
     technical_group:
         fields:
-          link:
-              control: text
-          framework:
-              control: text
-          status:
-              control: select
-              default: 'On-going'
-              values:
-                  On-going: 'On-going'
-                  Done: 'Done'
-          sticky:
-              control: checkbox
-              default:
-                  - 'Sticky'
-              values:
-                  Sticky: 'Sticky'
+            link:
+                control: text
+            framework:
+                control: text
+            status:
+                control: select
+                default: 'On-going'
+                values:
+                    On-going: 'On-going'
+                    Done: 'Done'
+            sticky:
+                control: checkbox
+                default:
+                    - 'Sticky'
+                values:
+                    Sticky: 'Sticky'
