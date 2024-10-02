@@ -1,6 +1,6 @@
 <script setup>
 import Nested from './Partials/Nested.vue';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import Cog from '@/Icons/Cog.vue';
 import Apps from '@/Icons/Apps.vue';
 import Desktop from '@/Icons/Desktop.vue';
@@ -18,7 +18,7 @@ const props = defineProps({
     }
 });
 
-console.log( componentDefinitions );
+//console.log( componentDefinitions );
 
 /** Fetch available public components */
 let availableComponents = ref([]);
@@ -53,8 +53,9 @@ const addComponent = (name, props, meta) => {
 };
 
 const recalculateFunctions = (items) => {
+    //console.log( items );
     items.map( (item) => {
-        console.log( item.meta );
+        //console.log( item.meta );
         item.edit = function() {
             editComponent( item, items );
         };
@@ -97,14 +98,17 @@ const deleteComponent = (item, list) => {
 };
 
 // Edit component
-const datainput = ref(null);
+/*const form = useForm({
+    datainput: null
+});*/
 const form = ref(null);
-const iframe = ref(null);
+const datainput = ref(null);
+const iframe =  ref(null);
 onMounted(() => form.value.submit() );
 onMounted(() => window.addEventListener( 'message', handleMessage ));
 onUnmounted(() => window.removeEventListener('message', handleMessage));
 const handleMessage = (message) => {
-    console.log( message );
+    //console.log( message );
     if( message.origin !== window.location.origin ) return;
     // If message was updated data
     if( message.data.payload ) {
@@ -128,7 +132,19 @@ const handleMessage = (message) => {
             }   
         }
     }
-}
+};
+
+const preview = () => {
+    datainput.value.value  = JSON.stringify(items.value);
+    //form.value.submit();
+    const message = {
+        type: 'DATA',
+        payload: datainput.value.value
+    };
+    if( iframe.value && iframe.value.contentWindow ) {
+        iframe.value.contentWindow.postMessage( message );
+    }
+};
 
 const findItemById = (items, id) => {
     for (let item of items) {
@@ -150,19 +166,13 @@ const findItemById = (items, id) => {
     return null;
 };
 
-const preview = () => {
-   datainput.value.value = JSON.stringify(items.value);
-   form.value.submit();
-};
-
-
 // Watch the items ref for changes
 watch(items, (newVal) => {
     preview();
 }, { deep: true });
 
 const save = () => {
-    console.log( JSON.stringify(items.value, null, 2) );
+    //console.log( JSON.stringify(items.value, null, 2) );
 };
 
 // Responsive View
@@ -228,9 +238,10 @@ const currentMeta = ref({});
                 <ThemeToggler class="ms-auto" />
             </div>
             <form action="http://127.0.0.1:8000/twig-preview" target="preview" method="GET" ref="form">
-                <input type="hidden" name="data" ref="datainput">
+                <input type="hidden" name="datainput" ref="datainput">
             </form>
             <iframe name="preview" ref="iframe" src="" :class="[breakpoints === 'Desktop' ? 'w-full' : breakpoints === 'Tablet' ? 'w-[820px]' : 'w-[360px]', 'h-full mx-auto transition-all scroll']"></iframe>
+            
         </div>
 
         <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen min-w-64 flex flex-col">

@@ -1,5 +1,6 @@
-<div class="flex {{ props.direction }}  {{ props.justify }}  {{ props.align }}">
-    {% for component in props.list %}
+<div class="{{ extra }} flex {{ props.direction }}  {{ props.justify }}  {{ props.align }} p-[{{ props.padding_px }}px] m-[{{ props.margin_px }}px] bg-[{{ background_color }}] {{ background_size }} {{ baackground_position }} {{ background_repeat }}" {{ props.background_image ? 'style="' ~ props.background_image ~ '"' : '' }}>
+    {#{% for component in props.list %}
         {% include '@Components/' ~ component.name ~ '.twig' with { props: component.props } %}
-    {% endfor %}
+    {% endfor %}#}
+    {% block content %}
 </div>

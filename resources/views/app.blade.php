@@ -5,6 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <script>
+            window.collections = @json($collections ?? []);
+            window.componentDefinitions = @json($componentDefinitions ?? []);
+        </script>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,11 +18,6 @@
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
-
-        <script>
-            window.collections = @json($collections ?? []);
-            window.componentDefinitions = @json($componentDefinitions ?? []);
-        </script>
     </head>
     <body class="font-sans antialiased">
         @inertia

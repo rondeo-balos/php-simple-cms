@@ -6,8 +6,11 @@
     <title>{{ title }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
+    <script type="module">
+        import hotwiredTurbo from 'https://cdn.skypack.dev/@hotwired/turbo@7.3.0';
+    </script>
 </head>
-<body class="bg-white select-none">
+<body class="bg-white">
 
     {% macro toolbar(component) %}
         <div class="toolbar">
@@ -25,13 +28,13 @@
 
     {% macro recursiveCheck(component) %}
         {% if component.props.nested %}
-            <div class="sortable movable p-3 w-full relative flex {{ component.props.direction }}  {{ component.props.justify }}  {{ component.props.align }}" data-id="{{ component.id }}">
+            <div class="movable {{ component.props.list ? '' : 'empty' }}" data-id="{{ component.id }}">
                 {{ _self.toolbar(component) }}
-                {% for component in component.props.list %}
-                    {{ _self.recursiveCheck( component ) }}
-                {% else %}
-                    <div class="empty"></div>
-                {% endfor %}
+                <div class="sortable relative  flex {{ component.props.direction }}  {{ component.props.justify }}  {{ component.props.align }} p-[{{ component.props.padding_px }}px] m-[{{ component.props.margin_px }}px] bg-[{{ component.props.background_color }}] {{ component.props.background_size }} {{ component.props.background_position }} {{ component.props.background_repeat }}" style="background-image: url({{ component.props.background_image }})" data-id="{{ component.id }}">
+                    {% for component in component.props.list %}
+                        {{ _self.recursiveCheck( component ) }}
+                    {% endfor %}
+                </div>
             </div>
         {% else %}
             <div class="relative movable" data-id="{{ component.id }}">
@@ -41,115 +44,157 @@
         {% endif %}
     {% endmacro %}
 
-    <div class="sortable main-content">
+    <div class="sortable {{ data ? '' : 'empty' }}">
         {% for component in data %}
             {{ _self.recursiveCheck( component ) }}
-        {% else %}
-            <div class="empty"></div>
         {% endfor %}
     </div>
 
     <script>
-        // Sample data for demonstration (this would usually come from a backend or server)
-        const data = {{ data|json_encode|raw }};
+        (function() {
+            // Sample data for demonstration (this would usually come from a backend or server)
+            let data = {{ data|json_encode|raw }};
 
-        // Helper function to find and remove a component by ID
-        function findAndRemoveById(id, list) {
-            for (let i = 0; i < list.length; i++) {
-                if (list[i].id === id) {
-                    return list.splice(i, 1)[0]; // Return the removed component
-                } else if (list[i].props.nested) {
-                    let result = findAndRemoveById(id, list[i].props.list);
-                    if (result) return result;
+            console.log( JSON.stringify(data) );
+
+            // Helper function to find and remove a component by ID
+            function findAndRemoveById(id, list) {
+                console.log( 'findAndRemoveById fired', list.length );
+                for (let i = 0; i < list.length; i++) {
+                    console.log( 'iterating:', i );
+                    console.log( 'iterating:', list[i].id );
+                    if (list[i].id == id) {
+                        console.log( 'found', id );
+                        return list.splice(i, 1)[0];
+                    } else if (list[i].props.nested) {
+                        console.log( 'find-remove: nested data', list[i] );
+                        console.log( 'find-remove: looping nested', list[i].props.list );
+                        let result = findAndRemoveById(id, list[i].props.list);
+                        if( result ) return result;
+                    }
                 }
+                //console.error(`find-remove Component with ID ${id} not found.`); // Log if not found
             }
-        }
 
-        // Helper function to find a parent component by ID
-        function findComponentById(id, list) {
-            for (let i = 0; i < list.length; i++) {
-                if (list[i].id === id) {
-                    return list[i];
-                } else if (list[i].props.nested) {
-                    let result = findComponentById(id, list[i].props.list);
-                    if (result) return result;
+            // Helper function to find a parent component by ID
+            function findComponentById(id, list) {
+                for (let i = 0; i < list.length; i++) {
+                    if (list[i].id == id) {
+                        return list[i];
+                    } else if (list[i].props.nested) {
+                        let result = findComponentById(id, list[i].props.list);
+                        if (result) return result;
+                    }
                 }
+                //console.error(`find Component with ID ${id} not found.`); // Log if not found
             }
-        }
 
-        // Sync updated data structure
-        function updateData(evt) {
-            const fromId = evt.from.getAttribute('data-id'); // Parent of the dragged component
-            const toId = evt.to.getAttribute('data-id'); // New parent of the dragged component
-            const draggedId = evt.item.getAttribute('data-id'); // Dragged component's ID
+            // Sync updated data structure
+            function updateData(evt) {
+                const fromId = evt.from.getAttribute('data-id'); // Parent of the dragged component
+                const toId = evt.to.getAttribute('data-id'); // New parent of the dragged component
+                const draggedId = evt.item.getAttribute('data-id'); // Dragged component's ID
 
-            // Check if it's a simple reorder within the same container
-            if (fromId === toId && evt.oldIndex === evt.newIndex) return;
+                // Check if it's a simple reorder within the same container
+                if (fromId === toId && evt.oldIndex === evt.newIndex) return;
 
-            // Remove the dragged component from its original place in the data
-            let draggedComponent = findAndRemoveById(draggedId, data);
+                // Remove the dragged component from its original place in the data
+                console.log( 'data before', data );
+                console.log( 'looking for', draggedId );
+                let draggedComponent = findAndRemoveById(draggedId, data);
+                console.log( 'dragged component', draggedComponent );
+                console.log( 'transition data: ', JSON.stringify(data) );
+                if( !draggedComponent ) {
+                    console.log( 'unable to find component' );
+                    return;
+                }
 
-            // If the target is the root, insert the component at the root level
-            if (toId === null || toId === "root") {
-                data.splice(evt.newIndex, 0, draggedComponent);
-            } else {
-                // Find the target component by ID (where the dragged item is dropped)
-                let targetComponent = findComponentById(toId, data);
+                console.log( 'toId', toId );
 
-                // Ensure the target component can contain children (nested)
-                if (targetComponent && targetComponent.props.nested) {
-                    targetComponent.props.list.splice(evt.newIndex, 0, draggedComponent);
-                } else {
-                    // If the target is not nested, treat it as moving to root
+                // If the target is the root, insert the component at the root level
+                if (toId === null || toId === "root") {
                     data.splice(evt.newIndex, 0, draggedComponent);
+                } else {
+                    // Find the target component by ID (where the dragged item is dropped)
+                    let targetComponent = findComponentById(toId, data);
+                    console.log( 'target', targetComponent );
+
+                    // Ensure the target component can contain children (nested)
+                    if (targetComponent && targetComponent.props.nested) {
+                        console.log( 'target is nested' );
+                        targetComponent.props.list.splice(evt.newIndex, 0, draggedComponent);
+                        console.log( 'updated target', targetComponent );
+                    } else {
+                        // If the target is not nested, treat it as moving to root
+                        data.splice(evt.newIndex, 0, draggedComponent);
+                    }
                 }
+
+                console.log("Updated data: ", data);
+
+                // Sync the updated data to the parent or backend
+                window.parent.postMessage({
+                    payload: data,
+                }, '*');
             }
 
-            console.log("Updated data:", data);
+            // Initialize Sortable options
+            const option = {
+                group: {
+                    name: 'sortable-list',
+                    pull: true,
+                    put: true,
+                },
+                filter: '.non-draggable',
+                animation: 250,
+                forceFallback: true,
+                //emptyInsertThreshold: 10,
+                handle: '.handle', // handle's class
+                onEnd: function (evt) {
+                    updateData(evt); // Update data when the drag and drop finishes
+                },
+            };
 
-            // Sync the updated data to the parent or backend
-            window.parent.postMessage({
-                payload: data,
-            }, '*');
-        }
+            // Initialize Sortable for each container
+            document.querySelectorAll(".sortable").forEach(function (container) {
+                console.log("Initializing sortable for: ", container);
+                new Sortable(container, option);
+            });
 
-        // Initialize Sortable options
-        const option = {
-            group: {
-                name: 'sortable-list',
-                pull: true,
-                put: true,
-            },
-            animation: 250,
-            forceFallback: true,
-            emptyInsertThreshold: 10,
-            handle: '.handle', // handle's class
-            onEnd: function (evt) {
-                updateData(evt); // Update data when the drag and drop finishes
-            },
-        };
+            window.editComponent = function(id) {
+                window.parent.postMessage({
+                    edit: id,
+                }, '*');
+            }
 
-        // Initialize Sortable for each container
-        document.querySelectorAll(".sortable").forEach(function (container) {
-            new Sortable(container, option);
-        });
+            window.deleteComponent = function(id) {
+                window.parent.postMessage({
+                    delete: id,
+                }, '*');
+            }
 
-        function editComponent(id) {
-            window.parent.postMessage({
-                edit: id,
-            }, '*');
-        }
-
-        function deleteComponent(id) {
-            window.parent.postMessage({
-                delete: id,
-            }, '*');
-        }
+            /** Receive message */
+            const handleMessage = (message) => {
+                if( message.origin !== window.location.origin ) return;
+                if( message.data.type === 'DATA' ) {
+                    const currentUrl = window.location.href;
+                    const url = new URL(currentUrl);
+                    const params = new URLSearchParams(url.search);
+                    params.set('datainput', message.data.payload);
+                    //window.history.pushState({}, '', `${url.pathname}?${params}`);
+                    //window.location.href = `${url.pathname}?${params}`;
+                    data = JSON.parse( message.data.payload );
+                    Turbo.visit( `${url.pathname}?${params}` );
+                }
+            };
+            window.addEventListener('message', handleMessage);
+        })();
     </script>
 
     <style>
-        .main-content {
-            padding: 10px;
+        body {
+            user-select: none;
+            padding-top: 20px;
         }
         .movable {
             border: solid 2px transparent;
@@ -161,9 +206,10 @@
         .movable .toolbar {
             opacity: 0;
             position: absolute;
-            top: 0;
-            right: 0;
-            border-bottom-left-radius: 0.5rem;
+            bottom: 100%;
+            left: 50%;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
             background-color: #2563eb;
             cursor: pointer;
             overflow: hidden;
@@ -185,18 +231,21 @@
             width: 1rem;
             color: white;
         }
-        .movable:hover .toolbar {
+        .movable:hover > .toolbar {
             opacity: 1;
         }
         .empty {
+            padding: 30px 0px;
+        }
+        .empty:before {
+            content: '';
             position: absolute;
-            top: 0;
             left: 0;
-            border: dashed #9ca3af 4px;
+            top: 0;
             width: 100%;
             height: 100%;
-            text-align: center;
-            z-index: 0;
+            pointer-events: none;
+            border: dashed #9ca3af 4px;
         }
     </style>
 </body>
