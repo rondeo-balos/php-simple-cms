@@ -54,7 +54,7 @@ const scrollTo = ( id ) => {
                 </ul>
             </nav>
             
-            <CTA is="button" @click.prevent="scrollTo('contactEl')" class="max-sm:hidden min-h-12">Contact</CTA>
+            <CTA is="button" @click.prevent="scrollTo('contactEl')" class="max-sm:hidden min-h-12 z-50">Contact</CTA>
             <button type="button" role="button" title="Show Nav Menu" @click="show = !show" :class="[{'show' : show}, 'hamburger fixed right-0 shadow-xl sm:hidden rounded-full border bg-[#232d3d] text-white p-2 mx-2 w-10 h-10']">
                 <span class="w-[20px] h-[3px] bg-white block absolute top-[35%] left-[25%]"></span>
                 <span class="w-[20px] h-[3px] bg-white block absolute top-[55%]"></span>

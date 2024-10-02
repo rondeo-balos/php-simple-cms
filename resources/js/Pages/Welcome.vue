@@ -172,10 +172,10 @@ const scrollTo = ( id ) => {
 
                     <div class="row-span-2 relative rounded-lg overflow-hidden bg-black p-5 md:p-20 text-center h-full flex flex-col justify-center" @mousemove="handleMouseMove" @mouseleave="resetTransform" ref="containerRef">
                         <img :src="`${cdn}logo-bordered-transparent-fade.webp`" class="opacity-35 w-72 absolute left-1/2 -ml-36" ref="imgRef" alt="Logo Bordered">
-                        <div ref="txtRef">
+                        <div ref="txtRef" class="relative">
                             <h3 class="text-3xl sm:text-5xl text-gray-200 mb-1">And even more...</h3>
                             <p class="text-slate-400 mb-5">Services tailored to your specific needs</p>
-                            <CTA @click.prevent="scrollTo('contactEl')" is="button" class="mx-auto">Get Started</CTA>
+                            <CTA @click.prevent="scrollTo('contactEl')" is="button" class="mx-auto z-50">Get Started</CTA>
                         </div>
                     </div>
 
