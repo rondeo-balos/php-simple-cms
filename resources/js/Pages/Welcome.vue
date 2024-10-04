@@ -8,10 +8,10 @@ import Button from '@/Pages/Partials/Button.vue';
 import CTA from '@/Pages/Partials/CTA.vue';
 import Video from '@/Pages/Partials/Video.vue';
 import PrimaryText from '@/Pages/Partials/PrimaryText.vue';
-import axios from 'axios';
 import Service from '@/Pages/Partials/Service.vue';
-import { dragScroll } from './Partials/DragScroll';
+import { dragScroll } from '@/Pages/Partials/DragScroll';
 import { useLayeredEffect } from '@/Pages/Partials/Layered';
+import Testimonials from '@/Pages/Partials/Testimonials.vue';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -50,6 +50,94 @@ const projects = ref([
         status: 'On-going'
     }
 ]);
+
+const testimonials = ref([
+    [
+        {
+            testimonial: 'I had the privilege of collaborating with an extraordinary web developer who blew me away. His exceptional skills and meticulousness left me thoroughly impressed. From concept to completion, their work showcased an unparalleled level of professionalism and attention to detail. I wholeheartedly recommend this web developer for anyone seeking an extraordinary online presence.',
+            name: 'Dan Erwin Magno',
+            image: 'https://lh3.googleusercontent.com/a-/ALV-UjVG_oUuI1zfJQc9rpEunqhH5sukkulBscz0afRsL6gY-giArh8=s36-c-rp-mo-br100'
+        },
+        {
+            testimonial: 'Working with this developer has been an absolute delight. They exceeded my expectations by delivering top-notch solutions in record time. The attention to detail and ability to anticipate needs was impressive. A true professional who goes above and beyond.',
+            name: 'Rosenie Talibo',
+            image: 'https://lh3.googleusercontent.com/a-/ALV-UjX42y0xzd5ivtdxA_WfDeZYpLKj_6xCe6SSurRVtBjF-YonXLAW=s36-c-rp-mo-br100'
+        }
+    ],
+    [
+        {
+            testimonial: 'I am thoroughly impressed with the creativity and dedication this developer brought to my project. Their problem-solving skills were exceptional, and they found innovative ways to tackle even the toughest challenges. Highly recommended!',
+            name: 'Ethan Ward',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        },
+        {
+            testimonial: 'Their work was simply outstanding! The developer delivered beyond what was asked for and always kept communication clear and professional. I couldn’t be more pleased with the end result. Will definitely work with them again in the future!',
+            name: 'Olivia Turner',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        }
+    ],
+    [
+        {
+            testimonial: 'Fantastic experience from start to finish! The developer was extremely responsive and adapted quickly to changes in the project. Their work ethic and quality of the final product were top-tier. I would highly recommend them to anyone seeking web development expertise.',
+            name: 'Michael Lee',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        },
+        {
+            testimonial: 'The developer demonstrated an unparalleled level of professionalism and care throughout our collaboration. They handled everything from the design to the smallest details with finesse. I am thrilled with the final product.',
+            name: 'Sarah Johnson',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        }
+    ],
+    [
+        {
+            testimonial: 'I can’t say enough about the quality of this developer’s work. Not only did they deliver everything on time, but the project exceeded my expectations in every way. Their attention to detail and commitment to excellence are truly remarkable.',
+            name: 'James Mitchell',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        },
+        {
+            testimonial: 'This developer is a true gem! Their technical expertise and creative solutions were invaluable to my project. The finished product is absolutely flawless, and I couldn’t have asked for a better partner on this journey.',
+            name: 'Amelia Carter',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        }
+    ],
+    [
+        {
+            testimonial: 'I was blown away by the level of service and the results this developer provided. They delivered a high-quality solution that perfectly met my needs, and they were always quick to respond to feedback. I would recommend them to anyone.',
+            name: 'Lucas Bennett',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        },
+        {
+            testimonial: 'This developer took my vague ideas and turned them into a beautiful and functional website. Their communication and understanding of my needs were excellent, and they made sure every aspect was perfect.',
+            name: 'Sophia Harris',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        }
+    ],
+    /*[
+        {
+            testimonial: 'The level of detail and precision this developer brings to their work is truly impressive. From the first conversation, I felt confident in their abilities, and they didn’t disappoint. Highly recommended for anyone in need of top-tier web development.',
+            name: 'William Robinson',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        },
+        {
+            testimonial: 'I have worked with many developers over the years, but this one stands out. They provided not only technical expertise but also thoughtful suggestions that improved the overall functionality of my site. A true professional!',
+            name: 'Isabella Nelson',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        }
+    ],
+    [
+        {
+            testimonial: 'The professionalism and expertise this developer brought to my project were unmatched. They took the time to understand my vision and executed it with great precision. I’m thrilled with the results and can’t wait to work with them again.',
+            name: 'Henry Wright',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        },
+        {
+            testimonial: 'I was incredibly impressed with the speed and quality of this developer’s work. They handled everything with ease and professionalism, ensuring a smooth experience from start to finish. I would gladly hire them again for future projects.',
+            name: 'Emma Scott',
+            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+        }
+    ]*/
+]);
+
 
 // Fetch all projects
 /*axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
@@ -114,14 +202,26 @@ const scrollTo = ( id ) => {
                         <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>
                     </div>
                 </div>
-
-                <!--<h1 class="kanit uppercase text-4xl sm:text-6xl lg:text-8xl lg:-mb-3 xl:-me-5 font-black flex flex-col lg:flex-row justify-between items-center text-[#293448]">
-                    <span class="text-lg text-[#2f8af3] normal-case">// Hi! <i class="not-italic text-white">my name is</i></span>
-                    Rondeo Balos
-                </h1>-->
                 <Video :cdn="cdn" />
 
                 <ArrowLongDownIcon class="w-10 h-10 p-2 border rounded-full animate-bounce mx-auto mb-10 -mt-10" />
+            </div>
+
+            <div class="mb-20">
+                <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-6 text-center">You're not the first to discover...</h2>
+                <Testimonials>
+                    <template v-for="testimonal in testimonials">
+                        <div class="flex flex-col gap-5">
+                            <div v-for="testimonal in testimonal" class="bg-[#1e2430] rounded-xl p-6 max-w-52 sm:max-w-sm text-wrap hover:scale-105 transition-transform duration-500">
+                                <p>{{ testimonal.testimonial }}</p>
+                                <div class="flex flex-row justify-between items-center mt-5">
+                                    <span class="uppercase font-semibold text-[#86a7c0]">{{ testimonal.name }}</span>
+                                    <img class="bg-white rounded-full overflow-hidden max-w-7" :alt="testimonal.name" :src="testimonal.image">
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </Testimonials>
             </div>
             
             <div class="mx-auto max-w-5xl px-2 mb-20">
@@ -201,7 +301,7 @@ const scrollTo = ( id ) => {
                 <div class="flex flex-wrap mx-auto max-w-7xl justify-center transition-all relative">
                     <TransitionGroup name="list">
                         <template v-for="tech in techs" :key="tech.name">
-                            <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-2">
+                            <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-2 hover:scale-105 transition-transform duration-500">
                                 <div class="bg-[#232c3d] p-4 font-bold rounded-xl flex flex-row items-center gap-3">
                                     <img :src="tech.image" class="w-8 h-8 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
                                     {{ tech.name }}
