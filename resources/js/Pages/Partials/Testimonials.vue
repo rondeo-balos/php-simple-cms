@@ -16,7 +16,7 @@ const animateMarquee = () => {
 
   if (content.value && marquee.value) {
     const contentWidth = content.value.offsetWidth;
-    const marqueeWidth = marquee.value.offsetWidth;
+    //const marqueeWidth = marquee.value.offsetWidth;
 
     // Reset the position of the marquee content when it's fully out of view
     if (offset.value <= -contentWidth) {
@@ -26,8 +26,6 @@ const animateMarquee = () => {
 
   // Continue the animation
   animationId.value = requestAnimationFrame(animateMarquee);
-
-  console.log( 'marqueeing', offset.value );
 };
 
 // Pause the marquee on hover
@@ -58,7 +56,7 @@ onUnmounted(() => {
         <div class="flex shrink-0 gap-5 text-sm md:text-base" ref="content" :style="{ transform: `translateX(${offset}px)` }">
             <slot />
         </div>
-        <div class="flex shrink-0 gap-5" :style="{ transform: `translateX(${offset}px)` }">
+        <div class="flex shrink-0 gap-5 text-sm md:text-base" :style="{ transform: `translateX(${offset}px)` }">
             <slot />
         </div>
     </div>
