@@ -11,7 +11,8 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('collection_meta', function (Blueprint $table) {
             $table->id();
-            $table->integer( 'meta_id' );
+            $table->unsignedBigInteger( 'meta_id' )->nullable();
+            $table->foreign( 'meta_id' )->on( 'collections' )->cascadeOnDelete();
             $table->string( 'key' );
             $table->text( 'value' )->nullable();
             $table->string( 'type' )->nullable();

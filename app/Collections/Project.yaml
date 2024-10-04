@@ -5,35 +5,71 @@ columns:
     - link
     - status
 meta:
+    
     project:
         control: text
         default: 'Awesome Project'
+        validate: string|required|max:255
+
+    head:
+        fields:
+            client:
+                control: text
+                validate: string|max:255
+            date:
+                control: date
+                validate: date|max:255
+            role:
+                control: select
+                values:
+                    Full-stack Dev: full
+                    Frontend Dev: frontend
+                    Backend Dev: backend
+                validate: required
+            type:
+                control: text
+                validate: string|required|max:255
+    challenge:
+        control: richtext
+        validate: string
+    
+    solution:
+        control: richtext
+        validate: string
 
     general_group:
         fields:
             image:
                 control: image
+                validate: string
             gallery:
                 control: images
+                default: []
+                validate: array
 
     description:
         control: textarea
+        validate: string
         
     technical_group:
         fields:
             link:
                 control: text
+                validate: url
             framework:
                 control: text
+                validate: string
             status:
                 control: select
-                default: 'On-going'
+                default: On-going
                 values:
-                    On-going: 'On-going'
-                    Done: 'Done'
+                    On-going: On-going
+                    Done: Done
+                validate: string|required
             sticky:
                 control: checkbox
                 default:
-                    - 'Sticky'
+                    - Sticky
                 values:
-                    Sticky: 'Sticky'
+                    Sticky: Sticky
+                validate: array

@@ -74,6 +74,7 @@ Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
 });
 
 Route::get( '/api/collections/{collection}', [CollectionsController::class, 'api'])->name( 'api.collection' );
+Route::get( '/api/collections/{collection}/{ID}', [CollectionsController::class, 'api_view'])->name( 'api.collection.view' );
 
 require __DIR__.'/auth.php';
 

@@ -187,7 +187,7 @@ const currentMeta = ref({});
     <AppHead title="Welcome" />
     <div class="flex flex-row">
         <div class="shadow bg-gray-50 dark:bg-gray-900 h-screen overflow-auto max-w-80 min-w-80 flex flex-col">
-            <div class="text-center dark:text-white font-bold bg-gray-200 dark:bg-gray-800 p-3 uppercase">{{ currentLabel }}</div>
+            <div class="text-center dark:text-white font-bold bg-gray-200 dark:bg-gray-800 p-3 uppercase sticky top-0 shadow-xl z-30">{{ currentLabel }}</div>
             <div class="flex-grow">
 
                 <div v-if="currentLabel === 'Components'" class="flex flex-row flex-wrap p-1">
@@ -200,9 +200,9 @@ const currentMeta = ref({});
 
                 <div v-else class="flex flex-col p-1">
                     <div class="dark:text-white text-center py-2 border-t border-b border-gray-600 dark:border-white bg-black dark:bg-white bg-opacity-10 dark:bg-opacity-10 mb-3">{{ currentName }}</div>
-                    <div v-for="(meta, label) in currentMeta" :key="label" class="mb-4 px-3">
+                    <!--<div v-for="(meta, label) in currentMeta" :key="label" class="mb-4 px-3">
                         <Control :label="label.replace( /_/g, ' ' )" :control="meta.control" :options="meta.values ?? []" v-model="currentProps[label]" />
-                    </div>
+                    </div>-->
                     <!--<div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
                         <div v-if="!Array.isArray(value) && Object.keys(currentMeta).length > 0" class="flex flex-row items-center flex-wrap">
 
@@ -210,10 +210,27 @@ const currentMeta = ref({});
 
                         </div>
                     </div>-->
+                    <div class="flex flex-col divide-y divide-slate-300 dark:divide-slate-700 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-gray-800 shadow">
+                        <div v-for="(meta, label) in currentMeta" :key="label">
+                            <!-- Render grouped fields -->
+                            <div v-if="meta.fields" class="p-2">
+                                <label class="dark:text-white font-bold block capitalize mb-1 flex-grow">{{ label.replace( /_/g, ' ' ) }}</label>
+                                <div class="flex flex-row">
+                                    <div v-for="(fieldOption, fieldKey) in meta.fields" :key="fieldKey" class="p-1 w-full">
+                                        <Control label="" :options="fieldOption.values ?? []" :control="fieldOption.control" v-model="currentProps[fieldKey]" class="w-full" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Render ungrouped fields as well -->
+                            <div v-else class="p-2 flex flex-col">
+                                <Control :label="label.replace( /_/g, ' ' )" :options="meta.values ?? []" :control="meta.control" v-model="currentProps[label]" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
-            <div class="bg-gray-200 dark:bg-gray-800 p-1 flex flex-row gap-2">
+            <div class="bg-gray-200 dark:bg-gray-800 p-1 flex flex-row gap-2 sticky bottom-0" style="box-shadow: 0px -6px 8px #0003;">
                 <SecondaryButton title="Components" @click="currentLabel = 'Components'">
                     <Apps :class="[currentLabel == 'Components' ? 'border-b-2 border-b-black dark:border-b-white':'', 'fill-white min-w-5 pb-1']"/>
                 </SecondaryButton>

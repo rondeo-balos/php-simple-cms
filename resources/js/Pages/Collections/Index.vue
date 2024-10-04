@@ -6,6 +6,7 @@ import Control from '@/Components/CustomComponents/Control.vue';
 import TitleBar from '@/Components/CustomComponents/TitleBar.vue';
 import { useForm } from '@inertiajs/vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import InputError from '@/Components/InputError.vue';
 
 const props = defineProps([ 'status', 'title', 'collection', 'data', 'id' ]);
 
@@ -21,6 +22,7 @@ onMounted( () => {
         for( const [key, metaField] of Object.entries(collection.meta) ) {
             if( metaField.fields ) { // Grouped fields
                 for( const [key, metaSubField] of Object.entries(metaField.fields) ) {
+                    console.log( props.data );
                     fields[key] = props.data ? props.data[key] : (metaSubField.default ?? '');
                 }
             } else { // Handle ungrouped fields
@@ -63,12 +65,14 @@ const save = () => {
                                 <div v-for="(fieldOption, fieldKey) in option.fields" :key="fieldKey" class="p-4 w-full">
                                     <div class="flex flex-col">
                                         <Control :label="fieldKey.replace( /_/g, ' ' )" :options="fieldOption.values ?? []" :control="fieldOption.control" v-model="formData[fieldKey]" />
+                                        <InputError class="mt-2" :message="formData.errors[fieldKey]" />
                                     </div>
                                 </div>
                             </div>
                             <!-- Render ungrouped fields as well -->
                             <div v-else class="p-4 flex flex-col">
                                 <Control :label="key.replace( /_/g, ' ' )" :options="option.values ?? []" :control="option.control" v-model="formData[key]" />
+                                <InputError class="mt-2" :message="formData.errors[key]" />
                             </div>
                         </div>
                         <!--<div v-for="(option, key) in options" :key="key" class="mb-4 px-3">

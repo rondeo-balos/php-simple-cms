@@ -5,9 +5,11 @@ const model = defineModel();
 defineProps([ 'options' ]);
 
 onMounted(() => {
-    if( !model.value ) {
+    if( !Array.isArray(model.value) ) {
         model.value = [];
     }
+
+    console.log( model.value );
 });
 </script>
 <template>

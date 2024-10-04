@@ -4,8 +4,14 @@ props:
     direction: 'flex-col'
     justify: ''
     align: 'items-stretch'
-    padding_px: '10'
-    margin_px: '0'
+    padding_top: 10
+    padding_right: 10
+    padding_bottom: 10
+    padding_left: 10
+    margin_top: 0
+    margin_right: 0
+    margin_bottom: 0
+    margin_left: 0
     background_color: ''
     background_image: ''
     background_size: 'bg-cover'
@@ -38,29 +44,51 @@ options:
                 Center: items-center
                 End: items-end
                 Stretch: items-stretch
-        padding_px:
-            control: number
-        margin_px:
-            control: number
+
+        padding:
+            fields:
+                padding_top:
+                    control: number
+                padding_right:
+                    control: number
+                padding_bottom:
+                    control: number
+                padding_left:
+                    control: number
+
+        margin:
+            fields:
+                margin_top:
+                    control: number
+                margin_right:
+                    control: number
+                margin_bottom:
+                    control: number
+                margin_left:
+                    control: number
+            
         background_color:
             control: color
         background_image:
             control: image
-        background_size:
-            control: select
-            values:
-                Auto: bg-auto
-                Cover: bg-cover
-                Contain: bg-contain
-        background_position:
-            control: select
-            values:
-                Botom: bg-bottom
-                Center: bg-center
-                Left: bg-left
-                Left Bottom: bg-left-bottom
-                Left Top: bg-left-top
-                Right: bg-right
-                Right Bottom: bg-right-bottom
-                Right Top: bg-right-top
-                Top: bg-top
+
+        background_options:
+            fields:
+                background_size:
+                    control: select
+                    values:
+                        Auto: bg-auto
+                        Cover: bg-cover
+                        Contain: bg-contain
+                background_position:
+                    control: select
+                    values:
+                        Botom: bg-bottom
+                        Center: bg-center
+                        Left: bg-left
+                        Left Bottom: bg-left-bottom
+                        Left Top: bg-left-top
+                        Right: bg-right
+                        Right Bottom: bg-right-bottom
+                        Right Top: bg-right-top
+                        Top: bg-top

@@ -28,13 +28,14 @@
 
     {% macro recursiveCheck(component) %}
         {% if component.props.nested %}
-            <div class="movable {{ component.props.list ? '' : 'empty' }}" data-id="{{ component.id }}">
+            <div class="movable {{ component.props.list ? '' : 'empty' }} sortable relative  flex {{ component.props.direction }}  {{ component.props.justify }}  {{ component.props.align }} 
+                pt-[{{ component.props.padding_top }}px] pr-[{{ component.props.padding_right }}px] pb-[{{ component.props.padding_bottom }}px] pl-[{{ component.props.padding_left }}px] 
+                mt-[{{ component.props.margin_top }}px] mr-[{{ component.props.margin_right }}px] mb-[{{ component.props.margin_bottom }}px] ll-[{{ component.props.margin_left }}px] 
+                bg-[{{ component.props.background_color }}] {{ component.props.background_size }} {{ component.props.background_position }} {{ component.props.background_repeat }}" style="background-image: url({{ component.props.background_image }})" data-id="{{ component.id }}">
                 {{ _self.toolbar(component) }}
-                <div class="sortable relative  flex {{ component.props.direction }}  {{ component.props.justify }}  {{ component.props.align }} p-[{{ component.props.padding_px }}px] m-[{{ component.props.margin_px }}px] bg-[{{ component.props.background_color }}] {{ component.props.background_size }} {{ component.props.background_position }} {{ component.props.background_repeat }}" style="background-image: url({{ component.props.background_image }})" data-id="{{ component.id }}">
-                    {% for component in component.props.list %}
-                        {{ _self.recursiveCheck( component ) }}
-                    {% endfor %}
-                </div>
+                {% for component in component.props.list %}
+                    {{ _self.recursiveCheck( component ) }}
+                {% endfor %}
             </div>
         {% else %}
             <div class="relative movable" data-id="{{ component.id }}">
@@ -145,6 +146,7 @@
                     pull: true,
                     put: true,
                 },
+                draggable: '.movable',
                 filter: '.non-draggable',
                 animation: 250,
                 forceFallback: true,
@@ -233,9 +235,6 @@
         }
         .movable:hover > .toolbar {
             opacity: 1;
-        }
-        .empty {
-            padding: 30px 0px;
         }
         .empty:before {
             content: '';

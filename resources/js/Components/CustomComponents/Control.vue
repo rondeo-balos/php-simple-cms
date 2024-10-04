@@ -16,24 +16,24 @@ defineProps([ 'control', 'options', 'label' ]);
     <label class="dark:text-white font-bold block capitalize mb-1 flex-grow">{{ label }}</label>
 
     <!-- Check control type -->
-    <TextInput v-if="!control || control === 'text'" v-model="model" />
+    <TextInput v-if="!control || control === 'text'" v-model="model" class="w-full" />
     <!-- Select input for 'select' control type -->
     <div v-else-if="control === 'select'">
-        <SelectV2 :options="options" :selected="model" v-model="model"/>
+        <SelectV2 :options="options" :selected="model" v-model="model" class="w-full"/>
     </div>
     <!-- Checkbox -->
     <div v-else-if="control === 'checkbox'">
-        <Checkbox v-model="model" :options="options" />
+        <Checkbox v-model="model" :options="options" class="w-full"/>
     </div>
     <!-- Number input for 'number' control type -->
-    <input v-else-if="control === 'number'" type="number" step=".1" v-model="model" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
+    <input v-else-if="control === 'number'" type="number" step=".1" v-model="model" class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
     <!-- Textarea input for 'textarea' control type -->
-    <textarea v-else-if="control === 'textarea'" v-model="model" class="basis-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm min-h-24"></textarea>
-    <div v-else-if="control === 'richtext'" class="basis-full bg-white">
+    <textarea v-else-if="control === 'textarea'" v-model="model" class="w-full basis-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm min-h-24"></textarea>
+    <div v-else-if="control === 'richtext'" class="w-full basis-full bg-white">
         <QuillEditor contentType="html" v-model:content="model" theme="snow" style="height: 250px"/>
     </div>
     <ImageSelector v-else-if="control === 'image'" v-model="model" />
     <ImageSelectorMany v-else-if="control === 'images'" v-model="model" />
     <CodeEditor v-else-if="control === 'code'" v-model="model" class="basis-full" :line-nums="true" :languages="[['html']]" width="100%" ></CodeEditor>
-    <input v-else :type="control" v-model="model" />
+    <input v-else :type="control" v-model="model" class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
 </template>
