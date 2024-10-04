@@ -66,9 +66,9 @@ const testimonials = ref([
     ],
     [
         {
-            testimonial: 'I am thoroughly impressed with the creativity and dedication this developer brought to my project. Their problem-solving skills were exceptional, and they found innovative ways to tackle even the toughest challenges. Highly recommended!',
-            name: 'Ethan Ward',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+            testimonial: 'I highly recommend Rondeo for any web development project you have in mind. His skills, professionalism, and dedication are unmatched, making him a true asset to anyone looking to create an outstanding online presence. Thank you, Rondeo, for an exceptional job well done!',
+            name: 'Vincent Oric',
+            image: 'https://lh3.googleusercontent.com/a-/AD_cMMTrMp9OYCUjC42OPxvN2MFf298-rcGwRVfUSE3GvNnDXC4=w60-h60-p-rp-mo-br100'
         },
         {
             testimonial: 'Their work was simply outstanding! The developer delivered beyond what was asked for and always kept communication clear and professional. I couldn’t be more pleased with the end result. Will definitely work with them again in the future!',
@@ -112,30 +112,6 @@ const testimonials = ref([
             image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
         }
     ],
-    /*[
-        {
-            testimonial: 'The level of detail and precision this developer brings to their work is truly impressive. From the first conversation, I felt confident in their abilities, and they didn’t disappoint. Highly recommended for anyone in need of top-tier web development.',
-            name: 'William Robinson',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        },
-        {
-            testimonial: 'I have worked with many developers over the years, but this one stands out. They provided not only technical expertise but also thoughtful suggestions that improved the overall functionality of my site. A true professional!',
-            name: 'Isabella Nelson',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        }
-    ],
-    [
-        {
-            testimonial: 'The professionalism and expertise this developer brought to my project were unmatched. They took the time to understand my vision and executed it with great precision. I’m thrilled with the results and can’t wait to work with them again.',
-            name: 'Henry Wright',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        },
-        {
-            testimonial: 'I was incredibly impressed with the speed and quality of this developer’s work. They handled everything with ease and professionalism, ensuring a smooth experience from start to finish. I would gladly hire them again for future projects.',
-            name: 'Emma Scott',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        }
-    ]*/
 ]);
 
 
