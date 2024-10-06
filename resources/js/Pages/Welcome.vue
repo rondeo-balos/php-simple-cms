@@ -264,7 +264,7 @@ const scrollTo = ( id ) => {
                     <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 text-center mb-3"><PrimaryText>Technologies</PrimaryText> and Tools I use</h2>
                     <p class="text-center text-slate-400 mb-10 text-lg">I take pride in showcasing my comprehensive knowledge and expertise in web development, utilizing a wide range of modern tools and technologies to deliver high-quality solutions.</p>
                     <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-800 mb-5">
-                        <ul class="flex flex-wrap -mb-px justify-center">
+                        <ul class="flex flex-row -mb-px justify-center overflow-x-auto">
                             <li v-for="(type, index) in types" class="sm:mx-2">
                                 <a href="#" @click.prevent="currentType = type" :class="[(currentType === type ? 'text-blue-600 border-b-2 border-blue-600' : 'border-transparent hover:text-gray-600 hover:border-gray-300') ,'inline-block p-4 border-b-2 rounded-t-lg capitalize']">
                                     {{ index }}
@@ -274,18 +274,17 @@ const scrollTo = ( id ) => {
                     </div>
                 </div>
 
-                <div class="flex flex-wrap mx-auto max-w-7xl justify-center transition-all relative">
+                <div class="flex flex-wrap mx-auto max-w-7xl justify-center transition-all relative gap-0">
                     <TransitionGroup name="list">
                         <template v-for="tech in techs" :key="tech.name">
-                            <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-2 hover:scale-105 transition-transform duration-500">
-                                <div class="bg-[#232c3d] p-4 font-bold rounded-xl flex flex-row items-center gap-3">
-                                    <img :src="tech.image" class="w-8 h-8 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
+                            <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-1 sm:p-2 hover:scale-105 transition-transform duration-500">
+                                <div class="bg-[#232c3d] p-3 sm:p-4 font-bold rounded-xl flex flex-row items-center gap-3 text-xs sm:text-base">
+                                    <img :src="tech.image" class="w-6 h-6 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
                                     {{ tech.name }}
                                 </div>
                             </div>
                         </template>
                     </TransitionGroup>
-
                 </div>
 
             </div>
@@ -299,20 +298,21 @@ const scrollTo = ( id ) => {
 </template>
 
 <style scoped>
-.list-move, /* apply transition to moving elements */
-.list-enter-active,
-.list-leave-active {
-    transition: all 0.5s ease;
+.move-item, .list-enter-active, .list-leave-active {
+    transition: all 0.6s ease-in-out;
+    transform-style: preserve-3d;
 }
 
-.list-enter-from,
-.list-leave-to {
+.list-enter-from {
+    transform: rotateY(90deg);  /* Start from a 90-degree rotation */
     opacity: 0;
 }
 
-.list-leave-active {
-    position: absolute;
+.list-leave-to {
+    transform: rotateY(90deg);  /* End with the same rotation */
+    opacity: 0;
 }
+
 
 .body-bg {
     z-index: 0;
