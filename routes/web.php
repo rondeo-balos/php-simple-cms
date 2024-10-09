@@ -5,8 +5,10 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Verify2FAController;
 use App\Http\Middleware\CollectionsLoader;
 use App\Http\Middleware\ComponentsLoader;
+use App\Http\Middleware\Google2faMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,15 +18,12 @@ Route::get( '/admin', function() {
 
 Route::get('/admin/dashboard', function() {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified', CollectionsLoader::class])->name('dashboard');
+})->middleware(['auth', 'verified', CollectionsLoader::class, Google2faMiddleware::class])->name('dashboard');
 
-Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
+Route::middleware( ['auth', CollectionsLoader::class, Google2faMiddleware::class] )->group( function() {
     Route::get('/admin/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/admin/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/admin/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
     // Media
     Route::get( '/admin/media', [MediaController::class, 'index'])->name( 'media' );
     Route::get( '/admin/media/add', [MediaController::class, 'add'])->name( 'media.add' );
@@ -71,10 +70,17 @@ Route::middleware( ['auth', CollectionsLoader::class] )->group( function() {
             'data' => json_decode($request->input('datainput'))
         ] );
     });
+
+    Route::get( '/2fa/enable', [Verify2FAController::class, 'qr'])->name( '2fa.qr' );
+    Route::post( '/2fa/enable', [Verify2FAController::class, 'enable'])->name( '2fa.enable' );
+    Route::patch( '/2fa/disable', [Verify2FAController::class, 'disable'])->name( '2fa.disable' );
 });
 
 Route::get( '/api/collections/{collection}', [CollectionsController::class, 'api'])->name( 'api.collection' );
 Route::get( '/api/collections/{collection}/{ID}', [CollectionsController::class, 'api_view'])->name( 'api.collection.view' );
+
+Route::get( '/2fa', [Verify2FAController::class, 'index'])->name( '2fa' );
+Route::post( '/2fa', [Verify2FAController::class, 'verify'])->name( '2fa.verify' );
 
 require __DIR__.'/auth.php';
 

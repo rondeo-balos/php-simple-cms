@@ -59,7 +59,7 @@ const testimonials = ref([
             image: 'https://lh3.googleusercontent.com/a-/ALV-UjVG_oUuI1zfJQc9rpEunqhH5sukkulBscz0afRsL6gY-giArh8=s36-c-rp-mo-br100'
         },
         {
-            testimonial: 'Working with this developer has been an absolute delight. They exceeded my expectations by delivering top-notch solutions in record time. The attention to detail and ability to anticipate needs was impressive. A true professional who goes above and beyond.',
+            testimonial: 'I highly recommend Rondeo for any web development projects. His technical skills are exceptional, and his consistently deliver high-quality work on time. If you\'re looking for a reliable and talented web developer, Rondeo is the perfect choice!',
             name: 'Rosenie Talibo',
             image: 'https://lh3.googleusercontent.com/a-/ALV-UjX42y0xzd5ivtdxA_WfDeZYpLKj_6xCe6SSurRVtBjF-YonXLAW=s36-c-rp-mo-br100'
         }
@@ -71,9 +71,9 @@ const testimonials = ref([
             image: 'https://lh3.googleusercontent.com/a-/AD_cMMTrMp9OYCUjC42OPxvN2MFf298-rcGwRVfUSE3GvNnDXC4=w60-h60-p-rp-mo-br100'
         },
         {
-            testimonial: 'Their work was simply outstanding! The developer delivered beyond what was asked for and always kept communication clear and professional. I couldn’t be more pleased with the end result. Will definitely work with them again in the future!',
-            name: 'Olivia Turner',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
+            testimonial: 'You can say this guy is always doing a job well done projects that he handled. I can recommend, you can hire this guy to do web development related stuffs.',
+            name: 'jhunel geronimo',
+            image: 'https://lh3.googleusercontent.com/a/ACg8ocKVh2bY6V0p-KU-7gB1f5imzDNylvCTclLRfjYQzQP0fO4HSA=s36-c-rp-mo-br100'
         }
     ],
     [
@@ -289,6 +289,21 @@ const scrollTo = ( id ) => {
 
             </div>
             <!--/ Max Screen /-->
+
+            <!-- Blog section -->
+            <div class="max-w-screen-xl px-2 py-4 mx-auto">
+                <div class="bg-[#232c3d] rounded-3xl px-8 sm:px-12 py-20 sm:mb-5 relative overflow-hidden flex flex-col sm:flex-row gap-10 items-center justify-center">
+                    <img src="https://placehold.co/400x400" />
+                    <div class=" max-w-[500px]">
+                        <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 text-start mb-3">Dive Into My Creative Journey</h2>
+                        <p class="text-slate-400 text-lg">Explore insights, tips, and stories that inspire and ignite your passion. Join me as we navigate the world of creativity together!</p>
+                        
+                        <div class="flex">
+                            <CTA class="mt-10 px-8 relative flex items-center" :href="route('blog')" is="a">Check It Out!</CTA>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <Footer />
 
