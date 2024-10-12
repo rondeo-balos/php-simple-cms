@@ -5,7 +5,7 @@ import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import AppHead from '@/Components/CustomComponents/AppHead.vue';
 import TitleBar from '@/Components/CustomComponents/TitleBar.vue';
-import Disable2fA from './Partials/Disable2fA.vue';
+import TwoFactorForm from './Partials/TwoFactorForm.vue';
 
 defineProps({
     mustVerifyEmail: {
@@ -32,11 +32,11 @@ defineProps({
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg grow shrink basis-1/2">
-                    <Disable2fA class="w-full" />
+                    <UpdatePasswordForm class="w-full" />
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg grow shrink basis-1/2">
-                    <UpdatePasswordForm class="w-full" />
+                    <TwoFactorForm class="w-full" />
                 </div>
 
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg grow shrink basis-1/2">
