@@ -79,10 +79,12 @@ const editComponent = (item, list) => {
     currentName.value = item.name;
     currentProps.value = item.props;
     currentMeta.value = item.meta ?? {};
+    selectElement( item.id );
 };
 
 // Delete component
 const deleteComponent = (item, list) => {
+    currentLabel.value = 'Components';
     const index = list.indexOf(item);
     if( index > -1 ) {
         list.splice( index, 1 );
@@ -131,8 +133,15 @@ const handleMessage = (message) => {
                 currentLabel.value = 'Components';
             }   
         }
+    } else if( message.data.selected ) { // If message is a selected id
+        selectElement(message.data.selected);
     }
 };
+
+const selectElement = (id) => {
+    document.querySelector( '.selected' )?.classList.remove( 'selected' );
+    document.querySelector( `[data-id="${CSS.escape(id)}"]` ).classList.add( 'selected' );
+}
 
 const preview = () => {
     datainput.value.value  = JSON.stringify(items.value);
@@ -181,6 +190,13 @@ const currentLabel = ref('Components');
 const currentName = ref( '' );
 const currentProps = ref({});
 const currentMeta = ref({});
+
+watch( currentLabel, (newVal) => {
+    if( newVal !== 'Component Settings' ) {
+        console.log( 'not component settings' );
+        document.querySelector( '.selected' )?.classList.remove( 'selected' );
+    }
+});
 </script>
 
 <template>
@@ -200,16 +216,6 @@ const currentMeta = ref({});
 
                 <div v-else class="flex flex-col p-1">
                     <div class="dark:text-white text-center py-2 border-t border-b border-gray-600 dark:border-white bg-black dark:bg-white bg-opacity-10 dark:bg-opacity-10 mb-3">{{ currentName }}</div>
-                    <!--<div v-for="(meta, label) in currentMeta" :key="label" class="mb-4 px-3">
-                        <Control :label="label.replace( /_/g, ' ' )" :control="meta.control" :options="meta.values ?? []" v-model="currentProps[label]" />
-                    </div>-->
-                    <!--<div v-for="(value, label) in currentProps" :key="label" class="mb-4 px-3">
-                        <div v-if="!Array.isArray(value) && Object.keys(currentMeta).length > 0" class="flex flex-row items-center flex-wrap">
-
-                            <Control :label="label.replace( /_/g, ' ' )" :control="currentMeta[label].control" :options="currentMeta[label].values ?? []" v-model="currentProps[label]" />
-
-                        </div>
-                    </div>-->
                     <div class="flex flex-col divide-y divide-slate-300 dark:divide-slate-700 border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-gray-800 shadow">
                         <div v-for="(meta, label) in currentMeta" :key="label">
                             <!-- Render grouped fields -->
@@ -272,6 +278,10 @@ const currentMeta = ref({});
             </div>
         </div>
     </div>
-
-    <!--<PrimaryButton @click="save">Save</PrimaryButton>-->
 </template>
+
+<style>
+.selected {
+    background-color: #3146c8 !important;
+}
+</style>

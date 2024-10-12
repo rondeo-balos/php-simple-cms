@@ -14,9 +14,9 @@
 
     {% macro toolbar(component) %}
         <div class="toolbar">
-            <button class="handle tool">
+            <!--<button class="handle tool">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M432 320v112H320M421.8 421.77L304 304M80 192V80h112M90.2 90.23L208 208M320 80h112v112M421.77 90.2L304 208M192 432H80V320M90.23 421.8L208 304"/></svg>
-            </button>
+            </button>-->
             <button class="tool" onclick="editComponent('{{ component.id }}')">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"/></svg>
             </button>
@@ -45,7 +45,7 @@
         {% endif %}
     {% endmacro %}
 
-    <div class="sortable {{ data ? '' : 'empty' }}">
+    <div class="sortable main-content {{ data ? '' : 'empty' }}">
         {% for component in data %}
             {{ _self.recursiveCheck( component ) }}
         {% endfor %}
@@ -151,7 +151,7 @@
                 animation: 250,
                 forceFallback: true,
                 //emptyInsertThreshold: 10,
-                handle: '.handle', // handle's class
+                //handle: '.handle', // handle's class
                 onEnd: function (evt) {
                     updateData(evt); // Update data when the drag and drop finishes
                 },
@@ -190,13 +190,33 @@
                 }
             };
             window.addEventListener('message', handleMessage);
+
+            /** Send message */
+            document.querySelectorAll( '[data-id]' ).forEach( el => {
+                el.onclick = function(event) {
+                    console.log( 'id sent' );
+                    const id = el.getAttribute( 'data-id' );
+                    if( window.parent ) {
+                        event.stopPropagation();
+                        window.parent.postMessage({
+                            selected: id
+                        }, '*');
+                        window.parent.postMessage({
+                            edit: id,
+                        }, '*');
+                    }
+                };
+            });
         })();
     </script>
 
     <style>
+        .sortable.main-content {
+            padding: 20px 5px;
+        }
         body {
             user-select: none;
-            padding-top: 20px;
+            overflow-x: hidden;
         }
         .movable {
             border: solid 2px transparent;
@@ -208,10 +228,10 @@
         .movable .toolbar {
             opacity: 0;
             position: absolute;
-            bottom: 100%;
-            left: 50%;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
+            top: 0%;
+            right: 0%;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
             background-color: #2563eb;
             cursor: pointer;
             overflow: hidden;
@@ -233,8 +253,14 @@
             width: 1rem;
             color: white;
         }
-        .movable:hover > .toolbar {
+        .movable:hover * ~ .toolbar {
             opacity: 1;
+        }
+        .movable {
+            cursor: grab;
+        }
+        .movable:active {
+            cursor: grabbing;
         }
         .empty:before {
             content: '';

@@ -47,13 +47,13 @@ onMounted( () => {
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <div class="ms-3">
+                        <div class="hidden sm:flex sm:items-center sm:ms-6 gap-3">
+                            <div>
                                 <a :href="route('home')" target="_blank" title="Visit your site" class="group text-gray-500 dark:text-gray-400">
                                     <Open class="w-5 group-hover:text-blue-500"/>
                                 </a>
                             </div>
-                            <div class="ms-3">
+                            <div>
                                 <ThemeToggler />
                             </div>
                             <!-- Settings Dropdown -->
@@ -139,10 +139,8 @@ onMounted( () => {
 
             <div class="flex">
                 <div class="sm:min-w-[300px]">
-                    
-
                     <!-- Sidebar -->
-                    <ul class="dark:text-white sm:px-7 sm:py-5 p-1 h-full max-sm:dark:bg-slate-950 max-sm:bg-slate-200">
+                    <ul class="dark:text-white sm:px-7 sm:py-5 p-1 sticky top-20 max-sm:dark:bg-slate-950 max-sm:bg-slate-200">
                         <li>
                             <Link :href="route('dashboard')" :class="[{ 'active font-bold' : $page.url.startsWith( '/admin/dashboard' ) }, 'flex flex-row gap-4 items-center rounded px-4 py-3 hover:dark:bg-slate-700 hover:bg-white transition-colors']">
                                 <Speedometer class="w-6" />
@@ -190,9 +188,9 @@ onMounted( () => {
                             </Link>
                         </li>
                     </ul>
-
                 </div>
-                <div class="flex-grow h-[calc(100vh-70px)] overflow-y-auto p-2">
+
+                <div class="flex-grow p-2">
                     <!-- Page Heading -->
                     <header v-if="$slots.header">
                         <div class="max-w-screen-2xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
