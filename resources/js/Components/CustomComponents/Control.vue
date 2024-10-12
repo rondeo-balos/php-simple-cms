@@ -34,6 +34,6 @@ defineProps([ 'control', 'options', 'label' ]);
     </div>
     <ImageSelector v-else-if="control === 'image'" v-model="model" />
     <ImageSelectorMany v-else-if="control === 'images'" v-model="model" />
-    <CodeEditor v-else-if="control === 'code'" v-model="model" class="basis-full min-h-10" :line-nums="true" :languages="[['html']]" width="100%" ></CodeEditor>
+    <CodeEditor v-else-if="control === 'code'" v-model="model" class="basis-full min-h-10" :line-nums="true" :languages="[['html']]" width="100%" />
     <input v-else :type="control" v-model="model" class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
 </template>
