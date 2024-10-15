@@ -1,5 +1,5 @@
 <script setup>
-import { PlayCircleIcon } from '@heroicons/vue/16/solid';
+import { PlayCircleIcon } from '@heroicons/vue/24/outline';
 import { useLayeredEffect } from '@/Pages/Partials/Layered';
 import { ref } from 'vue';
 
@@ -23,12 +23,13 @@ const { handleMouseMove, resetTransform } = useLayeredEffect( videoContainer, pl
 </script>
 
 <template>
-    <div class="w-full mb-20 relative shadow-2xl rounded-3xl overflow-hidden group">
+    <div class="w-full relative shadow-2xl rounded-3xl overflow-hidden group">
         <video class="w-full h-auto cursor-pointer" :poster="`${cdn}poster.gif`" autoplay muted loop ref="video" @click="playVideo">
             <source src="https://dl.dropboxusercontent.com/scl/fi/38l16oiq47hohnbja799l/hello-world.mp4?rlkey=jnc3x4g1vp2hv9v8g5c8wa5li&st=dkyuz4uj&dl=0" type="video/mp4">
         </video>
-        <div v-if="!videoPlayed" class="group-hover:opacity-100 opacity-0 transition-opacity duration-300 absolute left-0 top-0 w-full h-full bg-black bg-opacity-80 flex items-center justify-center cursor-pointer" @click="playVideo" @mousemove="handleMouseMove" @mouseleave="resetTransform" ref="videoContainer">
-            <PlayCircleIcon class="rounded-full w-52 h-52" ref="playRef" />
+        <div v-if="!videoPlayed" class="group-hover:opacity-100 opacity-100 transition-opacity duration-300 absolute left-0 top-0 w-full h-full bg-black bg-opacity-80 flex items-center justify-center cursor-pointer" @click="playVideo" @mousemove="handleMouseMove" @mouseleave="resetTransform" ref="videoContainer">
+            <PlayCircleIcon class="rounded-full w-2/5  h-2/5" ref="playRef" />
         </div>
     </div>
 </template>
+
