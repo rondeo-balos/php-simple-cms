@@ -19,7 +19,7 @@ const playVideo = () => {
 };
 const videoContainer = ref(null);
 const playRef = ref(null);
-const { handleMouseMove, resetTransform } = useLayeredEffect( videoContainer, playRef, null, 0, 30 );
+/*const { handleMouseMove, resetTransform } = useLayeredEffect( videoContainer, playRef, null, 0, 30 );*/
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const { handleMouseMove, resetTransform } = useLayeredEffect( videoContainer, pl
             <source src="https://dl.dropboxusercontent.com/scl/fi/38l16oiq47hohnbja799l/hello-world.mp4?rlkey=jnc3x4g1vp2hv9v8g5c8wa5li&st=dkyuz4uj&dl=0" type="video/mp4">
         </video>
         <div v-if="!videoPlayed" class="group-hover:opacity-100 opacity-100 transition-opacity duration-300 absolute left-0 top-0 w-full h-full bg-black bg-opacity-80 flex items-center justify-center cursor-pointer" @click="playVideo" @mousemove="handleMouseMove" @mouseleave="resetTransform" ref="videoContainer">
-            <PlayCircleIcon class="rounded-full w-2/5  h-2/5" ref="playRef" />
+            <PlayCircleIcon class="rounded-full w-1/5 h-1/5 group-hover:scale-125 transition-transform" ref="playRef" />
         </div>
     </div>
 </template>

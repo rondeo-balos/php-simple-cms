@@ -172,7 +172,7 @@ const scrollTo = ( id ) => {
                     <svg width="0" height="0">
                         <defs>
                             <clipPath id="clipConcave" clipPathUnits="objectBoundingBox">
-                                <path d="M0 .04Q0 0 .02 0L.98 0Q1 0 1 .04L1 .60Q1 .64.98.64L.82.64Q.8.64.8.68L.8.76Q.8.8.78.8L.52.8Q.5.8.5.76L.5.60Q.5.56.48.56L.02.56Q0 .56 0 .52Z"/>
+                                <path d="M0 .03Q0 0 .02 0L.98 0Q1 0 1 .03L1 .76Q1 .79.98.79L.52.8Q.5.8.5.77L.5.59Q.5.56.48.56L.02.56Q0 .56 0 .53Z"/>
                             </clipPath>
                         </defs>
                     </svg>
@@ -186,7 +186,10 @@ const scrollTo = ( id ) => {
                             <p class="text-slate-400 text-lg mb-4">I’m a web developer passionate about creating visually appealing, high-performance websites. I combine modern design with solid development to build digital experiences that help businesses grow. Let’s bring your project to life!</p>
                             <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>
                         </div>
-                        <div class="lg:w-4/12 lg:-mr-48 lg:mb-8">
+                        <!--<div class="lg:w-5/12 lg:-mr-12 lg:mb-20">
+                            <Video :cdn="cdn" />
+                        </div>-->
+                        <div class="lg:w-5/12 lg:mr-12 lg:mb-52">
                             <Video :cdn="cdn" />
                         </div>
                     </div>
