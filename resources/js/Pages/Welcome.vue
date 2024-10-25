@@ -386,7 +386,7 @@ const scrollTo = ( id ) => {
     top: 0;
     width: 100%;
     height: 100%;
-    background: url(https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg); /* Replace with your actual image URL */
+    background: url(https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg);
     background-size: cover; /* Make the background image cover the entire area */
     background-position: center;
 }
