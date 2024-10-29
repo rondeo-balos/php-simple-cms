@@ -58,6 +58,8 @@ const testimonials = ref([
             name: 'Dan Erwin Magno',
             image: 'https://lh3.googleusercontent.com/a-/ALV-UjVG_oUuI1zfJQc9rpEunqhH5sukkulBscz0afRsL6gY-giArh8=s36-c-rp-mo-br100'
         },
+    ],
+    [
         {
             testimonial: 'I highly recommend Rondeo for any web development projects. His technical skills are exceptional, and his consistently deliver high-quality work on time. If you\'re looking for a reliable and talented web developer, Rondeo is the perfect choice!',
             name: 'Rosenie Talibo',
@@ -70,46 +72,12 @@ const testimonials = ref([
             name: 'Vincent Oric',
             image: 'https://lh3.googleusercontent.com/a-/AD_cMMTrMp9OYCUjC42OPxvN2MFf298-rcGwRVfUSE3GvNnDXC4=w60-h60-p-rp-mo-br100'
         },
+    ],
+    [
         {
             testimonial: 'You can say this guy is always doing a job well done projects that he handled. I can recommend, you can hire this guy to do web development related stuffs.',
             name: 'jhunel geronimo',
             image: 'https://lh3.googleusercontent.com/a/ACg8ocKVh2bY6V0p-KU-7gB1f5imzDNylvCTclLRfjYQzQP0fO4HSA=s36-c-rp-mo-br100'
-        }
-    ],
-    [
-        {
-            testimonial: 'Fantastic experience from start to finish! The developer was extremely responsive and adapted quickly to changes in the project. Their work ethic and quality of the final product were top-tier. I would highly recommend them to anyone seeking web development expertise.',
-            name: 'Michael Lee',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        },
-        {
-            testimonial: 'The developer demonstrated an unparalleled level of professionalism and care throughout our collaboration. They handled everything from the design to the smallest details with finesse. I am thrilled with the final product.',
-            name: 'Sarah Johnson',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        }
-    ],
-    [
-        {
-            testimonial: 'I can’t say enough about the quality of this developer’s work. Not only did they deliver everything on time, but the project exceeded my expectations in every way. Their attention to detail and commitment to excellence are truly remarkable.',
-            name: 'James Mitchell',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        },
-        {
-            testimonial: 'This developer is a true gem! Their technical expertise and creative solutions were invaluable to my project. The finished product is absolutely flawless, and I couldn’t have asked for a better partner on this journey.',
-            name: 'Amelia Carter',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        }
-    ],
-    [
-        {
-            testimonial: 'I was blown away by the level of service and the results this developer provided. They delivered a high-quality solution that perfectly met my needs, and they were always quick to respond to feedback. I would recommend them to anyone.',
-            name: 'Lucas Bennett',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
-        },
-        {
-            testimonial: 'This developer took my vague ideas and turned them into a beautiful and functional website. Their communication and understanding of my needs were excellent, and they made sure every aspect was perfect.',
-            name: 'Sophia Harris',
-            image: 'https://lh3.googleusercontent.com/-cXXaVVq8nMM/AAAAAAAAAAI/AAAAAAAAAKI/_Y1WfBiSnRI/photo.jpg?sz=50'
         }
     ],
 ]);
@@ -157,6 +125,10 @@ const scrollTo = ( id ) => {
         <meta property="og:type" content="website">
         <meta property="twitter:card" content="summary_large_image">
         <link rel="icon" :href="`${cdn}logo-transparent.webp`">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     </Head>
     <div class="text-gray-200 main-content relative bg-[#151924]">
         <div class="fixed top-0 left-0 w-full h-screen body-bg"></div>
@@ -179,7 +151,7 @@ const scrollTo = ( id ) => {
                     <div class="hero-content"></div>
                     <div class="flex flex-col lg:flex-row bg-opacity-70 bg-black lg:bg-transparent p-8 lg:p-0 h-full z-50 relative justify-between items-end">
                         <div class="lg:w-[48%] mb-12">
-                            <h1 class="text-4xl sm:text-5xl font-bold text-gray-200 mb-4">
+                            <h1 class="text-4xl sm:text-5xl font-bold text-gray-200 mb-4 merienda">
                                 <PrimaryText>Welcome!</PrimaryText> <br>
                                 I'm Rondeo Balos
                             </h1>
@@ -211,11 +183,11 @@ const scrollTo = ( id ) => {
             </div>
 
             <div class="mb-20">
-                <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-6 text-center">You're not the first to discover...</h2>
+                <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-6 text-center px-3 merienda">You're not the first to discover...</h2>
                 <Testimonials>
                     <template v-for="testimonal in testimonials">
                         <div class="flex flex-col gap-5">
-                            <div v-for="testimonal in testimonal" class="bg-[#1e2430] rounded-xl p-6 max-w-52 sm:max-w-sm text-wrap hover:scale-105 transition-transform duration-500">
+                            <div v-for="testimonal in testimonal" class="bg-[#1e2430] rounded-xl p-6 max-w-xs sm:max-w-sm text-wrap hover:scale-105 transition-transform duration-500">
                                 <p>{{ testimonal.testimonial }}</p>
                                 <div class="flex flex-row justify-between items-center mt-5">
                                     <span class="uppercase font-semibold text-[#86a7c0]">{{ testimonal.name }}</span>
@@ -229,13 +201,13 @@ const scrollTo = ( id ) => {
             
             <div class="mx-auto max-w-5xl px-2 mb-20">
                 <div class="mx-auto max-w-2xl mb-10 text-center">
-                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 mb-3"><PrimaryText>Featured</PrimaryText> Projects</h2>
+                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 mb-3  merienda"><PrimaryText>Featured</PrimaryText> Projects</h2>
                     <p class="text-slate-400 mb-10 text-lg">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
                 </div>
 
                 <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center group">
                     <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-200 mb-3">{{ project.project }}</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-200 mb-3 merienda">{{ project.project }}</h3>
                         <p class="text-slate-400 mb-10">{{ project.description }}</p>
                         
                         <Button v-if="project.link" :href="project.link" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
@@ -256,7 +228,7 @@ const scrollTo = ( id ) => {
 
             <div class="mb-10">
                 <div class="max-w-screen-xl px-2 mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-start">
-                    <h2 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6">
+                    <h2 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6 merienda">
                         <PrimaryText>What</PrimaryText> <span class="inline-block md:block"></span>
                         I excel at
                     </h2>
@@ -288,7 +260,7 @@ const scrollTo = ( id ) => {
             <div class="max-w-screen-xl px-2 py-10 mx-auto">
                 
                 <div class="mx-auto max-w-2xl">
-                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 text-center mb-3"><PrimaryText>Technologies</PrimaryText> and Tools I use</h2>
+                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 text-center mb-3 merienda"><PrimaryText>Technologies</PrimaryText> and Tools I use</h2>
                     <p class="text-center text-slate-400 mb-10 text-lg">I take pride in showcasing my comprehensive knowledge and expertise in web development, utilizing a wide range of modern tools and technologies to deliver high-quality solutions.</p>
                     <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-800 mb-5">
                         <ul class="flex flex-row -mb-px justify-center overflow-x-auto">
@@ -322,7 +294,7 @@ const scrollTo = ( id ) => {
                 <div class="bg-[#232c3d] rounded-3xl px-8 sm:px-12 py-20 sm:mb-5 relative overflow-hidden flex flex-col sm:flex-row gap-10 items-center justify-center">
                     <img src="https://placehold.co/400x400" />
                     <div class=" max-w-[500px]">
-                        <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 text-start mb-3">Dive Into My Creative Journey</h2>
+                        <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 text-start mb-3 merienda">Dive Into My Creative Journey</h2>
                         <p class="text-slate-400 text-lg">Explore insights, tips, and stories that inspire and ignite your passion. Join me as we navigate the world of creativity together!</p>
                         
                         <div class="flex">
@@ -397,5 +369,18 @@ const scrollTo = ( id ) => {
     .hero-content {
         clip-path: url(#clipConcave);
     }
+}
+
+.merienda {
+  font-family: "Merienda", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+p {
+    font-family: "Roboto Condensed", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
 }
 </style>

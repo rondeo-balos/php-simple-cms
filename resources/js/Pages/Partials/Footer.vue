@@ -79,8 +79,8 @@ async function handleSubmit(e) {
                     
                     <div class="mb-32 pt-10 relative" id="contactEl">
 
-                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-1">Need help with a project?</h2>
-                        <h3 class="text-center text-4xl sm:text-6xl mb-3 font-bold"><PrimaryText>Let's Talk!</PrimaryText></h3>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-200 text-center mb-1 merienda">Need help with a project?</h2>
+                        <h3 class="text-center text-4xl sm:text-6xl mb-3 font-bold merienda"><PrimaryText>Let's Talk!</PrimaryText></h3>
                         <p class="mb-8 text-center"><a href="tel:+639615936086" class="text-blue-300">+63 (961) 593-6086</a></p>
                         <form name="contactme" @submit.prevent="handleSubmit">
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md mb-3">
@@ -147,3 +147,18 @@ async function handleSubmit(e) {
         </div>
     </footer>
 </template>
+
+<style scoped>
+.merienda {
+  font-family: "Merienda", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+p, li {
+    font-family: "Roboto Condensed", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+}
+</style>
