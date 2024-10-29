@@ -138,7 +138,7 @@ const scrollTo = ( id ) => {
         <!-- Main content -->
         <div class="relative backdrop-blur-lg overflow-x-hidden">
             <!-- Max Screen -->
-            <div class="max-w-screen-xl px-4 py-10 mx-auto">
+            <div class="max-w-screen-xl px-4 py-10 mx-auto" id="home">
 
                 <div class="hero mb-20 rounded-2xl overflow-hidden lg:overflow-visible">
                     <svg width="0" height="0">
@@ -182,7 +182,7 @@ const scrollTo = ( id ) => {
                 <ArrowLongDownIcon class="w-10 h-10 p-2 border rounded-full animate-bounce mx-auto mb-10 -mt-10" />
             </div>
 
-            <div class="mb-20">
+            <div class="mb-20" id="testimonials">
                 <h2 class="text-2xl sm:text-4xl font-bold text-gray-200 mb-6 text-center px-3 merienda">You're not the first to discover...</h2>
                 <Testimonials>
                     <template v-for="testimonal in testimonials">
@@ -199,9 +199,9 @@ const scrollTo = ( id ) => {
                 </Testimonials>
             </div>
             
-            <div class="mx-auto max-w-5xl px-2 mb-20">
+            <div class="mx-auto max-w-5xl px-2 mb-20" id="projects">
                 <div class="mx-auto max-w-2xl mb-10 text-center">
-                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 mb-3  merienda"><PrimaryText>Featured</PrimaryText> Projects</h2>
+                    <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 mb-3 merienda"><PrimaryText>Featured</PrimaryText> Projects</h2>
                     <p class="text-slate-400 mb-10 text-lg">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
                 </div>
 
@@ -226,7 +226,7 @@ const scrollTo = ( id ) => {
                 </div>
             </div>
 
-            <div class="mb-10">
+            <div class="mb-10" id="services">
                 <div class="max-w-screen-xl px-2 mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-start">
                     <h2 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6 merienda">
                         <PrimaryText>What</PrimaryText> <span class="inline-block md:block"></span>

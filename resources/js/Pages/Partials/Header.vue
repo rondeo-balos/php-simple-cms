@@ -1,6 +1,4 @@
 <script setup>
-import Close from '@/Icons/Close.vue';
-import Hamburger from '@/Icons/Hamburger.vue';
 import { usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -15,6 +13,31 @@ const setActive = function( route ) {
     return active.value === route;
 };
 const routes = [
+    {
+        route: '#home',
+        label: 'Welcome',
+        kicker: '// there\'s no place like 127.0.0.1',
+        active: setActive( '#home' )
+    },
+    {
+        route: '#testimonials',
+        label: 'Testimonials',
+        kicker: '// I know, they\'re bias',
+        active: setActive( '#testimonials' )
+    },
+    {
+        route: '#projects',
+        label: 'Projects',
+        kicker: '// my best works',
+        active: setActive( '#projects' )
+    },
+    {
+        route: '#services',
+        label: 'Services',
+        kicker: '// what I excel at',
+        active: setActive( '#services' )
+    }
+    /*
     {
         route: route( 'home' ),
         label: 'Welcome',
@@ -32,11 +55,14 @@ const routes = [
         label: 'Blog',
         kicker: '// latest updates',
         active: setActive( 'blog' )
-    }
+    }*/
 ];
 
 const scrollTo = ( id ) => {
-    document.getElementById( id ).scrollIntoView({ behavior: 'smooth' });
+    const yOffset = -100;
+    const el = document.getElementById( id )
+    const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
 };
 </script>
 
@@ -48,7 +74,7 @@ const scrollTo = ( id ) => {
             <nav class="flex-grow">
                 <ul class="max-sm:hidden flex flex-row gap-10 uppercase font-black lg:justify-center">
                     <li v-for="item in routes" class="relative group">
-                        <Link :href="item.route" :class="[(item.active ? 'text-white':''), 'block h-full text-slate-400 group-hover:text-white transition-all']">{{ item.label }}</Link>
+                        <a @click.prevent="scrollTo( (item.route).replace( '#', '' ) )" :class="[(item.active ? 'text-white':''), 'block h-full text-slate-400 group-hover:text-white transition-all cursor-pointer']">{{ item.label }}</a>
                         <div :class="[(item.active ? 'bg-blue-500' : 'bg-gray-300 opacity-0 group-hover:opacity-100'), 'h-1 w-full rounded-lg absolute -bottom-[31px] transition-all']"></div>
                     </li>
                 </ul>
