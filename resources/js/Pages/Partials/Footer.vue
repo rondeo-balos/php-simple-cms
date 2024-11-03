@@ -88,7 +88,7 @@ async function handleSubmit(e) {
                             </div>
                             <div class="bg-[#32405a] p-1 rounded-lg flex flex-row mx-auto max-w-md">
                                 <input type="text" placeholder="Enter email address" id="email" name="email" v-model="email" class="bg-transparent ring-0 focus:ring-0 text-white border-0 min-w-0 rounded-lg me-2 grow">
-                                <Button button="true" tyle="submit" role="button" class="transition-all">
+                                <Button button="true" tyle="submit" role="button" class="transition-all whitespace-nowrap">
                                     Send Inquiry <ArrowPathIcon class="h-5 inline animate-spin" v-if="submitted" />
                                 </Button>
                                 <!--<button type="submit" role="button" class="bg-[#3289f0] hover:bg-[#1770db] transition-colors px-4 py-2 font-bold text-white rounded-lg text-nowrap">

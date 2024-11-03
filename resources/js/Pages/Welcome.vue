@@ -6,13 +6,13 @@ import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
 import Button from '@/Pages/Partials/Button.vue';
 import CTA from '@/Pages/Partials/CTA.vue';
-import Video from '@/Pages/Partials/Video.vue';
 import PrimaryText from '@/Pages/Partials/PrimaryText.vue';
 import Service from '@/Pages/Partials/Service.vue';
 import { dragScroll } from '@/Pages/Partials/DragScroll';
 import { useLayeredEffect } from '@/Pages/Partials/Layered';
 import Testimonials from '@/Pages/Partials/Testimonials.vue';
 import { useAutoAnimate } from '@formkit/auto-animate/vue'
+import VideoAlt from '@/Pages/Partials/VideoAlt.vue';
 
 const cdn = ref(usePage().props.cdn);
 
@@ -144,20 +144,21 @@ const [autoAnimate] = useAutoAnimate()
             <div class="max-w-screen-xl px-4 py-10 mx-auto" id="home">
 
                 <div class="mb-36 flex flex-col-reverse lg:flex-row gap-10">
-                    <div class="grow shrink flex flex-col gap-10 basis-1/2">
-                        <img src="https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg" class="rounded-3xl">
+                    <div class="grow shrink flex flex-col gap-10 basis-1/2 justify-center">
                         <div>
                             <h1 class="text-4xl sm:text-5xl font-bold text-gray-200 mb-4 merienda">
                                 <PrimaryText>Welcome!</PrimaryText> <br>
                                 I'm Rondeo Balos
                             </h1>
                             <p class="text-slate-400 text-lg mb-4">I’m a web developer passionate about creating visually appealing, high-performance websites. I combine modern design with solid development to build digital experiences that help businesses grow. Let’s bring your project to life!</p>
-                            <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>
+                            <div class="flex flex-col lg:flex-row gap-5">
+                                <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>
+                                <VideoAlt :cdn="cdn" />
+                            </div>
                         </div>
                     </div>
                     <div class="grow shrink flex flex-col gap-10 basis-1/2">
-                        <Video :cdn="cdn" />
-                        <img src="https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg" class="rounded-3xl">  
+                        <img :src="`https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg`" class="rounded-3xl">  
                     </div>
                 </div>
 
