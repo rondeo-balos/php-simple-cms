@@ -143,17 +143,10 @@ const [autoAnimate] = useAutoAnimate()
             <!-- Max Screen -->
             <div class="max-w-screen-xl px-4 py-10 mx-auto" id="home">
 
-                <div class="hero mb-20 rounded-2xl overflow-hidden lg:overflow-visible">
-                    <svg width="0" height="0">
-                        <defs>
-                            <clipPath id="clipConcave" clipPathUnits="objectBoundingBox">
-                                <path d="M0 .03Q0 0 .02 0L.98 0Q1 0 1 .03L1 .76Q1 .79.98.79L.52.8Q.5.8.5.77L.5.59Q.5.56.48.56L.02.56Q0 .56 0 .53Z"/>
-                            </clipPath>
-                        </defs>
-                    </svg>
-                    <div class="hero-content"></div>
-                    <div class="flex flex-col lg:flex-row bg-opacity-70 bg-black lg:bg-transparent p-8 lg:p-0 h-full z-50 relative justify-between items-end">
-                        <div class="lg:w-[48%] mb-12">
+                <div class="mb-36 flex flex-col-reverse lg:flex-row gap-10">
+                    <div class="grow shrink flex flex-col gap-10 basis-1/2">
+                        <img src="https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg" class="rounded-3xl">
+                        <div>
                             <h1 class="text-4xl sm:text-5xl font-bold text-gray-200 mb-4 merienda">
                                 <PrimaryText>Welcome!</PrimaryText> <br>
                                 I'm Rondeo Balos
@@ -161,26 +154,12 @@ const [autoAnimate] = useAutoAnimate()
                             <p class="text-slate-400 text-lg mb-4">I’m a web developer passionate about creating visually appealing, high-performance websites. I combine modern design with solid development to build digital experiences that help businesses grow. Let’s bring your project to life!</p>
                             <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>
                         </div>
-                        <!--<div class="lg:w-5/12 lg:-mr-12 lg:mb-20">
-                            <Video :cdn="cdn" />
-                        </div>-->
-                        <div class="lg:w-5/12 lg:mr-12 lg:mb-52">
-                            <Video :cdn="cdn" />
-                        </div>
+                    </div>
+                    <div class="grow shrink flex flex-col gap-10 basis-1/2">
+                        <Video :cdn="cdn" />
+                        <img src="https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg" class="rounded-3xl">  
                     </div>
                 </div>
-
-                <!--<div class="flex flex-col md:flex-row justify-between my-5 md:my-20">
-                    <h1 class="text-4xl sm:text-7xl font-bold text-gray-200 mb-6">
-                        <PrimaryText>Welcome!</PrimaryText> <br>
-                        I'm Rondeo Balos
-                    </h1>
-                    <div class="md:w-5/12">
-                        <p class="text-slate-400 text-lg mb-3">I’m a web developer passionate about creating visually appealing, high-performance websites. I combine modern design with solid development to build digital experiences that help businesses grow. Let’s bring your project to life!</p>
-                        <CTA @click="scrollTo('contactEl')" is="button">Let's Talk</CTA>
-                    </div>
-                </div>
-                <Video :cdn="cdn" />-->
 
                 <ArrowLongDownIcon class="w-10 h-10 p-2 border rounded-full animate-bounce mx-auto mb-10 -mt-10" />
             </div>
@@ -329,32 +308,6 @@ const [autoAnimate] = useAutoAnimate()
 .dragging {
     cursor: grabbing;
     user-select: none; /* Prevent text selection while dragging */
-}
-
-.hero {
-    width: 100%; /* or any width */
-    position: relative;
-    filter: drop-shadow(0px 0px 8px 3px #fff);
-    
-    /* Create the concave effect with clip-path */
-    /*clip-path: path("M 0 9 Q 0 0 8 0 L 92 0 Q 100 0 100 8 L 100 42 Q 100 50 92 50 L 83 50 Q 75 50 75 58 L 75 57 Q 75 65 67 65 L 48 65 Q 40 65 40 57 L 40 58 Q 40 50 32 50 L 8 50 Q 0 50 0 42 Z");*/
-}
-.hero-content {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: url(https://imgcdn.stablediffusionweb.com/2024/10/3/1567c0fe-396c-49e8-8da8-5ffb87414d3f.jpg);
-    background-size: cover; /* Make the background image cover the entire area */
-    background-position: center;
-}
-@media screen and (min-width: 1024px) {
-    .hero {
-        height: 90vh; /* Adjust as needed */
-    }
-    .hero-content {
-        clip-path: url(#clipConcave);
-    }
 }
 
 .merienda {
