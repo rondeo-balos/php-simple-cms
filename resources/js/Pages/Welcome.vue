@@ -12,6 +12,7 @@ import Service from '@/Pages/Partials/Service.vue';
 import { dragScroll } from '@/Pages/Partials/DragScroll';
 import { useLayeredEffect } from '@/Pages/Partials/Layered';
 import Testimonials from '@/Pages/Partials/Testimonials.vue';
+import { useAutoAnimate } from '@formkit/auto-animate/vue'
 
 const cdn = ref(usePage().props.cdn);
 
@@ -106,6 +107,8 @@ const { handleMouseMove, resetTransform } = useLayeredEffect(containerRef, imgRe
 const scrollTo = ( id ) => {
     document.getElementById( id ).scrollIntoView({ behavior: 'smooth' });
 };
+
+const [autoAnimate] = useAutoAnimate()
 </script>
 
 <template>
@@ -273,17 +276,15 @@ const scrollTo = ( id ) => {
                     </div>
                 </div>
 
-                <div class="flex flex-wrap mx-auto max-w-7xl justify-center transition-all relative gap-0">
-                    <TransitionGroup name="list">
-                        <template v-for="tech in techs" :key="tech.name">
-                            <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-1 sm:p-2 hover:scale-105 transition-transform duration-500">
-                                <div class="bg-[#232c3d] p-3 sm:p-4 font-bold rounded-xl flex flex-row items-center gap-3 text-xs sm:text-base">
-                                    <img :src="tech.image" class="w-6 h-6 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
-                                    {{ tech.name }}
-                                </div>
+                <div class="flex flex-wrap mx-auto max-w-7xl justify-center transition-all relative gap-0" ref="autoAnimate">
+                    <template v-for="tech in techs" :key="tech.name">
+                        <div v-if="currentType == tech.type || currentType == false" class="md:min-w-52 p-1 sm:p-2 hover:scale-105 transition-transform duration-500">
+                            <div class="bg-[#232c3d] p-3 sm:p-4 font-bold rounded-xl flex flex-row items-center gap-3 text-xs sm:text-base">
+                                <img :src="tech.image" class="w-6 h-6 sm:w-12 sm:h-12 object-contain object-center" :alt="tech.name" width="auto" height="auto">
+                                {{ tech.name }}
                             </div>
-                        </template>
-                    </TransitionGroup>
+                        </div>
+                    </template>
                 </div>
 
             </div>
@@ -312,21 +313,6 @@ const scrollTo = ( id ) => {
 </template>
 
 <style scoped>
-.move-item, .list-enter-active, .list-leave-active {
-    transition: all 0.6s ease-in-out;
-    transform-style: preserve-3d;
-}
-
-.list-enter-from {
-    transform: rotateY(90deg);  /* Start from a 90-degree rotation */
-    opacity: 0;
-}
-
-.list-leave-to {
-    transform: rotateY(90deg);  /* End with the same rotation */
-    opacity: 0;
-}
-
 
 .body-bg {
     z-index: 0;
