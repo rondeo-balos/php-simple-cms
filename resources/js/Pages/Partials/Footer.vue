@@ -105,7 +105,7 @@ async function handleSubmit(e) {
                         <div class="grow sm:w-2/5">
                             
                             <img :src="`${cdn}logo-transparent.webp`" class="max-h-16 max-sm:mx-auto" width="auto" height="auto" alt="Logo">
-                            <h3 class="kanit text-2xl font-extrabold uppercase text-white mb-3">Rondeo Balos</h3>
+                            <h3 class="kanit text-2xl font-[700] text-white mb-3 merienda">Rondeo Balos</h3>
                             <p class="text-slate-500 font-semibold mb-10">My passion for web development extends beyond technical skills; it is driven by the desire to understand each client’s unique requirements and exceed their expectations.</p>
 
                             <template v-for="(social, index) in socials">

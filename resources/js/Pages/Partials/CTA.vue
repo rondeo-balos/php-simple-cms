@@ -35,7 +35,7 @@ const { handleMouseMove, resetTransform } = useLayeredEffect(buttonRef, txtRef, 
 </script>
 
 <template>
-    <component :is="is" @mouseover="createRipple" @mouseout="rippleVisible = false" @mousemove="handleMouseMove" @mouseleave="resetTransform" class="bg-[#0b58ca] hover:scale-110 transition-all overflow-hidden min-w-48 min-h-14 block font-medium text-xl group/button rounded-full shadow text-white" ref="buttonRef">
+    <component :is="is" @mouseover="createRipple" @mouseout="rippleVisible = false" @mousemove="handleMouseMove" @mouseleave="resetTransform" class="bg-[#0b58ca] hover:scale-105 transition-all overflow-hidden min-w-48 min-h-14 block font-medium text-xl group/button rounded-full shadow text-white" ref="buttonRef">
         <span v-if="rippleVisible" :style="rippleStyle" class="ripple z-0 absolute rounded-full pointer-events-none"></span>
         <span class="block relative z-10 group-hover/button:text-black pointer-events-none layer" ref="txtRef"><slot/></span>
     </component>

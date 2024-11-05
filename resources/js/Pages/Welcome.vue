@@ -1,7 +1,7 @@
 <script setup>
 import { Head, usePage, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon, ArrowLongDownIcon } from '@heroicons/vue/16/solid';
+import { BookOpenIcon, ClockIcon, ArrowTopRightOnSquareIcon, ArrowLongDownIcon, UserIcon } from '@heroicons/vue/16/solid';
 import Header from '@/Pages/Partials/Header.vue';
 import Footer from '@/Pages/Partials/Footer.vue';
 import Button from '@/Pages/Partials/Button.vue';
@@ -38,17 +38,30 @@ const projects = ref([
         project: 'Cool Rate',
         description: 'Financial and operational management system tailored for a service or installation-based company. The system focuses on tracking labor costs, expenses, and calculating the company’s financial "burden" or cost of operations.',
         link: 'https://cool-rate.com',
-        image: `${cdn.value}cool-rate.mockup-dark.webp`,
-        framework: 'Laravel, Vue',
-        status: 'On-going'
+        link_label: 'Visit Site',
+        image: `${cdn.value}cool-rate.mockup.webp`,
+        framework: [
+            'Laravel',
+            'Vue',
+            'TailwindCSS'
+        ],
+        status: 'On-going',
+        role: 'Backend'
     },
     {
         project: 'Simpl.CMS',
         description: 'A simple CMS that provides features such as database models, file management, a dashboard, block components, authentication, translations, caching and many more.',
-        link: 'https://cms.rondeobalos.com/',
-        image: `${cdn.value}simpl.cms.mockup-dark.webp`,
-        framework: 'Laravel, Vue',
-        status: 'On-going'
+        link: 'https://github.com/rondeo-balos/php-simple-cms',
+        link_label: 'Github',
+        image: `${cdn.value}simpl.cms.mockup.webp`,
+        framework: [
+            'Laravel',
+            'Vue',
+            'TailwindCSS',
+            'Twig'
+        ],
+        status: 'On-going',
+        role: 'Fullstack'
     }
 ]);
 
@@ -81,6 +94,13 @@ const testimonials = ref([
             image: 'https://lh3.googleusercontent.com/a/ACg8ocKVh2bY6V0p-KU-7gB1f5imzDNylvCTclLRfjYQzQP0fO4HSA=s36-c-rp-mo-br100'
         }
     ],
+    [
+        {
+            testimonial: 'He is incredibly knowledgeable and easy to work with, making the entire website creation process smooth and stress-free. They took the time to understand my business needs and provided creative, personalized solutions that truly captured my brand’s essence. The end result was a beautifully designed, user-friendly website that exceeded my expectations! Highly recommend Rondeo Balos for anyone looking for professional, innovative web solutions!',
+            name: 'Ric Ian Abing',
+            image: 'https://lh3.googleusercontent.com/a-/ALV-UjUD_0nWaLEcOp-Ffo2KEDDvOmTMqiuWGPDohu8SvWoFo2Qw9jY=s36-c-rp-mo-br100'
+        }
+    ]
 ]);
 
 
@@ -170,11 +190,11 @@ const [autoAnimate] = useAutoAnimate()
                 <Testimonials>
                     <template v-for="testimonal in testimonials">
                         <div class="flex flex-col gap-5">
-                            <div v-for="testimonal in testimonal" class="bg-[#1e2430] rounded-xl p-6 max-w-xs sm:max-w-sm text-wrap hover:scale-105 transition-transform duration-500">
-                                <p>{{ testimonal.testimonial }}</p>
+                            <div v-for="testimonial in testimonal" class="bg-[#1e2430] rounded-xl p-6 max-w-xs sm:max-w-sm text-wrap hover:scale-105 transition-transform duration-500">
+                                <p>{{ testimonial.testimonial.substring(0, 280) + ( testimonial.testimonial.length > 300 ? '...' : '' ) }}</p>
                                 <div class="flex flex-row justify-between items-center mt-5">
-                                    <span class="uppercase font-semibold text-[#86a7c0]">{{ testimonal.name }}</span>
-                                    <img class="bg-white rounded-full overflow-hidden max-w-7" :alt="testimonal.name" :src="testimonal.image">
+                                    <span class="uppercase font-semibold text-[#86a7c0]">{{ testimonial.name }}</span>
+                                    <img class="bg-white rounded-full overflow-hidden max-w-7" :alt="testimonial.name" :src="testimonial.image">
                                 </div>
                             </div>
                         </div>
@@ -182,7 +202,7 @@ const [autoAnimate] = useAutoAnimate()
                 </Testimonials>
             </div>
             
-            <div class="mx-auto max-w-5xl px-2 mb-20" id="projects">
+            <div class="mx-auto max-w-5xl px-2 mb-36" id="projects">
                 <div class="mx-auto max-w-2xl mb-10 text-center">
                     <h2 class="text-2xl sm:text-5xl font-bold text-gray-200 mb-3 merienda"><PrimaryText>Featured</PrimaryText> Projects</h2>
                     <p class="text-slate-400 mb-10 text-lg">Each website project is unique with its own set of challenges. I treat each one with the same approach, respect and dedication. I believe in transparency and honesty. This underlines everything I do.</p>
@@ -191,22 +211,25 @@ const [autoAnimate] = useAutoAnimate()
                 <div v-for="project in projects" class="bg-[#232c3d] relative rounded-xl shadow-xl mb-3 mt-16 flex even:md:flex-row-reverse odd:md:flex-row flex-col-reverse items-center group">
                     <div class="p-10 md:p-16 z-10 flex flex-col justify-center items-start">
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-200 mb-3 merienda">{{ project.project }}</h3>
-                        <p class="text-slate-400 mb-10">{{ project.description }}</p>
+                        <p class="text-slate-400">{{ project.description }}</p>
                         
-                        <Button v-if="project.link" :href="project.link" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">Visit Site <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
-
-                        <div>
-                            <span class="text-sm font-bold text-blue-300 inline me-3"><BookOpenIcon class="size-5 -mt-1 inline" /> {{ project.framework }}</span>
-                            <span class="text-sm font-bold text-blue-300 inline"><ClockIcon class="size-5 -mt-1 inline" /> {{ project.status }}</span>
+                        <div class="text-sm font-bold text-blue-300 my-5">
+                            <div class="flex flex-row mb-3 gap-1">
+                                <span v-for="framework in project.framework" class="bg-[#151926] p-1 px-2 rounded-lg text-white text-sm">{{ framework }}</span>
+                            </div>
+                            <span class="inline me-3"><ClockIcon class="size-5 -mt-1 inline" /> {{ project.status }}</span>
+                            <span class="inline"><UserIcon class="size-5 -mt-1 inline" /> {{ project.role }}</span>
                         </div>
+
+                        <Button v-if="project.link" :href="project.link" target="_blank" class="bg-[#333f5b] inline ms-0 me-auto mb-3">{{ project.link_label }} <ArrowTopRightOnSquareIcon class="h-5 inline -mt-1" /></Button>
                     </div>
 
-                    <img :src="project.image" :alt="project.project" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full -top-10 max-md:-mb-16 group-even:md:-left-10 group-odd:md:-right-10 group-even:md:-mr-10 group-odd:md:-ml-10 md:opacity-100 z-0 group-hover:scale-105 transition-transform duration-1000">
+                    <img :src="project.image" :alt="project.project" width="auto" height="auto" class="max-h-[400px] relative max-md:max-h-full max-md:-mb-16 group-even:md:-left-16 group-odd:md:-right-16 group-even:md:-mr-24 group-odd:md:-ml-24 md:opacity-100 z-0 group-hover:scale-110 transition-transform duration-300">
                 </div>
 
-                <div class="flex">
-                    <CTA class="mt-10 px-8 mx-auto relative flex items-center" :href="route('projects')" is="a">View all my projects</CTA>
-                </div>
+                <!--<div class="flex">
+                    <CTA class="mt-10 px-8 mx-auto relative flex items-center justify-center" :href="route('projects')" is="a">View More</CTA>
+                </div>-->
             </div>
 
             <div class="mb-10" id="services">

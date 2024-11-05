@@ -21,7 +21,7 @@ const stopVideo = () => {
 </script>
 
 <template>
-    <CTA @click="playVideo" is="button" class="min-w-60">Watch Showreel <PlayIcon class="w-6 inline -mt-1" /></CTA>
+    <CTA @click="playVideo" is="button" class="min-w-42">Showreel <PlayIcon class="w-6 inline -mt-1" /></CTA>
     <Modal :show="videoPlayed" @close="stopVideo" maxWidth="full">
         <div class="h-[90vh] flex items-center">
             <video class="w-full h-auto cursor-pointer transition-all z-30 rounded-2xl" :poster="`${cdn}poster.gif`" controls ref="video">
