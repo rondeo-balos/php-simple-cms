@@ -1,7 +1,7 @@
 <script setup>
 import { usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import CTA from '@/Pages/Partials/CTA.vue';
 
 const cdn = ref(usePage().props.cdn);
@@ -64,18 +64,46 @@ const scrollTo = ( id ) => {
     const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
     window.scrollTo({ top: y, behavior: 'smooth' });
 };
+
+const currentSection = ref('#home');
+const observer = ref(null);
+// Use IntersectionObserver to monitor sections in the viewport
+const observeSections = () => {
+    const options = { root: null, threshold: 0.8 }; // 60% of section in view to trigger
+    observer.value = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                currentSection.value = `#${entry.target.id}`;
+            }
+        });
+    }, options);
+
+    routes.forEach((route) => {
+        const section = document.querySelector(route.route);
+        if (section) observer.value.observe(section);
+    });
+};
+
+// Set up observer on mounted and clean up on unmounted
+onMounted(() => {
+    observeSections();
+});
+
+onUnmounted(() => {
+    if( observer.value ) observer.value.disconnect(); // Disconnect observer on unmount
+});
 </script>
 
 <template>
     <!-- Header -->
     <div class="border-b border-gray-600 border-opacity-25 nav backdrop-blur-lg sticky top-0 z-[55]">
         <div class="max-w-screen-xl px-2 py-4 mx-auto flex flex-row justify-between items-center gap-10">
-            <img :src="`${cdn}logo-transparent.webp`" class=" max-h-12" width="auto" height="auto" alt="Logo">
+            <a :href="route('home')" class="z-50"><img :src="`${cdn}logo-transparent.webp`" class=" max-h-12" width="auto" height="auto" alt="Logo"></a>
             <nav class="flex-grow">
                 <ul class="max-sm:hidden flex flex-row gap-10 uppercase font-black lg:justify-center">
                     <li v-for="item in routes" class="relative group">
-                        <a @click.prevent="scrollTo( (item.route).replace( '#', '' ) )" :class="[(item.active ? 'text-white':''), 'block h-full text-slate-400 group-hover:text-white transition-all cursor-pointer']">{{ item.label }}</a>
-                        <div :class="[(item.active ? 'bg-blue-500' : 'bg-gray-300 opacity-0 group-hover:opacity-100'), 'h-1 w-full rounded-lg absolute -bottom-[31px] transition-all']"></div>
+                        <a @click.prevent="scrollTo( (item.route).replace( '#', '' ) )" :class="[(item.active ? 'text-white':''), (currentSection === item.route ? 'text-white' : ''), 'block h-full text-slate-400 group-hover:text-white transition-all cursor-pointer']">{{ item.label }}</a>
+                        <div :class="[(currentSection === item.route ? 'bg-blue-500': 'bg-gray-300 opacity-0 group-hover:opacity-100'), 'h-1 w-full rounded-lg absolute -bottom-[31px] transition-all']"></div>
                     </li>
                 </ul>
             </nav>
@@ -104,7 +132,7 @@ const scrollTo = ( id ) => {
                             <nav class="self-center">
                                 <ul class="flex flex-col gap-10 font-black text-center pt-36">
                                     <li v-for="item in routes" class="relative group">
-                                        <Link :href="item.route" :class="[(item.active ? 'text-blue-600':'text-white'), 'font-black text-3xl transition-all']">{{ item.label }}</Link>
+                                        <a @click.prevent="show = false; scrollTo( (item.route).replace( '#', '' ) )" :href="item.route" :class="[(currentSection === item.route ? 'text-blue-600':'text-white'), 'font-black text-3xl transition-all']">{{ item.label }}</a>
                                         <span class="text-sm text-slate-600 block">{{ item.kicker }}</span>
                                     </li>
                                     <li class="relative group">

@@ -45,8 +45,8 @@ const projects = ref([
             'Vue',
             'TailwindCSS'
         ],
-        status: 'On-going',
-        role: 'Backend'
+        status: 'Post-deployment',
+        role: 'Back-end'
     },
     {
         project: 'Simpl.CMS',
@@ -61,7 +61,7 @@ const projects = ref([
             'Twig'
         ],
         status: 'On-going',
-        role: 'Fullstack'
+        role: 'Full-stack'
     }
 ]);
 
@@ -102,16 +102,6 @@ const testimonials = ref([
         }
     ]
 ]);
-
-
-// Fetch all projects
-/*axios.get( route('api.collection', { collection: 'project', 's': 'sticky'}) )
-    .then( response => {
-        projects.value = response.data.data;
-    })
-    .catch( error => {
-        console.log(error);
-    });*/
 
 // Scroll drag
 const scrollContainer = ref(null);
